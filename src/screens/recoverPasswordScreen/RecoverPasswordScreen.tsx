@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
@@ -14,27 +13,47 @@ import IMAGES from '../../assets/images';
 import COLOR from '../../constant/constant';
 import CustomInput from '../../components/input/customInput';
 import LoginButton from '../../components/button/CustomButton';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-const RecoverPasswordScreen: React.FC = () => {
+type RootStackParamList = {
+  RecoverPassword: undefined;
+  // Add other screens here if necessary
+};
+
+type RecoverPasswordScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'RecoverPassword'
+>;
+
+interface Props {
+  navigation: RecoverPasswordScreenNavigationProp;
+}
+
+const RecoverPasswordScreen: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState<string>('');
 
   const handleRecover = (): void => {
     if (email) {
       Alert.alert('Recovery URL has been sent to your email!');
+      // You can navigate to another screen after recovery if needed
+      // navigation.navigate('Login'); // Uncomment to navigate to the Login screen
     } else {
       Alert.alert('Please enter your email');
     }
   };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
       <TouchableOpacity
         style={styles.backButton}
-        onPress={() => Alert.alert('Go Back')}>
+        onPress={() => navigation.goBack()} 
+      >
         <Image source={IMAGES.BACKICOn} />
       </TouchableOpacity>
-      <Text style={styles.title}>Recover </Text>
+      <Text style={styles.title}>Recover</Text>
       <Text style={styles.title}>Password</Text>
       <View style={styles.content}>
         <Text style={styles.label}>Email</Text>
@@ -47,17 +66,15 @@ const RecoverPasswordScreen: React.FC = () => {
         <Text style={styles.description}>
           Put your email above to get recovery URL
         </Text>
-       <View style={styles.login}>
-       <LoginButton
-              onClick={() => {}}
-              title="Recover"
-              backgroundColor={COLOR.primary}
-              textColor={COLOR.white}
-              width={185}
-            />
-       </View>
-       
-       
+        <View style={styles.login}>
+          <LoginButton
+            onClick={handleRecover} 
+            title="Recover"
+            backgroundColor={COLOR.primary}
+            textColor={COLOR.white}
+            width={185}
+          />
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
@@ -69,10 +86,12 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#fff',
     justifyContent: 'center',
+    paddingHorizontal: 27,
   },
   backButton: {
     position: 'absolute',
     top: 50,
+    left: 20,
   },
   backText: {
     fontSize: 24,
@@ -85,11 +104,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 36,
-    fontWeight: 800,
+    fontWeight: '800',
     color: COLOR.primary,
     fontFamily: 'MontserratRegular',
   },
-
   label: {
     fontSize: 18,
     fontWeight: 600,
@@ -97,7 +115,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginBottom: 8,
   },
-
   description: {
     fontSize: 14,
     fontWeight: 600,
@@ -106,12 +123,11 @@ const styles = StyleSheet.create({
     marginTop: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    lineHeight:17,
-   
+    lineHeight: 17,
   },
-  login:{
-    marginTop:38
-  }
+  login: {
+    marginTop: 38,
+  },
 });
 
 export default RecoverPasswordScreen;

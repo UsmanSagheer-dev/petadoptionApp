@@ -1,8 +1,23 @@
-import {ImageBackground, Text, StyleSheet, View} from 'react-native';
-import React from 'react';
+import { ImageBackground, Text, StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import IMAGES from '../../assets/images';
 
-const SplashScreen = () => {
+type NavigationProp = {
+  replace: (screen: string) => void;
+};
+
+const SplashScreen: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>();  // Type the navigation hook
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.replace('Login');  // Navigate to Login screen after 3 seconds
+    }, 3000);
+
+    return () => clearTimeout(timer);  // Cleanup the timer
+  }, [navigation]);
+
   return (
     <ImageBackground
       source={IMAGES.SPLASH}
@@ -37,20 +52,20 @@ const styles = StyleSheet.create({
   mainText: {
     color: 'white',
     fontSize: 40,
-    fontWeight: 800,
+    fontWeight: '800',
     textAlign: 'center',
     fontFamily: 'MontserratRegular',
   },
   mainText1: {
     color: 'white',
     fontSize: 40,
-    fontWeight: 800,
+    fontWeight: '800',
     textAlign: 'center',
   },
   subText: {
     color: 'white',
     fontSize: 22,
-    fontWeight: 600,
+    fontWeight: '600',
     textAlign: 'center',
     marginTop: 15,
     fontFamily: 'MontserratRegular',

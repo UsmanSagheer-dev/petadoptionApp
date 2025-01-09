@@ -1,21 +1,36 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
   ScrollView,
   Platform,
 } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
 import LoginButton from '../../components/button/CustomButton';
 import COLOR from '../../constant/constant';
-const SignUpScreen = () => {
+
+// Define the navigation prop types
+type RootStackParamList = {
+  SignUp: undefined;
+  Login: undefined;
+  Home: undefined;
+};
+
+type SignUpScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
+
+interface Props {
+  navigation: SignUpScreenNavigationProp;
+}
+
+const SignUpScreen: React.FC<Props> = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -66,7 +81,7 @@ const SignUpScreen = () => {
           <View style={styles.buttonGroupContainer}>
             {/* Sign Up Button */}
             <LoginButton
-              onClick={() => {}}
+              onClick={() => navigation.navigate('Home')} // Navigate to Home screen after sign up
               title="Sign Up"
               backgroundColor={COLOR.primary}
               textColor={COLOR.white}
@@ -74,7 +89,7 @@ const SignUpScreen = () => {
             />
             {/* Login Link */}
             <LoginButton
-              onClick={() => {}}
+              onClick={() => navigation.navigate('Login')} // Navigate to Login screen
               title="Login"
               backgroundColor={COLOR.white}
               textColor={COLOR.primary}
@@ -86,6 +101,7 @@ const SignUpScreen = () => {
     </KeyboardAvoidingView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -94,7 +110,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     flex: 1,
-    paddingHorizontal: 37,
+    paddingHorizontal: 27,
     justifyContent: 'center',
   },
   title: {
