@@ -1,17 +1,41 @@
-import React, { useState } from 'react'; 
-import { View, Text, TouchableOpacity, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+} from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
 import LoginButton from '../../components/button/CustomButton';
 import COLOR from '../../constant/constant';
-const LoginScreen = () => {
+
+// Define the navigation prop types
+type RootStackParamList = {
+  Login: undefined;
+  Home: undefined;
+  SignUp: undefined;
+  Recover: undefined; // Add Recover screen to the navigation types
+};
+
+type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
+
+interface Props {
+  navigation: LoginScreenNavigationProp;
+}
+
+const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <Text style={styles.title}>Login</Text>
@@ -27,6 +51,7 @@ const LoginScreen = () => {
                 onChange={text => setEmail(text)}
               />
             </View>
+
             {/* Password Input */}
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Password</Text>
@@ -37,7 +62,10 @@ const LoginScreen = () => {
                 onChange={text => setPassword(text)}
                 secureTextEntry={true}
               />
-              <TouchableOpacity style={styles.forgotPassword}>
+              <TouchableOpacity
+                style={styles.forgotPassword}
+                onPress={() => navigation.navigate('Recover')} // Ensure 'Recover' screen is defined in the navigator
+              >
                 <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
               </TouchableOpacity>
             </View>
@@ -47,9 +75,10 @@ const LoginScreen = () => {
           <View style={styles.termsContainer}>
             <TermsCheckbox checked={false} onChange={() => {}} />
           </View>
+
           <View style={styles.buttonGroupContainer}>
             <LoginButton
-              onClick={() => {}}
+              onClick={() => navigation.navigate('Home')} // Navigate to Home screen on login
               title="Login"
               backgroundColor={COLOR.primary}
               textColor={COLOR.white}
@@ -57,7 +86,7 @@ const LoginScreen = () => {
             />
             {/* Sign Up Link */}
             <LoginButton
-              onClick={() => {}}
+              onClick={() => navigation.navigate('SignUp')} // Navigate to SignUp screen
               title="Sign Up"
               backgroundColor={COLOR.white}
               textColor={COLOR.primary}
@@ -69,15 +98,16 @@ const LoginScreen = () => {
     </KeyboardAvoidingView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLOR.white,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingHorizontal: 27,
   },
   scrollViewContainer: {
     flex: 1,
-    paddingHorizontal: 37,
     justifyContent: 'center',
   },
   title: {
