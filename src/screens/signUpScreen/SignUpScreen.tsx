@@ -1,23 +1,40 @@
-import React, { useState } from 'react'; 
-import { View, Text, TouchableOpacity, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
 import LoginButton from '../../components/button/CustomButton';
 import COLOR from '../../constant/constant';
-const LoginScreen = () => {
+const SignUpScreen = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-    >
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        <Text style={styles.title}>Login</Text>
+        <Text style={styles.title}>Sign Up</Text>
         <View style={styles.form}>
-          {/* Email Input */}
+          {/* Username Input */}
           <View style={styles.maininputContainer}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Username</Text>
+              <CustomInput
+                type="text"
+                placeholder=""
+                value={username}
+                onChange={text => setUsername(text)}
+              />
+            </View>
+            {/* Email Input */}
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Email</Text>
               <CustomInput
@@ -27,6 +44,7 @@ const LoginScreen = () => {
                 onChange={text => setEmail(text)}
               />
             </View>
+
             {/* Password Input */}
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Password</Text>
@@ -37,9 +55,6 @@ const LoginScreen = () => {
                 onChange={text => setPassword(text)}
                 secureTextEntry={true}
               />
-              <TouchableOpacity style={styles.forgotPassword}>
-                <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-              </TouchableOpacity>
             </View>
           </View>
 
@@ -47,18 +62,20 @@ const LoginScreen = () => {
           <View style={styles.termsContainer}>
             <TermsCheckbox checked={false} onChange={() => {}} />
           </View>
+
           <View style={styles.buttonGroupContainer}>
+            {/* Sign Up Button */}
             <LoginButton
               onClick={() => {}}
-              title="Login"
+              title="Sign Up"
               backgroundColor={COLOR.primary}
               textColor={COLOR.white}
               width={185}
             />
-            {/* Sign Up Link */}
+            {/* Login Link */}
             <LoginButton
               onClick={() => {}}
-              title="Sign Up"
+              title="Login"
               backgroundColor={COLOR.white}
               textColor={COLOR.primary}
               width={'100%'}
@@ -73,7 +90,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLOR.white,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   scrollViewContainer: {
     flex: 1,
@@ -115,14 +132,6 @@ const styles = StyleSheet.create({
     fontFamily: 'MontserratRegular',
     fontWeight: 600,
   },
-  signUpContainer: {
-    marginTop: 16,
-    alignItems: 'center',
-  },
-  signUpText: {
-    fontSize: 16,
-    color: COLOR.info,
-  },
   buttonGroupContainer: {
     width: '100%',
     marginTop: 24,
@@ -131,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default SignUpScreen;

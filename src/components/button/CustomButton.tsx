@@ -6,7 +6,7 @@ interface LoginButtonProps {
   title: string;
   backgroundColor?: string;
   textColor?: string;
-  width?: string | number; // Dynamic width prop
+  width?: string | number; 
 }
 
 const LoginButton = ({
@@ -16,9 +16,7 @@ const LoginButton = ({
   textColor = '#fff',
   width = '100%', 
 }: LoginButtonProps) => {
-
   const buttonStyle: ViewStyle = { backgroundColor, width: width as any };
-
   return (
     <TouchableOpacity
       style={[styles.button, buttonStyle]}
@@ -29,11 +27,10 @@ const LoginButton = ({
     </TouchableOpacity>
   );
 };
-
 const styles = StyleSheet.create({
   button: {
     paddingVertical: 12,
-    borderRadius: 9999,
+    borderRadius:37,
     alignItems: 'center',
     height:79,
     justifyContent: 'center',
