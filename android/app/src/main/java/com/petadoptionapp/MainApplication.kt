@@ -1,4 +1,5 @@
-package com.petadoptionapp
+package com.adoption
+
 
 import android.app.Application
 import com.facebook.react.PackageList

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "835900712525",
+    "project_id": "adoptionapp-a8ff2",
+    "storage_bucket": "adoptionapp-a8ff2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835900712525:android:7dd3e1a3a97f3c978d1e04",
+        "android_client_info": {
+          "package_name": "com.adoption"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUpL1mD3K0TybRtvnB8nkhAih66bwnTt4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
