@@ -76,7 +76,8 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigation.navigate('Home'); // Redirect to Home if authenticated
+      console.log("🚀 ~ useEffect ~ isAuthenticated:", isAuthenticated)
+      navigation.navigate('Home');
     }
   }, [isAuthenticated, navigation]);
 
