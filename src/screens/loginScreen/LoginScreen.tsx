@@ -13,13 +13,15 @@ import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
 import LoginButton from '../../components/button/CustomButton';
 import COLOR from '../../constant/constant';
+import { useDispatch, useSelector } from 'react-redux';
+import { signin } from '../../redux/slices/authSlice'; // Adjust the import path as needed
+import { RootState, AppDispatch } from '../../redux/store'; // Adjust the import path as needed
 
-// Define the navigation prop types
 type RootStackParamList = {
   Login: undefined;
   Home: undefined;
   SignUp: undefined;
-  Recover: undefined; // Add Recover screen to the navigation types
+  Recover: undefined;
 };
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
@@ -31,6 +33,30 @@ interface Props {
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showError, setShowError] = useState(false); // Show error if login fails
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const error = useSelector((state: RootState) => state.auth.error);
+
+  const handleLogin = async () => {
+    try {
+      setShowError(false);
+      setLoading(true);
+
+      if (!email || !password) {
+        throw new Error('All fields are required');
+      }
+
+      await dispatch(signin({ email, password })).unwrap(); // Dispatch Redux signin action
+      navigation.navigate('Home'); // Navigate to Home screen on successful login
+    } catch (err) {
+      console.error('Login failed:', err);
+      setShowError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -46,9 +72,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.label}>Email</Text>
               <CustomInput
                 type="email"
-                placeholder=""
+                placeholder="Enter your email"
                 value={email}
-                onChange={text => setEmail(text)}
+                onChange={setEmail}
               />
             </View>
 
@@ -57,19 +83,26 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.label}>Password</Text>
               <CustomInput
                 type="password"
-                placeholder=""
+                placeholder="Enter your password"
                 value={password}
-                onChange={text => setPassword(text)}
+                onChange={setPassword}
                 secureTextEntry={true}
               />
               <TouchableOpacity
                 style={styles.forgotPassword}
-                onPress={() => navigation.navigate('Recover')} // Ensure 'Recover' screen is defined in the navigator
+                onPress={() => navigation.navigate('Recover')}
               >
                 <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
               </TouchableOpacity>
             </View>
           </View>
+
+          {/* Show error if login fails */}
+          {showError && (
+            <Text style={styles.errorText}>
+              {error || 'Incorrect email or password. Please try again.'}
+            </Text>
+          )}
 
           {/* Terms and Conditions */}
           <View style={styles.termsContainer}>
@@ -78,15 +111,14 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
           <View style={styles.buttonGroupContainer}>
             <LoginButton
-              onClick={() => navigation.navigate('Home')} // Navigate to Home screen on login
-              title="Login"
+              onClick={handleLogin}
+              title={loading ? 'Loading...' : 'Login'}
               backgroundColor={COLOR.primary}
               textColor={COLOR.white}
               width={185}
             />
-            {/* Sign Up Link */}
             <LoginButton
-              onClick={() => navigation.navigate('SignUp')} // Navigate to SignUp screen
+              onClick={() => navigation.navigate('SignUp')}
               title="Sign Up"
               backgroundColor={COLOR.white}
               textColor={COLOR.primary}
@@ -131,7 +163,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     marginBottom: 8,
-    fontWeight: 600,
+    fontWeight: '600',
     color: COLOR.primary,
     fontFamily: 'MontserratRegular',
   },
@@ -143,15 +175,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLOR.primary,
     fontFamily: 'MontserratRegular',
-    fontWeight: 600,
+    fontWeight: '600',
   },
-  signUpContainer: {
-    marginTop: 16,
-    alignItems: 'center',
-  },
-  signUpText: {
-    fontSize: 16,
-    color: COLOR.info,
+  errorText: {
+    color: 'red',
+    marginTop: 10,
+    textAlign: 'center',
   },
   buttonGroupContainer: {
     width: '100%',

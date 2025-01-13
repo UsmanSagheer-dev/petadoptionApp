@@ -1,27 +1,28 @@
-import { View, Text,StyleSheet } from 'react-native'
-import React from 'react'
-// import LoginScreen from './src/screens/loginScreen/LoginScreen'
-// import SignUpScreen from './src/screens/signUpScreen/SignUpScreen'
-// import RecoverPasswordScreen from './src/screens/recoverPasswordScreen/RecoverPasswordScreen'
-import AppNavigator from './src/navigation/AppNavigator'
+import {View, StyleSheet} from 'react-native';
+
+import {Provider} from 'react-redux';
+import AppNavigator from './src/navigation/AppNavigator';
+import store from './src/redux/store'; // Assuming you have a store file
+import {AuthProvider} from './src/context/AuthContext';
 
 const App = () => {
   return (
-    <View style={styles.container}>
- <AppNavigator/>
-    {/* <RecoverPasswordScreen/> */}
-    </View>
-  )
-}
+    <Provider store={store}>
+      <View style={styles.container}>
+        <AuthProvider>
+          <AppNavigator />
+        </AuthProvider>
+      </View>
+    </Provider>
+  );
+};
 
-export default App
+export default App;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-
     justifyContent: 'center',
   },
-
-})
+});
