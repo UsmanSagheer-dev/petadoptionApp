@@ -15,7 +15,7 @@ const TermsCheckbox = ({checked, onChange}: TermsCheckboxProps) => {
         {checked && <View style={styles.checked} />}
       </TouchableOpacity>
       <Text style={styles.text}>
-        I agree to the <Text style={styles.link}>Terms of service</Text> and{' '}
+        I agree to the <Text style={styles.link}>Terms of service</Text> <Text>and</Text>
         <Text style={styles.link}>Privacy policy</Text>
       </Text>
     </View>
