@@ -1,28 +1,23 @@
-import {View, StyleSheet} from 'react-native';
+// import {View, StyleSheet} from 'react-native';
 
-import {Provider} from 'react-redux';
-import AppNavigator from './src/navigation/AppNavigator';
-import store from './src/redux/store'; // Assuming you have a store file
-import {AuthProvider} from './src/context/AuthContext';
+import React from 'react';
+import { Provider } from 'react-redux';
+import store from './src/redux/store';
+import RootNavigator from './src/navigation/index';
 
 const App = () => {
   return (
     <Provider store={store}>
-      <View style={styles.container}>
-        <AuthProvider>
-          <AppNavigator />
-        </AuthProvider>
-      </View>
+      <RootNavigator />
     </Provider>
   );
 };
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     justifyContent: 'center',
+//   },
+// });
