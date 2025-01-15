@@ -25,6 +25,7 @@ type RootStackParamList = {
   Home: undefined;
   Profiles: undefined;
   App: any;
+  Main:undefined;
  setIsAuthenticated: (value: boolean) => void;
   
 };
@@ -82,7 +83,7 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
   useEffect(() => {
     if (isAuthenticated) {
       console.log('🚀 ~ useEffect ~ isAuthenticated:', isAuthenticated);
-  navigation.navigate('Home')
+  navigation.navigate('App')
     }
   }, [isAuthenticated, navigation]);
 
