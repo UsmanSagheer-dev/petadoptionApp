@@ -1,8 +1,8 @@
 const COLOR={
     primary: '#101C1D',
     secondary: '#FFC300',
-    tertiary: '#FFA500',
-    quaternary: '#F5F5DC',
+    tertiary: '#F2F3FA',
+    quaternary: '#C4C4C4',
     lightGrey: '#D3D3D3',
     white: '#FFFFFF',
     black: '#000000',
