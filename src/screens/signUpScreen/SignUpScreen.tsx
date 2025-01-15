@@ -23,6 +23,11 @@ type RootStackParamList = {
   SignUp: undefined;
   Login: undefined;
   Home: undefined;
+  Profiles: undefined;
+  App: any;
+  Main:undefined;
+ setIsAuthenticated: (value: boolean) => void;
+  
 };
 
 type SignUpScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
@@ -32,12 +37,11 @@ interface Props {
 }
 
 const SignUpScreen: React.FC<Props> = ({ navigation }) => {
-  // State with explicit types
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showError, setShowError] = useState(false); // To show if email already exists
-  const [loading, setLoading] = useState(false); // State to handle loading
+  const [showError, setShowError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const { error, isAuthenticated } = useSelector((state: any) => state.auth);
 
@@ -58,9 +62,11 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
     }
 
     try {
-      setLoading(true); // Show loader when the signup starts
-      // Dispatch signup action
+      setLoading(true);
       await dispatch(signup({ email, password, name }));
+      setName('');
+      setEmail('');
+      setPassword('');
       console.log('User registered successfully');
     } catch (err: any) {
       console.error('Registration failed:', err.message);
@@ -70,14 +76,14 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
         Alert.alert('An error occurred during registration. Please try again.');
       }
     } finally {
-      setLoading(false); // Hide loader once the process is complete
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     if (isAuthenticated) {
-      console.log("🚀 ~ useEffect ~ isAuthenticated:", isAuthenticated)
-      navigation.navigate('Home');
+      console.log('🚀 ~ useEffect ~ isAuthenticated:', isAuthenticated);
+  navigation.navigate('App')
     }
   }, [isAuthenticated, navigation]);
 

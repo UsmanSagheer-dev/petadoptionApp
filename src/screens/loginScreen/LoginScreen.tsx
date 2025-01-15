@@ -22,6 +22,7 @@ type RootStackParamList = {
   Home: undefined;
   SignUp: undefined;
   Recover: undefined;
+  App:any
 };
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
@@ -49,7 +50,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       }
 
       await dispatch(signin({ email, password })).unwrap(); // Dispatch Redux signin action
-      navigation.navigate('Home'); // Navigate to Home screen on successful login
+      navigation.navigate('App'); // Navigate to Home screen on successful login
+      setEmail('');
+      setPassword('');
     } catch (err) {
       console.error('Login failed:', err);
       setShowError(true);
