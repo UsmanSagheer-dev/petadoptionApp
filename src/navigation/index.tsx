@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from '../screens/splashScreen/SplashScreen';
 import AuthNavigator from './AuthNavigator';
-// import HomeScreen from '../screens/homeScreen/HomeScreen';
 import auth from '@react-native-firebase/auth';
 import { ActivityIndicator, View, Text } from 'react-native';
 import AppNavigator from './AppNavigator';
@@ -16,7 +15,6 @@ const RootNavigator = () => {
   const [showSplash, setShowSplash] = useState(true);
 
   function onAuthStateChanged(user) {
-    console.log('Auth state changed:', user);
     setUser(user);
     if (initializing) setInitializing(false);
   }
@@ -41,20 +39,14 @@ const RootNavigator = () => {
       </View>
     );
   }
-  console.log("🚀 ~ RootNavigator ~ user:", user)
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {showSplash ? (
           <Stack.Screen name="Splash" component={SplashScreen} />
         ) : user ? (
-          // When the user is authenticated, go to AppNavigator
-          <Stack.Screen
-            name="App"
-            component={AppNavigator}
-            initialParams={{ user: user }} 
-          
-          />
+          <Stack.Screen name="App" component={AppNavigator} />
         ) : (
           <Stack.Screen name="Auth" component={AuthNavigator} />
         )}

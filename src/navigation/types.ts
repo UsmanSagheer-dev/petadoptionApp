@@ -10,6 +10,7 @@ export type AuthStackParamList = {
 export type AppStackParamList = {
   Home: undefined;
   Main:undefined;
+  Drawer: undefined;
   Profiles: {
     userId?: string;
     name?: string;
