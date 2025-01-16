@@ -6,7 +6,6 @@ import IMAGES from '../../assets/images';
 import ImgWithText from '../../components/imgWithText/ImgWithText';
 import CardSection from '../../components/cardSection/CardSection';
 import { StackNavigationProp } from '@react-navigation/stack';
-
 type RootStackParamList = {
   Home: undefined;
   Details: undefined;
@@ -64,7 +63,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.innerContainer}>
           <View>
-            <Header navigation={navigation} />
+            <Header  />
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.heading}>Find an Awesome Pets for You</Text>

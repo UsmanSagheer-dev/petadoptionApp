@@ -5,7 +5,7 @@ import COLOR from '../../constant/constant'
 
 const SearchInput = () => {
   const [searchText, setSearchText] = useState('')
-  const inputRef = useRef<TextInput>(null)  // Ref for TextInput
+  const inputRef = useRef<TextInput>(null) 
 
   const handleSearch = () => {
 
