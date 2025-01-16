@@ -5,8 +5,19 @@ import SearchInput from '../../components/searcInput/SearchInput';
 import IMAGES from '../../assets/images';
 import ImgWithText from '../../components/imgWithText/ImgWithText';
 import CardSection from '../../components/cardSection/CardSection';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-const HomeScreen = () => {
+type RootStackParamList = {
+  Home: undefined;
+  Details: undefined;
+};
+
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+
+interface HomeScreenProps {
+  navigation: HomeScreenNavigationProp;
+}
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const details = [
     {
       imageSource: IMAGES.PROFILEIMG,
@@ -53,7 +64,7 @@ const HomeScreen = () => {
       <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.innerContainer}>
           <View>
-            <Header />
+            <Header navigation={navigation} />
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.heading}>Find an Awesome Pets for You</Text>
@@ -103,7 +114,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     width: 230,
-    marginTop: 39,
+    marginTop: 100,
   },
   searchContainer: {
     marginTop: 27,
