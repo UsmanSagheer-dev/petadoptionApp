@@ -9,6 +9,7 @@ interface SignUpState {
   setPassword: (password: string) => void;
   loading: boolean;
   showError: boolean;
+  emailError: string | null;
   handleRegister: () => Promise<{ name: string; email: string; password: string } | undefined>;
 }
 
@@ -18,18 +19,22 @@ const useSignUp = (): SignUpState => {
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [showError, setShowError] = useState<boolean>(false);
-
+  const [emailError, setEmailError] = useState<string | null>(null);
   const handleRegister = async (): Promise<{ name: string; email: string; password: string } | undefined> => {
     if (!name || !email || !password) {
       setShowError(true);
       return undefined;
     }
-
+  
     setLoading(true);
+    setEmailError(null); // Clear any previous error
     try {
-      // یوزر ڈیٹا ریٹرن کر رہا ہے
+      // Example data validation, actual API will handle this
       return { name, email, password };
-    } catch (error) {
+    } catch (error: any) {
+      if (error.message.includes('already registered')) {
+        setEmailError('This email is already registered.');
+      }
       console.error("Signup error:", error);
       setShowError(true);
       return undefined;
@@ -37,7 +42,7 @@ const useSignUp = (): SignUpState => {
       setLoading(false);
     }
   };
-
+  
   return {
     name,
     setName,
@@ -48,6 +53,7 @@ const useSignUp = (): SignUpState => {
     loading,
     showError,
     handleRegister,
+    emailError
   };
 };
 

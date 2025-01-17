@@ -3,10 +3,10 @@ import { TouchableOpacity, Text, StyleSheet, ViewStyle } from 'react-native';
 
 interface LoginButtonProps {
   onClick: () => void;
-  title: string;
+  title: React.ReactNode; // Updated to allow strings and React elements
   backgroundColor?: string;
   textColor?: string;
-  width?: string | number; 
+  width?: string | number;
 }
 
 const LoginButton = ({
@@ -14,31 +14,37 @@ const LoginButton = ({
   title,
   backgroundColor = '#000',
   textColor = '#fff',
-  width = '100%', 
+  width = '100%',
 }: LoginButtonProps) => {
   const buttonStyle: ViewStyle = { backgroundColor, width: width as any };
+
   return (
     <TouchableOpacity
       style={[styles.button, buttonStyle]}
       onPress={onClick}
       activeOpacity={0.9}
     >
-      <Text style={[styles.buttonText, { color: textColor }]}>{title}</Text>
+      {typeof title === 'string' ? (
+        <Text style={[styles.buttonText, { color: textColor }]}>{title}</Text>
+      ) : (
+        title // Render React elements like <ActivityIndicator />
+      )}
     </TouchableOpacity>
   );
 };
+
 const styles = StyleSheet.create({
   button: {
     paddingVertical: 12,
-    borderRadius:37,
+    borderRadius: 37,
     alignItems: 'center',
-    height:79,
+    height: 79,
     justifyContent: 'center',
   },
   buttonText: {
     fontSize: 20,
-    fontWeight:700,
-  fontFamily: 'MontserratRegular',
+    fontWeight: '700',
+    fontFamily: 'MontserratRegular',
   },
 });
 

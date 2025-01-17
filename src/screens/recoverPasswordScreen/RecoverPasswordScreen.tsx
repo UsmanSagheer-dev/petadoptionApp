@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -13,44 +13,47 @@ import IMAGES from '../../assets/images';
 import COLOR from '../../constant/constant';
 import CustomInput from '../../components/input/customInput';
 import LoginButton from '../../components/button/CustomButton';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import auth from '@react-native-firebase/auth';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 type RootStackParamList = {
   RecoverPassword: undefined;
-  // Add other screens here if necessary
+  Login: undefined;
 };
 
 type RecoverPasswordScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'RecoverPassword'
 >;
-
 interface Props {
   navigation: RecoverPasswordScreenNavigationProp;
 }
-
-const RecoverPasswordScreen: React.FC<Props> = ({ navigation }) => {
+const RecoverPasswordScreen: React.FC<Props> = ({navigation}) => {
   const [email, setEmail] = useState<string>('');
-
-  const handleRecover = (): void => {
+  const handleRecover = async (): Promise<void> => {
     if (email) {
-      Alert.alert('Recovery URL has been sent to your email!');
-      // You can navigate to another screen after recovery if needed
-      // navigation.navigate('Login'); // Uncomment to navigate to the Login screen
+      try {
+        const methods=await auth().sendPasswordResetEmail(email);
+        console.log('methods:', methods);
+        console.log('Password reset email sent successfully');
+        Alert.alert('Success', 'Password reset email sent!');
+        setEmail('');
+      } catch (error: any) {
+        console.error('Error sending password reset email:', error);
+        Alert.alert('Error', error.message || 'Unable to send reset email');
+      }
     } else {
-      Alert.alert('Please enter your email');
+      Alert.alert('Error', 'Please enter your email');
     }
   };
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <TouchableOpacity
         style={styles.backButton}
-        onPress={() => navigation.goBack()} 
-      >
+        onPress={() => navigation.goBack()}>
         <Image source={IMAGES.BACKICOn} />
       </TouchableOpacity>
       <Text style={styles.title}>Recover</Text>
@@ -68,7 +71,7 @@ const RecoverPasswordScreen: React.FC<Props> = ({ navigation }) => {
         </Text>
         <View style={styles.login}>
           <LoginButton
-            onClick={handleRecover} 
+            onClick={handleRecover}
             title="Recover"
             backgroundColor={COLOR.primary}
             textColor={COLOR.white}

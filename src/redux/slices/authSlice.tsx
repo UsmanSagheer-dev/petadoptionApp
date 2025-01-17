@@ -26,11 +26,21 @@ export const signup = createAsyncThunk(
   'auth/signup',
   async ({ email, password, name }: { email: string; password: string; name: string }, { rejectWithValue }) => {
     try {
+      // Check if email already exists in Firestore
+      const existingUser = await firestore()
+        .collection('users')
+        .where('email', '==', email)
+        .get();
+
+      if (!existingUser.empty) {
+        throw new Error('This email is already registered. Please try another email.');
+      }
+
       const userCredential = await auth().createUserWithEmailAndPassword(email, password);
-      
+
       if (name) {
         await userCredential.user.updateProfile({
-          displayName: name
+          displayName: name,
         });
       }
 
@@ -38,13 +48,11 @@ export const signup = createAsyncThunk(
         id: userCredential.user.uid,
         name: name || 'Anonymous',
         email,
+        password,
         createdAt: firestore.Timestamp.now(),
       };
 
-      await firestore()
-        .collection('users')
-        .doc(userCredential.user.uid)
-        .set(userDoc);
+      await firestore().collection('users').doc(userCredential.user.uid).set(userDoc);
 
       return {
         uid: userCredential.user.uid,
@@ -58,6 +66,7 @@ export const signup = createAsyncThunk(
   }
 );
 
+
 export const signin = createAsyncThunk(
   'auth/signin',
   async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
@@ -66,6 +75,7 @@ export const signin = createAsyncThunk(
       return {
         uid: userCredential.user.uid,
         email: userCredential.user.email,
+        
         displayName: userCredential.user.displayName,
         photoURL: userCredential.user.photoURL,
       } as User;
