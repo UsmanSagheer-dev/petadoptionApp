@@ -1,23 +1,16 @@
 import { View, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native'
-import React, { useState, useRef } from 'react'
+import React from 'react'
+import useSearchInput from '../../hooks/useSearchInput'
 import IMAGES from '../../assets/images'
 import COLOR from '../../constant/constant'
 
 const SearchInput = () => {
-  const [searchText, setSearchText] = useState('')
-  const inputRef = useRef<TextInput>(null) 
-
-  const handleSearch = () => {
-
-    console.log(searchText)
- 
-    inputRef.current?.focus()
-  }
+  const { searchText, setSearchText, inputRef, handleSearch } = useSearchInput()
 
   return (
     <View style={styles.container}>
       <TextInput
-        ref={inputRef}  
+        ref={inputRef}
         style={styles.input}
         value={searchText}
         onChangeText={setSearchText}
@@ -25,10 +18,7 @@ const SearchInput = () => {
         placeholderTextColor="#aaa"
       />
       <TouchableOpacity onPress={handleSearch} style={styles.iconContainer}>
-        <Image 
-          source={IMAGES.SEARCHICON} 
-          style={styles.icon} 
-        />
+        <Image source={IMAGES.SEARCHICON} style={styles.icon} />
       </TouchableOpacity>
     </View>
   )
@@ -64,7 +54,7 @@ const styles = StyleSheet.create({
   icon: {
     width: 25,
     height: 35,
-  }
+  },
 })
 
 export default SearchInput

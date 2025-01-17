@@ -1,33 +1,21 @@
-import { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  KeyboardAvoidingView,
-  ScrollView,
-  Platform,
-  Alert,
-  ActivityIndicator, // Import the ActivityIndicator for loading
-} from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, ActivityIndicator, Alert } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { signup } from '../../redux/slices/authSlice';
+import useSignUp from '../../hooks/useSignup'; 
+
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
 import LoginButton from '../../components/button/CustomButton';
 import COLOR from '../../constant/constant';
-import { useDispatch, useSelector } from 'react-redux';
-import { signup } from '../../redux/slices/authSlice'; // Import the signup action
-import { AppDispatch } from '../../redux/store'; // Import AppDispatch
 
-// Defining types for the navigation params
 type RootStackParamList = {
   SignUp: undefined;
   Login: undefined;
-  Home: undefined;
-  Profiles: undefined;
   App: any;
-  Main:undefined;
- setIsAuthenticated: (value: boolean) => void;
-  
+  Main: undefined;
 };
 
 type SignUpScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
@@ -37,55 +25,25 @@ interface Props {
 }
 
 const SignUpScreen: React.FC<Props> = ({ navigation }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showError, setShowError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { name, setName, email, setEmail, password, setPassword, loading, handleRegister, showError } = useSignUp();
   const dispatch = useDispatch<AppDispatch>();
-  const { error, isAuthenticated } = useSelector((state: any) => state.auth);
-
-  const validateEmail = (email: string) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
-
-  const handleRegister = async () => {
-    if (!name || !email || !password) {
-      Alert.alert('All fields are required.');
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      Alert.alert('Invalid email format.');
-      return;
-    }
-
-    try {
-      setLoading(true);
-      await dispatch(signup({ email, password, name }));
-      setName('');
-      setEmail('');
-      setPassword('');
-      console.log('User registered successfully');
-    } catch (err: any) {
-      console.error('Registration failed:', err.message);
-      if (err.message.includes('email-already-in-use')) {
-        setShowError(true);
-      } else {
-        Alert.alert('An error occurred during registration. Please try again.');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { isAuthenticated, error } = useSelector((state: any) => state.auth);
 
   useEffect(() => {
     if (isAuthenticated) {
-      console.log('🚀 ~ useEffect ~ isAuthenticated:', isAuthenticated);
-  navigation.navigate('App')
+      navigation.navigate('App');
     }
   }, [isAuthenticated, navigation]);
+
+  const handleSignUp = async () => {
+    const userData = await handleRegister();
+
+    if (userData) {
+      dispatch(signup(userData));
+    } else {
+      Alert.alert('Please fill in all fields correctly.');
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -136,7 +94,7 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
           <View style={styles.buttonGroupContainer}>
             {/* Sign Up Button */}
             <LoginButton
-              onClick={handleRegister} // Dispatch the signup action on button click
+              onClick={handleSignUp}
               title="Sign Up"
               backgroundColor={COLOR.primary}
               textColor={COLOR.white}
@@ -144,18 +102,14 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
             />
 
             {/* Loader - Show when loading is true */}
-            {loading && (
-              <ActivityIndicator size="large" color={COLOR.primary} style={styles.loader} />
-            )}
+            {loading && <ActivityIndicator size="large" color={COLOR.primary} style={styles.loader} />}
 
             {/* Display error message when an error occurs during signup */}
-            {showError && (
-              <Text style={styles.errorText}>{error}</Text>
-            )}
+            {showError && <Text style={styles.errorText}>{error}</Text>}
 
             {/* Login Link */}
             <LoginButton
-              onClick={() => navigation.navigate('Login')} // Navigate to Login screen
+              onClick={() => navigation.navigate('Login')}
               title="Login"
               backgroundColor={COLOR.white}
               textColor={COLOR.primary}
@@ -167,7 +121,6 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
     </KeyboardAvoidingView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -201,7 +154,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     marginBottom: 8,
-    fontWeight: 600,
+    fontWeight: '600',
     color: COLOR.primary,
     fontFamily: 'MontserratRegular',
   },
@@ -213,7 +166,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLOR.primary,
     fontFamily: 'MontserratRegular',
-    fontWeight: 600,
+    fontWeight: '600',
   },
   buttonGroupContainer: {
     width: '100%',
@@ -222,7 +175,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loader: {
-    marginTop: 20, // Add some space between the button and the loader
+    marginTop: 20,
   },
   errorText: {
     color: COLOR.white,
@@ -234,3 +187,4 @@ const styles = StyleSheet.create({
 });
 
 export default SignUpScreen;
+
