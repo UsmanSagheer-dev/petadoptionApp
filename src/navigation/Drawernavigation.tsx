@@ -1,17 +1,15 @@
 import * as React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
-import { Button } from 'react-native';
-import { View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {Button} from 'react-native';
+import {View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import ProfileScreen from '../screens/profilescreen/ProfileScreen';
-import HomeScreen from '../screens/homeScreen/HomeScreen';
 import TabNavigator from './TabNavigator';
 
 function NotificationsScreen() {
   const navigation = useNavigation();
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Button title="Go back home" onPress={() => navigation.goBack()} />
     </View>
   );
