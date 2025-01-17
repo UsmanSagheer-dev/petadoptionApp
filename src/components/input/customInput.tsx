@@ -1,6 +1,5 @@
 import React from 'react';
 import {TextInput, StyleSheet} from 'react-native';
-
 interface CustomInputProps {
   type: string;
   placeholder: string;
@@ -8,7 +7,6 @@ interface CustomInputProps {
   onChange: (text: string) => void;
   secureTextEntry?: boolean;
 }
-
 const CustomInput = ({
   type,
   placeholder,
@@ -26,7 +24,6 @@ const CustomInput = ({
     />
   );
 };
-
 const styles = StyleSheet.create({
   input: {
     width: '100%',
