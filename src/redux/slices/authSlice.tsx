@@ -1,8 +1,7 @@
+// authSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { auth, firestore } from '../../services/firebaseConfig';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
-import { collection, doc, setDoc, Timestamp } from 'firebase/firestore';
-
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 interface User {
   uid: string;
@@ -10,7 +9,6 @@ interface User {
   displayName: string | null;
   photoURL: string | null;
 }
-
 
 interface AuthState {
   currentUser: User | null;
@@ -24,24 +22,29 @@ const initialState: AuthState = {
   error: null,
 };
 
-
 export const signup = createAsyncThunk(
   'auth/signup',
   async ({ email, password, name }: { email: string; password: string; name: string }, { rejectWithValue }) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+      
       if (name) {
-        await updateProfile(userCredential.user, { displayName: name });
+        await userCredential.user.updateProfile({
+          displayName: name
+        });
       }
 
       const userDoc = {
         id: userCredential.user.uid,
         name: name || 'Anonymous',
         email,
-        createdAt: Timestamp.now(),
+        createdAt: firestore.Timestamp.now(),
       };
 
-      await setDoc(doc(collection(firestore, 'users'), userCredential.user.uid), userDoc);
+      await firestore()
+        .collection('users')
+        .doc(userCredential.user.uid)
+        .set(userDoc);
 
       return {
         uid: userCredential.user.uid,
@@ -55,12 +58,11 @@ export const signup = createAsyncThunk(
   }
 );
 
-
 export const signin = createAsyncThunk(
   'auth/signin',
   async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await auth().signInWithEmailAndPassword(email, password);
       return {
         uid: userCredential.user.uid,
         email: userCredential.user.email,
@@ -73,14 +75,16 @@ export const signin = createAsyncThunk(
   }
 );
 
-// Async thunk for signing out
-export const signout = createAsyncThunk('auth/signout', async (_, { rejectWithValue }) => {
-  try {
-    await signOut(auth);
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const signout = createAsyncThunk(
+  'auth/signout', 
+  async (_, { rejectWithValue }) => {
+    try {
+      await auth().signOut();
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -116,3 +120,5 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
+
+// store.ts remains the same

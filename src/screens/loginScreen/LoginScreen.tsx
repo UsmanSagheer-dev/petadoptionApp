@@ -1,28 +1,18 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  KeyboardAvoidingView,
-  ScrollView,
-  Platform,
-} from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
 import LoginButton from '../../components/button/CustomButton';
 import COLOR from '../../constant/constant';
-import { useDispatch, useSelector } from 'react-redux';
-import { signin } from '../../redux/slices/authSlice'; // Adjust the import path as needed
-import { RootState, AppDispatch } from '../../redux/store'; // Adjust the import path as needed
+import useLogin from '../../hooks/useLogin';
 
 type RootStackParamList = {
   Login: undefined;
   Home: undefined;
   SignUp: undefined;
   Recover: undefined;
-  App:any
+  App: any;
 };
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
@@ -32,101 +22,37 @@ interface Props {
 }
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showError, setShowError] = useState(false); // Show error if login fails
-  const [loading, setLoading] = useState(false);
-
-  const dispatch = useDispatch<AppDispatch>();
-  const error = useSelector((state: RootState) => state.auth.error);
-
-  const handleLogin = async () => {
-    try {
-      setShowError(false);
-      setLoading(true);
-
-      if (!email || !password) {
-        throw new Error('All fields are required');
-      }
-
-      await dispatch(signin({ email, password })).unwrap(); // Dispatch Redux signin action
-      navigation.navigate('App'); // Navigate to Home screen on successful login
-      setEmail('');
-      setPassword('');
-    } catch (err) {
-      console.error('Login failed:', err);
-      setShowError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { email, setEmail, password, setPassword, loading, error, handleLogin } = useLogin(navigation);
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <Text style={styles.title}>Login</Text>
         <View style={styles.form}>
-          {/* Email Input */}
           <View style={styles.maininputContainer}>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Email</Text>
-              <CustomInput
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={setEmail}
-              />
+              <CustomInput type="email" placeholder="Enter your email" value={email} onChange={setEmail} />
             </View>
 
-            {/* Password Input */}
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Password</Text>
-              <CustomInput
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={setPassword}
-                secureTextEntry={true}
-              />
-              <TouchableOpacity
-                style={styles.forgotPassword}
-                onPress={() => navigation.navigate('Recover')}
-              >
+              <CustomInput type="password" placeholder="Enter your password" value={password} onChange={setPassword} secureTextEntry={true} />
+              <TouchableOpacity style={styles.forgotPassword} onPress={() => navigation.navigate('Recover')}>
                 <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
               </TouchableOpacity>
             </View>
           </View>
 
-          {/* Show error if login fails */}
-          {showError && (
-            <Text style={styles.errorText}>
-              {error || 'Incorrect email or password. Please try again.'}
-            </Text>
-          )}
+          {error && <Text style={styles.errorText}>{error}</Text>}
 
-          {/* Terms and Conditions */}
           <View style={styles.termsContainer}>
             <TermsCheckbox checked={false} onChange={() => {}} />
           </View>
 
           <View style={styles.buttonGroupContainer}>
-            <LoginButton
-              onClick={handleLogin}
-              title={loading ? 'Loading...' : 'Login'}
-              backgroundColor={COLOR.primary}
-              textColor={COLOR.white}
-              width={185}
-            />
-            <LoginButton
-              onClick={() => navigation.navigate('SignUp')}
-              title="Sign Up"
-              backgroundColor={COLOR.white}
-              textColor={COLOR.primary}
-              width={'100%'}
-            />
+            <LoginButton onClick={handleLogin} title={loading ? 'Loading...' : 'Login'} backgroundColor={COLOR.primary} textColor={COLOR.white} width={185} />
+            <LoginButton onClick={() => navigation.navigate('SignUp')} title="Sign Up" backgroundColor={COLOR.white} textColor={COLOR.primary} width={'100%'} />
           </View>
         </View>
       </ScrollView>
