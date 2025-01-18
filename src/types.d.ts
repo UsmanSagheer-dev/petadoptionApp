@@ -9,4 +9,10 @@ export interface UseSignUp {
     handleRegister: () => Promise<{ name: string; email: string; password: string } | undefined>;
     showError: boolean;
   }
+
+
+
+
+
+
   

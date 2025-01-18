@@ -1,22 +1,22 @@
-import { ImageBackground, Text, StyleSheet, View } from 'react-native';
-import React, { useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import {ImageBackground, Text, StyleSheet, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import IMAGES from '../../assets/images';
+import useAuth from '../../hooks/useAuth';
 
 type NavigationProp = {
   replace: (screen: string) => void;
 };
 
 const SplashScreen: React.FC = () => {
-  const navigation = useNavigation<NavigationProp>();  // Type the navigation hook
+  const navigation = useNavigation<NavigationProp>();
+  const {showSplash} = useAuth();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      navigation.replace('Login');  // Navigate to Login screen after 3 seconds
-    }, 3000);
-
-    return () => clearTimeout(timer);  // Cleanup the timer
-  }, [navigation]);
+    if (!showSplash) {
+      navigation.replace('Login');
+    }
+  }, [showSplash, navigation]);
 
   return (
     <ImageBackground

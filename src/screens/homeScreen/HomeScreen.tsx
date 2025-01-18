@@ -1,11 +1,18 @@
 import COLOR from '../../constant/constant';
 import Header from '../../components/header/Header';
-import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import SearchInput from '../../components/searcInput/SearchInput';
 import IMAGES from '../../assets/images';
 import ImgWithText from '../../components/imgWithText/ImgWithText';
 import CardSection from '../../components/cardSection/CardSection';
-import { StackNavigationProp } from '@react-navigation/stack';
+import {StackNavigationProp} from '@react-navigation/stack';
 type RootStackParamList = {
   Home: undefined;
   Details: undefined;
@@ -16,7 +23,7 @@ type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 interface HomeScreenProps {
   navigation: HomeScreenNavigationProp;
 }
-const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const details = [
     {
       imageSource: IMAGES.PROFILEIMG,
@@ -60,10 +67,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.innerContainer}>
           <View>
-            <Header  />
+            <Header />
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.heading}>Find an Awesome Pets for You</Text>
@@ -77,7 +86,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.carousel}>
               {details.map((item, index) => (
-                <ImgWithText key={index} imageSource={item.imageSource} label={item.label} />
+                <ImgWithText
+                  key={index}
+                  imageSource={item.imageSource}
+                  label={item.label}
+                />
               ))}
             </ScrollView>
           </View>
@@ -95,7 +108,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   scrollView: {
-    flexGrow: 1, 
+    flexGrow: 1,
   },
   container: {
     flex: 1,
