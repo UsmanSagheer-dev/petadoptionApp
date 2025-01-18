@@ -1,35 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from '../screens/splashScreen/SplashScreen';
 import AuthNavigator from './AuthNavigator';
-import auth from '@react-native-firebase/auth';
 import { ActivityIndicator, View, Text } from 'react-native';
 import AppNavigator from './AppNavigator';
+import useAuth from '../hooks/useAuth';
 
 const Stack = createNativeStackNavigator();
 
 const RootNavigator = () => {
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState(null);
-  const [showSplash, setShowSplash] = useState(true);
-
-  function onAuthStateChanged(user) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+  const { initializing, user, showSplash } = useAuth();
 
   if (initializing) {
     return (

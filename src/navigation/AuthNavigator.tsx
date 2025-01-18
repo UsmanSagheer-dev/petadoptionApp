@@ -1,16 +1,13 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import LoginScreen from '../screens/loginScreen/LoginScreen';
 import SignUpScreen from '../screens/signUpScreen/SignUpScreen';
 import RecoverPasswordScreen from '../screens/recoverPasswordScreen/RecoverPasswordScreen';
-import { AuthStackParamList } from './types';
+import {AuthStackParamList} from './types';
 import AppNavigator from './AppNavigator';
-
-
 const Stack = createStackNavigator<AuthStackParamList>();
-
 const AuthNavigator: React.FC = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="Recover" component={RecoverPasswordScreen} />

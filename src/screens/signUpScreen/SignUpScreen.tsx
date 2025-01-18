@@ -14,7 +14,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch} from '../../redux/store';
 import {signup} from '../../redux/slices/authSlice';
 import useSignUp from '../../hooks/useSignup';
-
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
 import LoginButton from '../../components/button/CustomButton';
@@ -26,16 +25,13 @@ type RootStackParamList = {
   App: any;
   Main: undefined;
 };
-
 type SignUpScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'SignUp'
 >;
-
 interface Props {
   navigation: SignUpScreenNavigationProp;
 }
-
 const SignUpScreen: React.FC<Props> = ({navigation}) => {
   const {
     name,
@@ -76,7 +72,6 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
         <Text style={styles.title}>Sign Up</Text>
         <View style={styles.form}>
           <View style={styles.maininputContainer}>
-            {/* Username Input */}
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Username</Text>
               <CustomInput
@@ -86,7 +81,6 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
                 onChange={text => setName(text)}
               />
             </View>
-            {/* Email Input */}
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Email</Text>
               <CustomInput
@@ -97,7 +91,6 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
               />
               {emailError && <Text style={styles.errorText}>{emailError}</Text>}
             </View>
-            {/* Password Input */}
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Password</Text>
               <CustomInput
@@ -109,22 +102,17 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
               />
             </View>
           </View>
-
-          {/* Terms and Conditions */}
           <View style={styles.termsContainer}>
             <TermsCheckbox checked={false} onChange={() => {}} />
           </View>
-
           <View style={styles.buttonGroupContainer}>
-            {/* Sign Up Button */}
             <LoginButton
               onClick={handleSignUp}
-              title={loading ? 'Loading...' : 'Sign Up'} // Show "Loading..." when loading is true
+              title={loading ? 'Loading...' : 'Sign Up'}
               backgroundColor={COLOR.primary}
               textColor={COLOR.white}
               width={185}
             />
-            {/* Loader - Show when loading is true */}
             {loading && (
               <ActivityIndicator
                 size="large"
@@ -133,10 +121,8 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
               />
             )}
 
-            {/* Display error message when an error occurs during signup */}
             {showError && <Text style={styles.errorText}>{error}</Text>}
 
-            {/* Login Link */}
             <LoginButton
               onClick={() => navigation.navigate('Login')}
               title="Login"
