@@ -131,11 +131,7 @@ const TabScreens = () => {
         component={FavouriteScreen}
         options={{tabBarLabel: 'Favourite'}}
       />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{tabBarLabel: 'Profile'}}
-      />
+  
     </Tab.Navigator>
   );
 };
@@ -178,11 +174,7 @@ const TabNavigator = () => {
               component={FavouriteScreen}
               options={{tabBarLabel: 'Favourite'}}
             />
-            <Tab.Screen
-              name="ProfileTab"
-              component={ProfileScreen}
-              options={{tabBarLabel: 'Profile'}}
-            />
+         
           </Tab.Navigator>
         )}
       </Drawer.Screen>

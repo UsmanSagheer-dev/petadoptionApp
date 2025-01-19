@@ -27,7 +27,7 @@ const LoginButton = ({
       {typeof title === 'string' ? (
         <Text style={[styles.buttonText, { color: textColor }]}>{title}</Text>
       ) : (
-        title // Render React elements like <ActivityIndicator />
+        title 
       )}
     </TouchableOpacity>
   );

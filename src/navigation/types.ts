@@ -9,12 +9,12 @@ export type AuthStackParamList = {
 
 export type AppStackParamList = {
   Home: undefined;
-  Main:undefined;
-  Drawer: undefined;
-  Profiles: {
+  Search: undefined;
+  Favourite: undefined;
+  Profiles: {   
     userId?: string;
     name?: string;
-    focused:any
-   
+    focused: any;
   };
+  passwrdUpdates: undefined;
 };
