@@ -10,5 +10,6 @@ const COLOR={
     success: '#008000',
     info: '#1E90FF',
     warning: '#FFD700',
+    BorderBack:'#E2E2E2',
 }
 export default COLOR;

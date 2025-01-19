@@ -1,7 +1,9 @@
-import {StyleSheet, View} from 'react-native';
 import React from 'react';
+import {StyleSheet, View, ScrollView} from 'react-native';
 import SearchInput from '../../components/searcInput/SearchInput';
 import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
+import PetCard from '../../components/petCard/PetCard'; // Import PetCard
+
 const SearchScreen = () => {
   const tabs = [
     {id: 'dogs', label: 'Dogs'},
@@ -15,6 +17,10 @@ const SearchScreen = () => {
     console.log(`Selected Tab: ${tabId}`);
   };
 
+  const handleFavoriteToggle = (petId: string) => {
+    console.log(`Favorite toggled for pet: ${petId}`);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
@@ -23,6 +29,33 @@ const SearchScreen = () => {
       <View style={styles.tabsContainer}>
         <HorizontalTabs tabs={tabs} onTabPress={handleTabPress} />
       </View>
+      <ScrollView style={styles.petCardsContainer}>
+        <PetCard
+          name="Cavachon"
+          age="Age 4 Months"
+          location="FSD"
+          gender="Male"
+          isFavorite={false}
+          onFavoriteToggle={() => handleFavoriteToggle('1')}
+          imageUrl="https://example.com/pet-image.jpg"
+          locationIcon="https://example.com/location-icon.png"
+          favoriteIcon="https://example.com/favorite-icon.png"
+          unfavoriteIcon="https://example.com/unfavorite-icon.png"
+        />
+        <PetCard
+          name="Persian Cat"
+          age="Age 2 Months"
+          location="LHR"
+          gender="Female"
+          isFavorite={true}
+          onFavoriteToggle={() => handleFavoriteToggle('2')}
+          imageUrl="https://example.com/cat-image.jpg"
+          locationIcon="https://example.com/location-icon.png"
+          favoriteIcon="https://example.com/favorite-icon.png"
+          unfavoriteIcon="https://example.com/unfavorite-icon.png"
+        />
+        {/* Add more PetCard components as needed */}
+      </ScrollView>
     </View>
   );
 };
@@ -38,7 +71,10 @@ const styles = StyleSheet.create({
   },
   tabsContainer: {
     marginTop: 25,
-    
+  },
+  petCardsContainer: {
+    marginTop: 20,
   },
 });
+
 export default SearchScreen;
