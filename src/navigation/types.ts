@@ -1,20 +1,25 @@
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+
+export type { BottomTabBarProps };
+
 export type AuthStackParamList = {
   Login: undefined;
   SignUp: undefined;
   Recover: undefined;
-  Home: undefined;
   App: undefined;
-  Main: undefined;
 };
 
 export type AppStackParamList = {
-  Home: undefined;
-  Search: undefined;
-  Favourite: undefined;
-  Profiles: {   
+  Main: undefined;
+  Profiles: {
     userId?: string;
     name?: string;
-    focused: any;
   };
-  passwrdUpdates: undefined;
+};
+
+export type TabParamList = {
+  HomeTab: undefined;
+  SearchTab: undefined;
+  FavouriteTab: undefined;
+  ProfileTab: undefined; // Ensure this exists
 };

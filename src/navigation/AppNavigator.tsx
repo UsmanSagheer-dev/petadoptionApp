@@ -1,7 +1,7 @@
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ProfileScreen from '../screens/profilescreen/ProfileScreen';
-import { AppStackParamList } from './types';
 import TabNavigator from './TabNavigator';
+import { AppStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
 
@@ -9,7 +9,6 @@ const AppNavigator: React.FC = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Main" component={TabNavigator} />
-      <Stack.Screen name="Profiles" component={ProfileScreen} />
     </Stack.Navigator>
   );
 };

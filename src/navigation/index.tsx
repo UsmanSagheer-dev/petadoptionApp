@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { ActivityIndicator, View, Text } from 'react-native';
 import SplashScreen from '../screens/splashScreen/SplashScreen';
 import AuthNavigator from './AuthNavigator';
-import { ActivityIndicator, View, Text } from 'react-native';
 import AppNavigator from './AppNavigator';
 import useAuth from '../hooks/useAuth';
 

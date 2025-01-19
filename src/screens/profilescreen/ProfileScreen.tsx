@@ -1,26 +1,21 @@
+// ProfileScreen.tsx
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { AppStackParamList } from '../../navigation/types';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { TabParamList } from '../../navigation/types';
 import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
 import COLOR from '../../constant/constant';
 import LoginButton from '../../components/button/CustomButton';
 
-// Type for ProfileScreen props
-type ProfileScreenProps = NativeStackScreenProps<AppStackParamList, 'Profiles'>;
+type ProfileScreenProps = BottomTabScreenProps<TabParamList, 'ProfileTab'>;
 
-const ProfileScreen: React.FC<ProfileScreenProps> = ({ route, navigation }) => {
-  // Extract route params
-  const { userId, name: initialName } = route.params || {};
-  
-  // State variables for form fields
-  const [name, setName] = useState<string>(initialName || '');
+const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
+  const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
 
   const handleUpdateProfile = () => {
     console.log('Profile updated for:', name, email);
-    navigation.navigate('passwrdUpdates'); // Navigate to Password Update Screen
   };
 
   return (
@@ -61,7 +56,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ route, navigation }) => {
       {/* Update Profile Button */}
       <View style={styles.buttonContainer}>
         <LoginButton
-          onClick={handleUpdateProfile} // Fixed incorrect prop name
+          onClick={handleUpdateProfile}
           title="Update Profile"
           backgroundColor={COLOR.primary}
           textColor={COLOR.white}
@@ -72,7 +67,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ route, navigation }) => {
   );
 };
 
-// Styles
+// Styles remain the same
 const styles = StyleSheet.create({
   container: {
     flex: 1,

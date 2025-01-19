@@ -1,68 +1,47 @@
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {useTheme} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useTheme } from '@react-navigation/native';
+import { 
+  createBottomTabNavigator,
+  BottomTabNavigationOptions,
+  BottomTabBarProps,
+} from '@react-navigation/bottom-tabs';
+import { 
+  createDrawerNavigator, 
+  DrawerContentScrollView, 
+  DrawerItemList 
 } from '@react-navigation/drawer';
-import {PlatformPressable} from '@react-navigation/elements';
+import { PlatformPressable } from '@react-navigation/elements';
+import auth from '@react-native-firebase/auth';
+
+// Import your screens
 import HomeScreen from '../screens/homeScreen/HomeScreen';
-import ProfileScreen from '../screens/profilescreen/ProfileScreen';
 import SearchScreen from '../screens/searchScreen/SearchScreen';
 import FavouriteScreen from '../screens/favouriteScreen/FavouriteScreen';
-import SearchInput from '../components/searcInput/SearchInput';
-import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
-import auth from '@react-native-firebase/auth';
+import ProfileScreen from '../screens/profilescreen/ProfileScreen';
 import DotScreen from '../screens/dotScreen/DotScreen';
-
+import SearchInput from '../components/searcInput/SearchInput';
+type TabParamList = {
+  HomeTab: undefined;
+  SearchTab: undefined;
+  FavouriteTab: undefined;
+  ProfileTab: undefined;
+};
 const Drawer = createDrawerNavigator();
-const Tab = createBottomTabNavigator();
-const handleLogout = () => {
-  auth()
-    .signOut()
-    .then(() => console.log('User signed out!'))
-    .catch(error => console.error('Error signing out: ', error));
-};
+const Tab = createBottomTabNavigator<TabParamList>();
 
-const CustomDrawerContent = props => {
-  const {colors} = useTheme();
+const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation }) => {
+  const { colors } = useTheme();
 
   return (
-    <DrawerContentScrollView {...props}>
-      <View style={styles.searchContainer}>
-        <SearchInput />
-      </View>
-      <DrawerItemList {...props} />
-      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-        <Text style={{color: 'red'}}>Log Out</Text>
-      </TouchableOpacity>
-    </DrawerContentScrollView>
-  );
-};
-
-const MyTabBar: React.FC<BottomTabBarProps> = ({
-  state,
-  descriptors,
-  navigation,
-}) => {
-  const {colors} = useTheme();
-
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        backgroundColor: colors.background,
-        padding: 10,
-      }}>
+    <View style={[styles.tabBar, { backgroundColor: colors.background }]}>
       {state.routes.map((route, index) => {
-        const {options} = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
+        const { options } = descriptors[route.key];
+        const label = options.tabBarLabel !== undefined 
+          ? options.tabBarLabel 
+          : options.title !== undefined
+          ? options.title 
+          : route.name;
 
         const isFocused = state.index === index;
 
@@ -74,32 +53,19 @@ const MyTabBar: React.FC<BottomTabBarProps> = ({
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name, route.params);
+            navigation.navigate(route.name);
           }
-        };
-
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
         };
 
         return (
           <PlatformPressable
             key={route.key}
-            accessibilityState={isFocused ? {selected: true} : {}}
+            accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarButtonTestID}
             onPress={onPress}
-            onLongPress={onLongPress}
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 10,
-            }}>
-            <Text style={{color: isFocused ? colors.primary : colors.text}}>
+            style={styles.tabItem}>
+            <Text style={{ color: isFocused ? colors.primary : colors.text }}>
               {typeof label === 'string' ? label : route.name}
             </Text>
           </PlatformPressable>
@@ -109,29 +75,54 @@ const MyTabBar: React.FC<BottomTabBarProps> = ({
   );
 };
 
-const TabScreens = () => {
+const CustomDrawerContent: React.FC<any> = props => {
+  const handleLogout = () => {
+    auth()
+      .signOut()
+      .then(() => console.log('User signed out!'))
+      .catch(error => console.error('Error signing out: ', error));
+  };
+
+  return (
+    <DrawerContentScrollView {...props}>
+      <View style={styles.searchContainer}>
+        <SearchInput />
+      </View>
+      <DrawerItemList {...props} />
+      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+        <Text style={styles.logoutText}>Log Out</Text>
+      </TouchableOpacity>
+    </DrawerContentScrollView>
+  );
+};
+
+const TabStack = () => {
   return (
     <Tab.Navigator
-      tabBar={props => <MyTabBar {...props} />}
+      tabBar={props => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: false,
       }}>
-      <Tab.Screen
-        name="Home"
+      <Tab.Screen 
+        name="HomeTab" 
         component={HomeScreen}
-        options={{tabBarLabel: 'Home'}}
+        options={{ tabBarLabel: 'Home' }}
       />
-      <Tab.Screen
-        name="Search"
+      <Tab.Screen 
+        name="SearchTab" 
         component={SearchScreen}
-        options={{tabBarLabel: 'Search'}}
+        options={{ tabBarLabel: 'Search' }}
       />
-      <Tab.Screen
-        name="Favourite"
+      <Tab.Screen 
+        name="FavouriteTab" 
         component={FavouriteScreen}
-        options={{tabBarLabel: 'Favourite'}}
+        options={{ tabBarLabel: 'Favourite' }}
       />
-  
+      <Tab.Screen 
+        name="ProfileTab" 
+        component={ProfileScreen}
+        options={{ tabBarLabel: 'Profile' }}
+      />
     </Tab.Navigator>
   );
 };
@@ -147,39 +138,13 @@ const TabNavigator = () => {
           width: 350,
         },
       }}>
-      {/* Main Tabs */}
       <Drawer.Screen
         name="MainTabs"
+        component={TabStack}
         options={{
           drawerLabel: 'Home',
-        }}>
-        {() => (
-          <Tab.Navigator
-            tabBar={props => <MyTabBar {...props} />}
-            screenOptions={{
-              headerShown: false,
-            }}>
-            <Tab.Screen
-              name="HomeTab"
-              component={HomeScreen}
-              options={{tabBarLabel: 'Home'}}
-            />
-            <Tab.Screen
-              name="SearchTab"
-              component={SearchScreen}
-              options={{tabBarLabel: 'Search'}}
-            />
-            <Tab.Screen
-              name="FavouriteTab"
-              component={FavouriteScreen}
-              options={{tabBarLabel: 'Favourite'}}
-            />
-         
-          </Tab.Navigator>
-        )}
-      </Drawer.Screen>
-
-      {/* Additional Screens */}
+        }}
+      />
       <Drawer.Screen
         name="Donation"
         component={DotScreen}
@@ -191,8 +156,17 @@ const TabNavigator = () => {
   );
 };
 
-export default TabNavigator;
 const styles = StyleSheet.create({
+  tabBar: {
+    flexDirection: 'row',
+    padding: 10,
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+  },
   searchContainer: {
     marginVertical: 10,
   },
@@ -200,4 +174,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 20,
   },
+  logoutText: {
+    color: 'red',
+  },
 });
+
+export default TabNavigator;
