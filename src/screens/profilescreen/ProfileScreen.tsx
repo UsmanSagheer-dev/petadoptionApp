@@ -15,7 +15,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
   const [email, setEmail] = useState<string>('');
 
   const handleUpdateProfile = () => {
-    console.log('Profile updated for:', name, email);
+   navigation.navigate('PasswordUpdate')
   };
 
   return (

@@ -11,6 +11,7 @@ export type AuthStackParamList = {
 
 export type AppStackParamList = {
   Main: undefined;
+  PasswordUpdate:undefined;
   Profiles: {
     userId?: string;
     name?: string;
@@ -22,4 +23,5 @@ export type TabParamList = {
   SearchTab: undefined;
   FavouriteTab: undefined;
   ProfileTab: undefined; // Ensure this exists
+  PasswordUpdate: undefined;
 };

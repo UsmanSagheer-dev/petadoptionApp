@@ -21,3 +21,7 @@ export interface SigninPayload {
   email: string;
   password: string;
 }
+interface UpdatePasswordPayload {
+  oldPassword: string;
+  newPassword: string;
+}
