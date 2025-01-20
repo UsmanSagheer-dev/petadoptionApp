@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import auth from '@react-native-firebase/auth';
-import {LoginScreenNavigationProp} from './types';
+import {LoginScreenNavigationProp} from '../types/navigation';
 const useLogin = (navigation: LoginScreenNavigationProp) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');

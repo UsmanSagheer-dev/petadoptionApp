@@ -1,6 +1,6 @@
-import {ImageBackground, Text, StyleSheet, View} from 'react-native';
-import React, {useEffect} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import { ImageBackground, Text, StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import IMAGES from '../../assets/images';
 import useAuth from '../../hooks/useAuth';
 
@@ -10,7 +10,7 @@ type NavigationProp = {
 
 const SplashScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
-  const {showSplash} = useAuth();
+  const { showSplash } = useAuth();
 
   useEffect(() => {
     if (!showSplash) {

@@ -1,20 +1,3 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-export type RootStackParamList = {
-  Login: undefined;
-  Home: undefined;
-  SignUp: undefined;
-  Recover: undefined;
-  App: any;
-};
-
-export type LoginScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Login'
->;
-
-
-
 export interface SignUpState {
     name: string;
     setName: (name: string) => void;
@@ -27,4 +10,3 @@ export interface SignUpState {
     emailError: string | null;
     handleRegister: () => Promise<{ name: string; email: string; password: string } | undefined>;
   }
-  

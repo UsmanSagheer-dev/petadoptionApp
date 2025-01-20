@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { TabParamList } from '../../navigation/types';
+import { TabParamList } from '../../types/navigation';
 import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
 import COLOR from '../../constant/constant';
@@ -15,7 +15,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
   const [email, setEmail] = useState<string>('');
 
   const handleUpdateProfile = () => {
-    console.log('Profile updated for:', name, email);
+   navigation.navigate('PasswordUpdate')
   };
 
   return (

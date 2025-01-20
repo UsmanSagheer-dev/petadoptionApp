@@ -7,6 +7,7 @@ interface LoginButtonProps {
   backgroundColor?: string;
   textColor?: string;
   width?: string | number;
+  disabled?: boolean; 
 }
 
 const LoginButton = ({

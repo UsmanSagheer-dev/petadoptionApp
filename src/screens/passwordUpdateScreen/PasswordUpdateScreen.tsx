@@ -1,12 +1,76 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, StyleSheet, Text } from 'react-native';
+import React from 'react';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import CustomText from '../../components/customText/CustomText';
+import CustomInput from '../../components/input/customInput';
+import COLOR from '../../constant/constant';
+import LoginButton from '../../components/button/CustomButton';
+import { usePasswordUpdate } from '../../hooks/usePasswordUpdate';
+import { RootStackParamList } from '../types';
 
-const PasswordUpdateScreen = () => {
+type PasswordUpdateScreenProps = NativeStackScreenProps<RootStackParamList, 'PasswordUpdate'>;
+
+const PasswordUpdateScreen: React.FC<PasswordUpdateScreenProps> = ({ navigation }) => {
+  const { state, setState, handleUpdateProfile } = usePasswordUpdate(navigation);
+
   return (
-    <View>
-      <Text>PasswordUpdateScreen</Text>
+    <View style={styles.container}>
+      <View>
+        <View style={styles.titleContainer}>
+          <CustomText title="Profile Settings" style={styles.title} />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Current Password</Text>
+          <CustomInput
+            type="password"
+            placeholder=""
+            value={state.oldPassword}
+            onChange={value => setState(prev => ({ ...prev, oldPassword: value }))}
+            secureTextEntry={true}
+          />
+        </View>
+        <View>
+          <Text style={styles.label}>New Password</Text>
+          <CustomInput
+            type="password"
+            placeholder=""
+            value={state.newPassword}
+            onChange={value => setState(prev => ({ ...prev, newPassword: value }))}
+            secureTextEntry={true}
+          />
+        </View>
+        <View style={styles.inputContainer1}>
+          <Text style={styles.label}>Confirm New Password</Text>
+          <CustomInput
+            type="password"
+            placeholder=""
+            value={state.confirmNewPassword}
+            onChange={value => setState(prev => ({ ...prev, confirmNewPassword: value }))}
+            secureTextEntry={true}
+          />
+        </View>
+      </View>
+      <View style={styles.buttonContainer}>
+        <LoginButton
+          onClick={handleUpdateProfile}
+          title={state.isLoading ? "Updating..." : "Update Password"}
+          backgroundColor={COLOR.primary}
+          textColor={COLOR.white}
+          width="100%"
+        />
+      </View>
     </View>
-  )
-}
+  );
+};
 
-export default PasswordUpdateScreen
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 20, backgroundColor: COLOR.white, justifyContent: 'space-between' },
+  titleContainer: { paddingTop: 41, alignItems: 'center', marginBottom: 20 },
+  title: { fontSize: 24, fontWeight: '700', color: COLOR.primary, textAlign: 'center', fontFamily: 'MontserratRegular' },
+  label: { fontSize: 18, fontWeight: '600', color: COLOR.primary, fontFamily: 'MontserratRegular' },
+  inputContainer: { marginTop: 42, marginBottom: 20 },
+  inputContainer1: { marginTop: 24 },
+  buttonContainer: { marginTop: 32, justifyContent: 'center', alignItems: 'center' },
+});
+
+export default PasswordUpdateScreen;

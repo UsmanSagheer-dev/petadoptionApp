@@ -9,6 +9,7 @@ export interface AuthState {
   currentUser: User | null;
   isAuthenticated: boolean;
   error: string | null;
+  showSplash: boolean;
 }
 
 export interface SignupPayload {
