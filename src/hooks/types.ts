@@ -6,7 +6,15 @@ export type RootStackParamList = {
   SignUp: undefined;
   Recover: undefined;
   App: any;
+  PasswordUpdate: undefined;
+  ProfileTab: undefined;
 };
+export interface PasswordUpdateState {
+  oldPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+  isLoading: boolean;
+}
 
 export type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

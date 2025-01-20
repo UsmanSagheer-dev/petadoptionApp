@@ -6,10 +6,13 @@ export type RootStackParamList = {
   SignUp: undefined;
   Recover: undefined;
   App: any;
-  
+  PasswordUpdate: undefined;
+  ProfileTab: undefined;
 };
 
 export type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
+
+
 
 
 
