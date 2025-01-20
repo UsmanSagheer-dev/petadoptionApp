@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { updatePassword, signout } from '../redux/slices/authSlice';
 import { AppDispatch } from '../redux/store';
 import { Alert } from 'react-native';
-import { RootStackParamList } from './types';
+import { RootStackParamList } from '../types/navigation';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 

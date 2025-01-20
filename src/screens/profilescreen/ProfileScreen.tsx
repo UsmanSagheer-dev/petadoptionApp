@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { TabParamList } from '../../navigation/types';
+import { TabParamList } from '../../types/navigation';
 import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
 import COLOR from '../../constant/constant';

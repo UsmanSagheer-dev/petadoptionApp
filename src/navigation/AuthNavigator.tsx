@@ -4,7 +4,7 @@ import LoginScreen from '../screens/loginScreen/LoginScreen';
 import SignUpScreen from '../screens/signUpScreen/SignUpScreen';
 import RecoverPasswordScreen from '../screens/recoverPasswordScreen/RecoverPasswordScreen';
 import AppNavigator from './AppNavigator';
-import { AuthStackParamList } from './types';
+import { AuthStackParamList } from '../types/navigation';
 
 const Stack = createStackNavigator<AuthStackParamList>();
 

@@ -1,12 +1,13 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {User, AuthState, SignupPayload, SigninPayload} from './../types';
+import {User, AuthState, SignupPayload, SigninPayload} from '../../types/auth';
 
 const initialState: AuthState = {
   currentUser: null,
   isAuthenticated: false,
   error: null,
+  showSplash: true, // Added the missing property
 };
 
 // Signup
