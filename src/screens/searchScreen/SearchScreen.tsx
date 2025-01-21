@@ -1,16 +1,36 @@
 import React from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import SearchInput from '../../components/searcInput/SearchInput';
 import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
 import PetCard from '../../components/petCard/PetCard'; // Import PetCard
+import IMAGES from 'assets/images';
 
 const SearchScreen = () => {
   const tabs = [
-    {id: 'dogs', label: 'Dogs'},
-    {id: 'cats', label: 'Cats'},
-    {id: 'bunnies', label: 'Bunnies'},
-    {id: 'birds', label: 'Birds'},
-    {id: 'turtles', label: 'Turtles'},
+    { id: 'dogs', label: 'Dogs' },
+    { id: 'cats', label: 'Cats' },
+    { id: 'bunnies', label: 'Bunnies' },
+    { id: 'birds', label: 'Birds' },
+    { id: 'turtles', label: 'Turtles' },
+  ];
+
+  const pets = [
+    {
+      id: '1',
+      name: 'Cavachon',
+      age: 'Age 4 Months',
+      location: 'FSD',
+      gender: 'Male',
+      isFavorite: false,
+    },
+    {
+      id: '2',
+      name: 'Persian Cat',
+      age: 'Age 2 Months',
+      location: 'LHR',
+      gender: 'Female',
+      isFavorite: true,
+    },
   ];
 
   const handleTabPress = (tabId: string) => {
@@ -30,31 +50,17 @@ const SearchScreen = () => {
         <HorizontalTabs tabs={tabs} onTabPress={handleTabPress} />
       </View>
       <ScrollView style={styles.petCardsContainer}>
-        <PetCard
-          name="Cavachon"
-          age="Age 4 Months"
-          location="FSD"
-          gender="Male"
-          isFavorite={false}
-          onFavoriteToggle={() => handleFavoriteToggle('1')}
-          imageUrl="https://example.com/pet-image.jpg"
-          locationIcon="https://example.com/location-icon.png"
-          favoriteIcon="https://example.com/favorite-icon.png"
-          unfavoriteIcon="https://example.com/unfavorite-icon.png"
-        />
-        <PetCard
-          name="Persian Cat"
-          age="Age 2 Months"
-          location="LHR"
-          gender="Female"
-          isFavorite={true}
-          onFavoriteToggle={() => handleFavoriteToggle('2')}
-          imageUrl="https://example.com/cat-image.jpg"
-          locationIcon="https://example.com/location-icon.png"
-          favoriteIcon="https://example.com/favorite-icon.png"
-          unfavoriteIcon="https://example.com/unfavorite-icon.png"
-        />
-        {/* Add more PetCard components as needed */}
+        {pets.map((pet) => (
+          <PetCard
+            key={pet.id}
+            name={pet.name}
+            age={pet.age}
+            location={pet.location}
+            gender={pet.gender}
+            isFavorite={pet.isFavorite}
+            onFavoriteToggle={() => handleFavoriteToggle(pet.id)}
+          />
+        ))}
       </ScrollView>
     </View>
   );
@@ -74,6 +80,7 @@ const styles = StyleSheet.create({
   },
   petCardsContainer: {
     marginTop: 20,
+
   },
 });
 
