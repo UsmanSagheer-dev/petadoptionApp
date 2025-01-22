@@ -29,7 +29,11 @@ export interface PetCardProps {
   favoriteIcon: any;
   unfavoriteIcon: any;
   locationIcon: any;
-  
+  onPress: () => void;
+}
+export interface TabItem {
+  id: string;
+  label: string;
 }
 
 export interface PickerInputProps {

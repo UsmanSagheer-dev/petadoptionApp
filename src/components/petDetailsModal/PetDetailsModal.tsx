@@ -1,194 +1,116 @@
-import IMAGES from '../../assets/images/index';
-import React from 'react';
+import React, { useRef } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  Modal,
   TouchableOpacity,
+  Animated,
   Dimensions,
-  Image,
-} from 'react-native';
+} from "react-native";
 
-interface PetDetailsModalProps {
-  visible: boolean;
+const { height } = Dimensions.get("screen");
+
+interface CustomBottomSheetProps {
+  isVisible: boolean;
   onClose: () => void;
-  petData: {
-    name: string;
-    type: string;
-    age: string;
-    gender: string;
-    vaccinated: string;
-    price: string;
-    description?: string;
-    ownerName: string;
-  };
+  selectedPet?: any;
 }
 
-const { height } = Dimensions.get('window');
-
-const PetDetailsModal: React.FC<PetDetailsModalProps> = ({
-  visible,
+const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
+  isVisible,
   onClose,
-  petData,
+  selectedPet,
 }) => {
+  const translateY = useRef(new Animated.Value(height)).current;
+
+  React.useEffect(() => {
+    if (isVisible) {
+      Animated.timing(translateY, {
+        toValue: height * 0.4, // Adjust this value based on your desired content area
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(translateY, {
+        toValue: height,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isVisible]);
+
+  if (!selectedPet) return null;
+
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={visible}
-      onRequestClose={onClose}>
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalView}>
-          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Image 
-              source={IMAGES.BACKICOn}
-              style={styles.closeIcon} 
-            />
-          </TouchableOpacity>
-
-          <Text style={styles.title}>{petData.name}</Text>
-          <Text style={styles.subtitle}>{petData.type}</Text>
-
-          <View style={styles.statsContainer}>
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{petData.age}</Text>
-              <Text style={styles.statLabel}>Age</Text>
-            </View>
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{petData.gender}</Text>
-              <Text style={styles.statLabel}>Gender</Text>
-            </View>
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{petData.vaccinated}</Text>
-              <Text style={styles.statLabel}>Vaccinated</Text>
-            </View>
-          </View>
-
-          <View style={styles.ownerContainer}>
-            <View style={styles.ownerImageContainer}>
-              <View style={styles.ownerImage} />
-            </View>
-            <View style={styles.ownerInfo}>
-              <Text style={styles.ownerName}>{petData.ownerName}</Text>
-              <Text style={styles.ownerLabel}>Owner</Text>
-            </View>
-            <Text style={styles.price}>${petData.price}</Text>
-          </View>
-
-          <Text style={styles.description}>{petData.description}</Text>
-
-          <TouchableOpacity style={styles.adoptButton}>
-            <Text style={styles.adoptButtonText}>Adopt Now</Text>
+    <Animated.View style={[styles.overlay, { transform: [{ translateY }] }]}>
+      <View style={styles.bottomSheet}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={onClose}>
+            <View style={styles.handle} />
           </TouchableOpacity>
         </View>
+
+        <Text style={styles.title}>{selectedPet.name}</Text>
+        <Text style={styles.subtitle}>{selectedPet.type}</Text>
+        <Text style={styles.price}>${selectedPet.price}</Text>
+
+        <View style={styles.infoContainer}>
+          <View style={styles.infoBox}>
+            <Text>Age</Text>
+            <Text>{selectedPet.age}</Text>
+          </View>
+          <View style={styles.infoBox}>
+            <Text>Gender</Text>
+            <Text>{selectedPet.gender}</Text>
+          </View>
+          <View style={styles.infoBox}>
+            <Text>Weight</Text>
+            <Text>{selectedPet.weight}</Text>
+          </View>
+          <View style={styles.infoBox}>
+            <Text>Vaccine</Text>
+            <Text>{selectedPet.vaccinated ? "Yes" : "No"}</Text>
+          </View>
+        </View>
+
+        <TouchableOpacity style={styles.button} onPress={onClose}>
+          <Text style={styles.buttonText}>Adopt Now</Text>
+        </TouchableOpacity>
       </View>
-    </Modal>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-end',
+  overlay: {
+    position: "absolute",
+    bottom: 350,
+    left: 0,
+    right: 0,
+    height: "100%",
+    justifyContent: "flex-end", // Ensures the sheet slides up from the bottom
   },
-  modalView: {
-    backgroundColor: 'white',
+  bottomSheet: {
+    width: "100%",
+    backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    height: height * 0.65,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
   },
-  closeButton: {
-    alignSelf: 'flex-end',
-    padding: 10,
-  },
-  closeIcon: {
-    width: 24,
-    height: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#000000',
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666666',
-    marginBottom: 20,
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: '#F5F5F5',
-    borderRadius: 15,
-    padding: 20,
-    marginBottom: 20,
-  },
-  statItem: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  statValue: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#000000',
-    marginBottom: 4,
-  },
-  statLabel: {
-    fontSize: 12,
-    color: '#666666',
-  },
-  ownerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  ownerImageContainer: {
-    marginRight: 12,
-  },
-  ownerImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#C4C4C4',
-  },
-  ownerInfo: {
-    flex: 1,
-  },
-  ownerName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#000000',
-  },
-  ownerLabel: {
-    fontSize: 14,
-    color: '#666666',
-  },
-  price: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#000000',
-  },
-  description: {
-    fontSize: 14,
-    color: '#666666',
-    lineHeight: 20,
-    marginBottom: 20,
-  },
-  adoptButton: {
-    backgroundColor: '#000000',
-    borderRadius: 15,
-    paddingVertical: 15,
-    alignItems: 'center',
-  },
-  adoptButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
+  header: { alignItems: "center", marginBottom: 10 },
+  handle: { width: 100, height: 7, backgroundColor: "#ccc", borderRadius: 10 },
+  title: { fontSize: 24, fontWeight: "bold" },
+  subtitle: { fontSize: 16, color: "gray" },
+  price: { fontSize: 22, color: "#FFA500", fontWeight: "bold", marginVertical: 5 },
+  infoContainer: { flexDirection: "row", justifyContent: "space-between", marginVertical: 10 },
+  infoBox: { backgroundColor: "#F5F5F5", padding: 10, borderRadius: 10, alignItems: "center", flex: 1, margin: 5 },
+  button: { backgroundColor: "black", padding: 15, borderRadius: 10, marginTop: 10, alignItems: "center" },
+  buttonText: { color: "white", fontSize: 16, fontWeight: "bold" },
 });
 
-export default PetDetailsModal;
+export default CustomBottomSheet;
