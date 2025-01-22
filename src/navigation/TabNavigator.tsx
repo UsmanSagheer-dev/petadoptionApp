@@ -1,26 +1,25 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useTheme } from '@react-navigation/native';
-import { 
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {useTheme} from '@react-navigation/native';
+import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
   BottomTabBarProps,
 } from '@react-navigation/bottom-tabs';
-import { 
-  createDrawerNavigator, 
-  DrawerContentScrollView, 
-  DrawerItemList 
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
 } from '@react-navigation/drawer';
-import { PlatformPressable } from '@react-navigation/elements';
+import {PlatformPressable} from '@react-navigation/elements';
 import auth from '@react-native-firebase/auth';
-
-// Import your screens
 import HomeScreen from '../screens/homeScreen/HomeScreen';
 import SearchScreen from '../screens/searchScreen/SearchScreen';
 import FavouriteScreen from '../screens/favouriteScreen/FavouriteScreen';
 import ProfileScreen from '../screens/profilescreen/ProfileScreen';
-import DotScreen from '../screens/dotScreen/DotScreen';
 import SearchInput from '../components/searcInput/SearchInput';
+import DonateScreen from '../screens/donateScreen/DonateScreen';
+import MyDonationScreen from '../screens/myDonationScreen/MyDonationScreen';
 type TabParamList = {
   HomeTab: undefined;
   SearchTab: undefined;
@@ -29,19 +28,22 @@ type TabParamList = {
 };
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator<TabParamList>();
-
-const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation }) => {
-  const { colors } = useTheme();
-
+const CustomTabBar: React.FC<BottomTabBarProps> = ({
+  state,
+  descriptors,
+  navigation,
+}) => {
+  const {colors} = useTheme();
   return (
-    <View style={[styles.tabBar, { backgroundColor: colors.background }]}>
+    <View style={[styles.tabBar, {backgroundColor: colors.background}]}>
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const label = options.tabBarLabel !== undefined 
-          ? options.tabBarLabel 
-          : options.title !== undefined
-          ? options.title 
-          : route.name;
+        const {options} = descriptors[route.key];
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+            ? options.title
+            : route.name;
 
         const isFocused = state.index === index;
 
@@ -60,12 +62,12 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigat
         return (
           <PlatformPressable
             key={route.key}
-            accessibilityState={isFocused ? { selected: true } : {}}
+            accessibilityState={isFocused ? {selected: true} : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarButtonTestID}
             onPress={onPress}
             style={styles.tabItem}>
-            <Text style={{ color: isFocused ? colors.primary : colors.text }}>
+            <Text style={{color: isFocused ? colors.primary : colors.text}}>
               {typeof label === 'string' ? label : route.name}
             </Text>
           </PlatformPressable>
@@ -103,25 +105,25 @@ const TabStack = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Tab.Screen 
-        name="HomeTab" 
+      <Tab.Screen
+        name="HomeTab"
         component={HomeScreen}
-        options={{ tabBarLabel: 'Home' }}
+        options={{tabBarLabel: 'Home'}}
       />
-      <Tab.Screen 
-        name="SearchTab" 
+      <Tab.Screen
+        name="SearchTab"
         component={SearchScreen}
-        options={{ tabBarLabel: 'Search' }}
+        options={{tabBarLabel: 'Search'}}
       />
-      <Tab.Screen 
-        name="FavouriteTab" 
+      <Tab.Screen
+        name="FavouriteTab"
         component={FavouriteScreen}
-        options={{ tabBarLabel: 'Favourite' }}
+        options={{tabBarLabel: 'Favourite'}}
       />
-      <Tab.Screen 
-        name="ProfileTab" 
+      <Tab.Screen
+        name="ProfileTab"
         component={ProfileScreen}
-        options={{ tabBarLabel: 'Profile' }}
+        options={{tabBarLabel: 'Profile'}}
       />
     </Tab.Navigator>
   );
@@ -146,10 +148,17 @@ const TabNavigator = () => {
         }}
       />
       <Drawer.Screen
-        name="Donation"
-        component={DotScreen}
+        name="DonateScreen"
+        component={DonateScreen}
         options={{
-          drawerLabel: 'Settings',
+          drawerLabel: 'DonateScreen',
+        }}
+      />
+      <Drawer.Screen
+        name="Add Pet"
+        component={MyDonationScreen}
+        options={{
+          drawerLabel: 'Add Pet',
         }}
       />
     </Drawer.Navigator>

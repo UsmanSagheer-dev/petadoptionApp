@@ -1,11 +1,15 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import auth from '@react-native-firebase/auth';
-import {LoginScreenNavigationProp} from '../types/navigation';
+import { LoginScreenNavigationProp } from '../types/navigation';
+
 const useLogin = (navigation: LoginScreenNavigationProp) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [termsError, setTermsError] = useState('');
+
   const handleLogin = async () => {
     setLoading(true);
     setError(null);
@@ -14,6 +18,13 @@ const useLogin = (navigation: LoginScreenNavigationProp) => {
       setLoading(false);
       return;
     }
+    if (!termsAccepted) {
+      setTermsError('You must accept the terms and conditions to proceed.');
+      setLoading(false);
+      return;
+    }
+
+    setTermsError('');
     try {
       await auth().signInWithEmailAndPassword(email, password);
       navigation.navigate('App');
@@ -24,6 +35,7 @@ const useLogin = (navigation: LoginScreenNavigationProp) => {
       setLoading(false);
     }
   };
+
   return {
     email,
     setEmail,
@@ -32,6 +44,10 @@ const useLogin = (navigation: LoginScreenNavigationProp) => {
     loading,
     error,
     handleLogin,
+    termsAccepted,
+    setTermsAccepted,
+    termsError,
   };
 };
+
 export default useLogin;
