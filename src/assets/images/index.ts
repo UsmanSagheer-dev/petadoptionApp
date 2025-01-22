@@ -9,7 +9,8 @@ PETCARDIMG:require('./petcardimg.png'),
 ONCLICKFAV:require('./onclickfav.png'),
 OFCLICKFAV:require('./offclickfav.png'),
 LOCATION_VECTOR:require('./locationvector.png'),
-UPLOADIMG:require('./Uploadimg.png')
+UPLOADIMG:require('./Uploadimg.png'),
+DELETEICON:require('./Deleteicon.png'),
 
 }
 export default IMAGES

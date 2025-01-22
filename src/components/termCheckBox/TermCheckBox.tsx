@@ -1,11 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-
-interface TermsCheckboxProps {
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-}
-
+import {TermsCheckboxProps} from '../../types/componentTypes';
 const TermsCheckbox = ({checked, onChange}: TermsCheckboxProps) => {
   return (
     <View style={styles.container}>
@@ -15,7 +10,8 @@ const TermsCheckbox = ({checked, onChange}: TermsCheckboxProps) => {
         {checked && <View style={styles.checked} />}
       </TouchableOpacity>
       <Text style={styles.text}>
-        I agree to the <Text style={styles.link}>Terms of service</Text> <Text>and</Text>
+        I agree to the <Text style={styles.link}>Terms of service</Text>{' '}
+        <Text>and</Text>
         <Text style={styles.link}>Privacy policy</Text>
       </Text>
     </View>

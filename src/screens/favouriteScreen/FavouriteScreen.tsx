@@ -3,6 +3,7 @@ import React from 'react';
 import COLOR from '../../constant/constant';
 import PetCard from '../../components/petCard/PetCard';
 import CustomeHeader from '../../components/customeHeader/CustomeHeader';
+import IMAGES from '../../assets/images/index';
 
 const pets = [
   {
@@ -40,14 +41,17 @@ const FavouriteScreen = () => {
       <ScrollView style={styles.petCardsContainer}>
         {pets.map((pet) => (
           <PetCard
-            key={pet.id}
-            name={pet.name}
-            age={pet.age}
-            location={pet.location}
-            gender={pet.gender}
-            isFavorite={pet.isFavorite}
-            onFavoriteToggle={() => handleFavoriteToggle(pet.id)}
-          />
+          key={pet.id}
+          name={pet.name}
+          age={pet.age}
+          location={pet.location}
+          gender={pet.gender}
+          isFavorite={pet.isFavorite}
+          onFavoriteToggle={() => handleFavoriteToggle(pet.id)}
+          favoriteIcon={IMAGES.ONCLICKFAV}
+          unfavoriteIcon={IMAGES.OFCLICKFAV}
+          locationIcon={IMAGES.LOCATION_VECTOR}
+        />
         ))}
       </ScrollView>
     </View>

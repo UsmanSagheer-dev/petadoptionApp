@@ -2,16 +2,7 @@ import COLOR from '../../constant/constant';
 import IMAGES from '../../assets/images/index';
 import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-
-interface PetCardProps {
-  imageUrl?: string;
-  name: string;
-  age: string;
-  location: string;
-  gender: string;
-  isFavorite: boolean;
-  onFavoriteToggle: () => void;
-}
+import {PetCardProps} from '../../types/componentTypes'
 
 const PetCard: React.FC<PetCardProps> = ({
   imageUrl,
@@ -21,12 +12,15 @@ const PetCard: React.FC<PetCardProps> = ({
   gender,
   isFavorite,
   onFavoriteToggle,
+  favoriteIcon,
+  unfavoriteIcon,
+  locationIcon,
 }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         {imageUrl ? (
-          <Image source={IMAGES.PETCARDIMG} style={styles.image} />
+          <Image source={{ uri: imageUrl }} style={styles.image} />
         ) : (
           <View style={styles.placeholder} />
         )}
@@ -37,18 +31,13 @@ const PetCard: React.FC<PetCardProps> = ({
           <Text style={styles.age}> {age}</Text>
           <View style={styles.locationRow}>
             <Text style={styles.location}>{location}</Text>
-            <Image
-              source={IMAGES.LOCATION_VECTOR}
-              style={styles.locationIcon}
-            />
+            <Image source={locationIcon} style={styles.locationIcon} />
           </View>
           <View style={styles.genderContainer}>
             <Text style={styles.gender}>{gender}</Text>
-            <TouchableOpacity
-              onPress={onFavoriteToggle}
-              style={styles.heartButton}>
+            <TouchableOpacity onPress={onFavoriteToggle} style={styles.heartButton}>
               <Image
-                source={isFavorite ? IMAGES.ONCLICKFAV : IMAGES.OFCLICKFAV}
+                source={isFavorite ? favoriteIcon : unfavoriteIcon}
                 style={styles.heartIcon}
               />
             </TouchableOpacity>
@@ -58,6 +47,7 @@ const PetCard: React.FC<PetCardProps> = ({
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -137,7 +127,7 @@ const styles = StyleSheet.create({
   heartIcon: {
     width: 20,
     height: 20,
-    tintColor: '#FF5A5F',
+    // tintColor: '#FF5A5F',
   },
   genderContainer: {
     flexDirection: 'row',

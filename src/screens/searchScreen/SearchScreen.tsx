@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import SearchInput from '../../components/searcInput/SearchInput';
 import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
-import PetCard from '../../components/petCard/PetCard'; // Import PetCard
-import IMAGES from 'assets/images';
+import PetCard from '../../components/petCard/PetCard';
+import IMAGES from '../../assets/images/index';
 
 const SearchScreen = () => {
   const tabs = [
@@ -52,14 +52,17 @@ const SearchScreen = () => {
       <ScrollView style={styles.petCardsContainer}>
         {pets.map((pet) => (
           <PetCard
-            key={pet.id}
-            name={pet.name}
-            age={pet.age}
-            location={pet.location}
-            gender={pet.gender}
-            isFavorite={pet.isFavorite}
-            onFavoriteToggle={() => handleFavoriteToggle(pet.id)}
-          />
+          key={pet.id}
+          name={pet.name}
+          age={pet.age}
+          location={pet.location}
+          gender={pet.gender}
+          isFavorite={pet.isFavorite}
+          onFavoriteToggle={() => handleFavoriteToggle(pet.id)}
+          favoriteIcon={IMAGES.ONCLICKFAV}
+          unfavoriteIcon={IMAGES.OFCLICKFAV}
+          locationIcon={IMAGES.LOCATION_VECTOR}
+        />
         ))}
       </ScrollView>
     </View>

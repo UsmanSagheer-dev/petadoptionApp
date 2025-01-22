@@ -1,5 +1,6 @@
-import {useState} from 'react';
-import {SignUpState} from '../types/signup';
+import { useState } from 'react';
+import { SignUpState } from '../types/signup';
+
 const useSignUp = (): SignUpState => {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -7,9 +8,9 @@ const useSignUp = (): SignUpState => {
   const [loading, setLoading] = useState<boolean>(false);
   const [showError, setShowError] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<string | null>(null);
-  const handleRegister = async (): Promise<
-    {name: string; email: string; password: string} | undefined
-  > => {
+  const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
+
+  const handleRegister = async (): Promise<{ name: string; email: string; password: string } | undefined> => {
     if (!name || !email || !password) {
       setShowError(true);
       return undefined;
@@ -18,7 +19,7 @@ const useSignUp = (): SignUpState => {
     setLoading(true);
     setEmailError(null);
     try {
-      return {name, email, password};
+      return { name, email, password };
     } catch (error: any) {
       if (error?.message.includes('already registered')) {
         setEmailError('This email is already registered.');
@@ -42,6 +43,8 @@ const useSignUp = (): SignUpState => {
     showError,
     handleRegister,
     emailError,
+    termsAccepted,
+    setTermsAccepted,
   };
 };
 

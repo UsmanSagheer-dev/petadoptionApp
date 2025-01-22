@@ -1,18 +1,14 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import COLOR from '../../constant/constant';
+import {CustomeHeaderProps} from '../../types/componentTypes';
 
-interface CustomeHeaderProps {
-  title: string;
-  onPress: () => void;
-}
-
-const CustomeHeader: React.FC<CustomeHeaderProps> = ({ title, onPress }) => {
+const CustomeHeader: React.FC<CustomeHeaderProps> = ({title}) => {
   return (
     <View>
       <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>{title}</Text>
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity>
           <Text style={styles.plus}>+</Text>
         </TouchableOpacity>
       </View>
@@ -31,13 +27,13 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 24,
     fontWeight: '700',
-    color:COLOR.primary, 
+    color: COLOR.primary,
     fontFamily: 'Montserrat-Regular',
   },
   plus: {
     fontSize: 36,
     fontWeight: '500',
-    color:COLOR.primary,  
+    color: COLOR.primary,
   },
 });
 
