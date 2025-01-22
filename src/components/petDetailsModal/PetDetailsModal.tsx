@@ -9,11 +9,20 @@ import {
 } from "react-native";
 
 const { height } = Dimensions.get("screen");
-
+interface Pet {
+  id: string;
+  name: string;
+  type: string;
+  age: string;
+  gender: string;
+  weight: string;
+  price: string;
+  vaccinated: boolean;
+}
 interface CustomBottomSheetProps {
   isVisible: boolean;
   onClose: () => void;
-  selectedPet?: any;
+  selectedPet?: Pet | null;
 }
 
 const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({

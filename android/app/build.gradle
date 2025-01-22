@@ -2,6 +2,7 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 apply plugin: "com.google.gms.google-services" // Correct plugin added
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 react {
     autolinkLibrariesWithApp()
@@ -15,7 +16,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.adoption" // Updated namespace to match package name
+    namespace "com.adoption"
     defaultConfig {
         applicationId "com.adoption" // Updated applicationId to match google-services.json
         minSdkVersion rootProject.ext.minSdkVersion
@@ -50,6 +51,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
         implementation "com.google.firebase:firebase-auth"
     implementation "com.google.firebase:firebase-firestore"
+    implementation project(':react-native-vector-icons')
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
