@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     width: 230,
-    marginTop: 100,
+    marginTop: 20,
   },
   searchContainer: {
     marginTop: 27,

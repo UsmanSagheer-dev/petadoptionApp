@@ -4,6 +4,7 @@ import CustomeHeader from '../../components/customeHeader/CustomeHeader';
 import PetCard from '../../components/petCard/PetCard';
 import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import IMAGES from '../../assets/images/index';
+import CustomBottomSheet from '../../components/petDetailsModal/PetDetailsModal';
 
 const pets = [
   {
@@ -28,7 +29,7 @@ const MyDonationScreen = () => {
     console.log(`Favorite toggled for pet: ${petId}`);
   };
 
-  const handlePetPress = (pet: any) => {
+  const handlePetClick = (pet: any) => {
     setSelectedPet(pet);
     setModalVisible(true);
   };
@@ -49,27 +50,16 @@ const MyDonationScreen = () => {
             favoriteIcon={IMAGES.DELETEICON}
             unfavoriteIcon={IMAGES.DELETEICON}
             locationIcon={IMAGES.LOCATION_VECTOR}
-            onPress={() => handlePetPress(pet)}
+            onPress={() => handlePetClick(pet)} 
           />
         ))}
       </ScrollView>
 
-      {selectedPet && (
-        <PetDetailsModal
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-          petData={{
-            name: selectedPet.name,
-            type: 'Dog',
-            age: selectedPet.age,
-            gender: selectedPet.gender,
-            vaccinated: selectedPet.vaccinated,
-            price: selectedPet.price,
-            description: selectedPet.description,
-            ownerName: selectedPet.ownerName,
-          }}
-        />
-      )}
+      <CustomBottomSheet 
+        isVisible={modalVisible} 
+        onClose={() => setModalVisible(false)} 
+        selectedPet={selectedPet} 
+      />
     </View>
   );
 };

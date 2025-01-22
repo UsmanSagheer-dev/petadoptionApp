@@ -1,5 +1,8 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+
 import {useTheme} from '@react-navigation/native';
 import {
   createBottomTabNavigator,
@@ -100,32 +103,54 @@ const CustomDrawerContent: React.FC<any> = props => {
 
 const TabStack = () => {
   return (
-    <Tab.Navigator
-      tabBar={props => <CustomTabBar {...props} />}
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Tab.Screen
-        name="HomeTab"
-        component={HomeScreen}
-        options={{tabBarLabel: 'Home'}}
-      />
-      <Tab.Screen
-        name="SearchTab"
-        component={SearchScreen}
-        options={{tabBarLabel: 'Search'}}
-      />
-      <Tab.Screen
-        name="FavouriteTab"
-        component={FavouriteScreen}
-        options={{tabBarLabel: 'Favourite'}}
-      />
-      <Tab.Screen
-        name="ProfileTab"
-        component={ProfileScreen}
-        options={{tabBarLabel: 'Profile'}}
-      />
-    </Tab.Navigator>
+<Tab.Navigator
+  tabBar={props => <CustomTabBar {...props} />}
+  screenOptions={{
+    headerShown: false,
+  }}>
+  <Tab.Screen
+    name="HomeTab"
+    component={HomeScreen}
+    options={{
+      tabBarLabel: 'Home',
+      tabBarIcon: () => (
+        <FontAwesome name="home" size={20} color={'black'} />
+      ),
+    }}
+  />
+  <Tab.Screen
+    name="SearchTab"
+    component={SearchScreen}
+    options={{
+      tabBarLabel: 'Search',
+      tabBarIcon: ({ color, size }) => (
+        <FontAwesome name="search" size={size} color={color} />
+      ),
+    }}
+  />
+  <Tab.Screen
+    name="FavouriteTab"
+    component={FavouriteScreen}
+    options={{
+      tabBarLabel: 'Favourite',
+      tabBarIcon: ({ color, size }) => (
+        <FontAwesome name="heart" size={size} color={color} />
+      ),
+    }}
+  />
+  <Tab.Screen
+    name="ProfileTab"
+    component={ProfileScreen}
+    options={{
+      tabBarLabel: 'Profile',
+      tabBarIcon: ({ color, size }) => (
+        <FontAwesome name="user" size={size} color={color} />
+      ),
+    }}
+  />
+</Tab.Navigator>
+
+
   );
 };
 
