@@ -102,19 +102,16 @@ export const updatePassword = createAsyncThunk(
         throw new Error('User not found. Please login again.');
       }
 
-      // Re-authenticate user before updating password
       const credential = auth.EmailAuthProvider.credential(
         user.email,
         oldPassword,
       );
       await user.reauthenticateWithCredential(credential);
 
-      // Update password in Firebase Authentication
       await user.updatePassword(newPassword);
 
-      // Update password in Firestore (if needed)
       await firestore().collection('users').doc(user.uid).update({
-        password: newPassword, // Ensure you are not storing plain text passwords
+        password: newPassword,
       });
 
       return 'Password updated successfully';
