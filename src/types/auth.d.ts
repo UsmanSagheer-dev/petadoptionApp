@@ -22,3 +22,16 @@ export interface SigninPayload {
   email: string;
   password: string;
 }
+
+export interface PetDonation {
+  petType: string;
+  gender: string;
+  vaccinated: string;
+  petBreed: string;
+  amount: string;
+  weight: string;
+  location: string;
+  description: string;
+  errorText?: string;
+  imageUrl?: string;
+}

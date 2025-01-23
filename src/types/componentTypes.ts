@@ -18,7 +18,9 @@ export interface CustomeHeaderProps {
   title: string;
 }
 
+
 export interface PetCardProps {
+  
   imageUrl?: string;
   name: string;
   age: string;
@@ -26,9 +28,9 @@ export interface PetCardProps {
   gender: string;
   isFavorite: boolean;
   onFavoriteToggle: () => void;
-  favoriteIcon: any;
-  unfavoriteIcon: any;
-  locationIcon: any;
+  favoriteIcon: any; // Type this based on your icon assets, or use `ImageSourcePropType` from `react-native`
+  unfavoriteIcon: any; // Same as above
+  locationIcon: any; // Same as above
   onPress: () => void;
 }
 export interface TabItem {
