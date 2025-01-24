@@ -1,98 +1,36 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Alert, Image } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
-import { donatePet } from "../../redux/slices/donateSlice";
-import PickerInput from "../../components/pickerInput/PickerInput";
+import React from "react";
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image } from "react-native";
 import CustomInput from "../../components/input/customInput";
-import { PetDonation } from "../../types/auth";
+import PickerInput from "../../components/pickerInput/PickerInput";
 import COLOR from "../../constant/constant";
-import { launchImageLibrary } from "react-native-image-picker";
-import { Image as RNImage } from "react-native-compressor"; 
+import useDonateScreen from "../../hooks/useDonateScreen";
 
 const DonateScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { loading, error } = useSelector((state: RootState) => state.donation);
-
-  const [petType, setPetType] = useState("");
-  const [gender, setGender] = useState("");
-  const [vaccinated, setVaccinated] = useState("");
-  const [petBreed, setPetBreed] = useState("");
-  const [amount, setAmount] = useState("");
-  const [weight, setWeight] = useState("");
-  const [location, setLocation] = useState("");
-  const [description, setDescription] = useState("");
-  const [imageUri, setImageUri] = useState<string | null>(null); 
-
-  const pickImage = async () => {
-    launchImageLibrary({ mediaType: "photo", quality: 1 }, async (response) => {
-      if (response.didCancel) return;
-      if (response.assets && response.assets.length > 0) {
-        const originalUri = response.assets[0].uri;
-        
-        // Ensure originalUri is not undefined before compressing
-        if (!originalUri) {
-          console.log("No image selected");
-          return;
-        }
-  
-        try {
-          const compressedUri = await RNImage.compress(originalUri, {
-            compressionMethod: "auto",
-            quality: 0.6,
-            maxWidth: 800,
-            maxHeight: 800,
-          });
-  
-          setImageUri(compressedUri);
-        } catch (error) {
-          console.log("Image compression error:", error);
-        }
-      }
-    });
-  };
-  
-
-  const handleDonate = () => {
-    navigation.navigate('DonateScreen')
-    if (!imageUri) {
-      Alert.alert("Error", "Please select an image");
-      return;
-    }
-  
-    const petData: PetDonation = {
-      petType,
-      gender,
-      vaccinated,
-      petBreed,
-      amount,
-      weight,
-      location,
-      description,
-      imageUrl: imageUri,
-    };
-  
-    dispatch(donatePet(petData)).then((result) => {
-      if (result.meta.requestStatus === "fulfilled") {
-        Alert.alert("Success", "Donation submitted successfully!");
-        
-        // Reset form inputs after successful submission
-        setPetType("");
-        setGender("");
-        setVaccinated("");
-        setPetBreed("");
-        setAmount("");
-        setWeight("");
-        setLocation("");
-        setDescription("");
-        setImageUri(null);
-  
-        navigation.goBack();
-      } else {
-        Alert.alert("Error", result.payload as string);
-      }
-    });
-  };
+  const {
+    petType,
+    setPetType,
+    gender,
+    setGender,
+    vaccinated,
+    setVaccinated,
+    petBreed,
+    setPetBreed,
+    amount,
+    setAmount,
+    weight,
+    setWeight,
+    location,
+    setLocation,
+    description,
+    setDescription,
+    age,
+    setAge,
+    imageUri,
+    pickImage,
+    handleDonate,
+    loading,
+    error,
+  } = useDonateScreen(navigation);
 
   return (
     <ScrollView style={styles.container}>
@@ -106,7 +44,7 @@ const DonateScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         onValueChange={setPetType}
         items={[
           { label: "Select", value: "" },
-          { label: "Dog", value: "dogs" },
+          { label: "Dog", value: "dog" },
           { label: "Cat", value: "cat" },
           { label: "Bunnies", value: "bunnies" },
           { label: "Birds", value: "birds" },
@@ -144,18 +82,19 @@ const DonateScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       <Text style={styles.label}>Weight</Text>
       <CustomInput type="numeric" placeholder="KG" value={weight} onChange={setWeight} />
 
+      <Text style={styles.label}>Age</Text>
+      <CustomInput type="numeric" placeholder="Years" value={age} onChange={setAge} />
+
       <Text style={styles.label}>Location</Text>
       <CustomInput type="text" placeholder="Location" value={location} onChange={setLocation} />
 
       <Text style={styles.label}>Description</Text>
       <CustomInput type="text" placeholder="Description" value={description} onChange={setDescription} />
 
-      {/* Image Picker */}
       <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
         <Text style={styles.uploadText}>Select Image</Text>
       </TouchableOpacity>
 
-      {/* Show selected image */}
       {imageUri && <Image source={{ uri: imageUri }} style={styles.imagePreview} />}
 
       <TouchableOpacity style={styles.button} onPress={handleDonate} disabled={loading}>

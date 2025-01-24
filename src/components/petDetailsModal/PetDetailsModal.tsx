@@ -1,3 +1,4 @@
+import COLOR from "constant/constant";
 import React, { useRef } from "react";
 import {
   View,
@@ -22,7 +23,7 @@ interface Pet {
 interface CustomBottomSheetProps {
   isVisible: boolean;
   onClose: () => void;
-  selectedPet?: Pet |any;  // Ensure it's optional
+  selectedPet?: Pet |any;  
 }
 
 const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
@@ -58,9 +59,11 @@ const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
             <View style={styles.handle} />
           </TouchableOpacity>
         </View>
-
-        <Text style={styles.title}>{selectedPet.name}</Text>
-        <Text style={styles.subtitle}>{selectedPet.type}</Text>
+<View style={styles.details} >
+<Text style={styles.title}>{selectedPet.name}</Text>
+<Text style={styles.subtitle}>{selectedPet.type}</Text>
+</View>
+       
         <Text style={styles.price}>${selectedPet.price}</Text>
 
         <View style={styles.infoContainer}>
@@ -98,6 +101,9 @@ const styles = StyleSheet.create({
     right: 0,
     height: "100%",
     justifyContent: "flex-end", // Ensures the sheet slides up from the bottom
+  },
+  details: {
+    backgroundColor:'gray'
   },
   bottomSheet: {
     width: "100%",
