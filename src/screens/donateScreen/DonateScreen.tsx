@@ -54,11 +54,12 @@ const DonateScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   
 
   const handleDonate = () => {
+    navigation.navigate('DonateScreen')
     if (!imageUri) {
       Alert.alert("Error", "Please select an image");
       return;
     }
-
+  
     const petData: PetDonation = {
       petType,
       gender,
@@ -68,12 +69,24 @@ const DonateScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       weight,
       location,
       description,
-      imageUrl: imageUri, // Save compressed image URL
+      imageUrl: imageUri,
     };
-
+  
     dispatch(donatePet(petData)).then((result) => {
       if (result.meta.requestStatus === "fulfilled") {
         Alert.alert("Success", "Donation submitted successfully!");
+        
+        // Reset form inputs after successful submission
+        setPetType("");
+        setGender("");
+        setVaccinated("");
+        setPetBreed("");
+        setAmount("");
+        setWeight("");
+        setLocation("");
+        setDescription("");
+        setImageUri(null);
+  
         navigation.goBack();
       } else {
         Alert.alert("Error", result.payload as string);
@@ -93,8 +106,10 @@ const DonateScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         onValueChange={setPetType}
         items={[
           { label: "Select", value: "" },
-          { label: "Dog", value: "dog" },
+          { label: "Dog", value: "dogs" },
           { label: "Cat", value: "cat" },
+          { label: "Bunnies", value: "bunnies" },
+          { label: "Birds", value: "birds" },
         ]}
       />
 

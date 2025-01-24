@@ -22,7 +22,7 @@ interface Pet {
 interface CustomBottomSheetProps {
   isVisible: boolean;
   onClose: () => void;
-  selectedPet?: Pet | null;
+  selectedPet?: Pet |any;  // Ensure it's optional
 }
 
 const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({

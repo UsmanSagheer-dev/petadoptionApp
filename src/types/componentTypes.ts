@@ -26,7 +26,7 @@ export interface PetCardProps {
   age: string;
   location: string;
   gender: string;
-  isFavorite: boolean;
+  isFavorite:any;
   onFavoriteToggle: () => void;
   favoriteIcon: any; // Type this based on your icon assets, or use `ImageSourcePropType` from `react-native`
   unfavoriteIcon: any; // Same as above

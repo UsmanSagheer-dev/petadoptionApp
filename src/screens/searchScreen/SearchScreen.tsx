@@ -1,14 +1,37 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 import SearchInput from '../../components/searcInput/SearchInput';
 import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
 import PetCard from '../../components/petCard/PetCard';
 import CustomBottomSheet from '../../components/petDetailsModal/PetDetailsModal';
 import IMAGES from '../../assets/images/index';
 
+interface Pet {
+  id: string;
+  name: string;
+  type: string;
+  petType: string;
+  age: string;
+  location: string;
+  gender: string;
+  isFavorite?: boolean;
+  imageUrl?: string;
+  weight?: string;
+  vaccinated?: boolean;
+  price?: number;
+  description?: string;
+  
+}
+
 const SearchScreen = () => {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-  const [selectedPet, setSelectedPet] = useState(null);
+  const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
+  const [pets, setPets] = useState<Pet[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedTab, setSelectedTab] = useState<string>('Dog');
+
+  const scrollViewRef = useRef<ScrollView>(null); // ScrollView ka reference
 
   const tabs = [
     { id: 'dogs', label: 'Dogs' },
@@ -18,43 +41,52 @@ const SearchScreen = () => {
     { id: 'turtles', label: 'Turtles' },
   ];
 
-  const pets = [
-    {
-      id: '1',
-      name: 'Cavachon',
-      type: 'Dog',
-      age: '4 Months',
-      location: 'FSD',
-      gender: 'Male',
-      isFavorite: false,
-      price: 250,
-      weight: '2.1 kg',
-      vaccinated: true,
-    },
-    {
-      id: '2',
-      name: 'Persian Cat',
-      type: 'Cat',
-      age: '2 Months',
-      location: 'LHR',
-      gender: 'Female',
-      isFavorite: true,
-      price: 200,
-      weight: '1.8 kg',
-      vaccinated: true,
-    },
- 
-  ];
+  useEffect(() => {
+    const fetchPets = async () => {
+      try {
+        setLoading(true);
+        const petCollection = firestore().collection('donations');
+        
+        // Log the exact petType you're querying
+        const queryPetType = selectedTab.slice(0, -1).toLowerCase(); 
+
+        console.log('Querying petType:', queryPetType);
+    
+        const snapshot = await petCollection
+          .where('petType', '==', queryPetType)
+          .get();
+    
+        console.log('Snapshot size:', snapshot.size);
+    
+        const fetchedPets: Pet[] = snapshot.docs.map(doc => {
+          const petData = doc.data();
+          console.log('Pet document:', petData);
+          return {
+            id: doc.id,
+            ...petData
+          } as Pet;
+        });
+    
+        setPets(fetchedPets);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching pets:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchPets();
+  }, [selectedTab]);
 
   const handleTabPress = (tabId: string) => {
-    console.log(`Selected Tab: ${tabId}`);
+    setSelectedTab(tabId);
   };
 
-  const handleFavoriteToggle = (petId: string) => {
-    console.log(`Favorite toggled for pet: ${petId}`);
+  const handleFavoriteToggle = async (petId: string) => {
+    // Implement favorite toggle logic
   };
 
-  const handlePetPress = (pet: any) => {
+  const handlePetPress = (pet: Pet) => {
     setSelectedPet(pet);
     setIsBottomSheetVisible(true);
   };
@@ -65,25 +97,37 @@ const SearchScreen = () => {
         <SearchInput />
       </View>
       <View style={styles.tabsContainer}>
-        <HorizontalTabs tabs={tabs} onTabPress={handleTabPress} />
+        <HorizontalTabs 
+          tabs={tabs} 
+          onTabPress={handleTabPress} 
+          selectedTab={selectedTab}
+        />
       </View>
-      <ScrollView style={styles.petCardsContainer}>
-        {pets.map((pet) => (
-          <PetCard
-            key={pet.id}
-            name={pet.name}
-            age={pet.age}
-            location={pet.location}
-            gender={pet.gender}
-            isFavorite={pet.isFavorite}
-            onFavoriteToggle={() => handleFavoriteToggle(pet.id)}
-            favoriteIcon={IMAGES.ONCLICKFAV}
-            unfavoriteIcon={IMAGES.OFCLICKFAV}
-            locationIcon={IMAGES.LOCATION_VECTOR}
-            onPress={() => handlePetPress(pet)}
-          />
-        ))}
-      </ScrollView>
+      {loading ? (
+        <ActivityIndicator size="large" color="#000" />
+      ) : (
+        <ScrollView 
+          ref={scrollViewRef} 
+          style={styles.petCardsContainer}
+        >
+          {pets.map((pet) => (
+            <PetCard
+              key={pet.id}
+              imageUrl={pet.imageUrl}
+              name={pet.name}
+              age={pet.age}
+              location={pet.location}
+              gender={pet.gender}
+              isFavorite={pet.isFavorite}
+              onFavoriteToggle={() => handleFavoriteToggle(pet.id)}
+              favoriteIcon={IMAGES.ONCLICKFAV}
+              unfavoriteIcon={IMAGES.OFCLICKFAV}
+              locationIcon={IMAGES.LOCATION_VECTOR}
+              onPress={() => handlePetPress(pet)}
+            />
+          ))}
+        </ScrollView>
+      )}
 
       <CustomBottomSheet 
         isVisible={isBottomSheetVisible}
@@ -97,7 +141,7 @@ const SearchScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    zIndex:99,
+    zIndex: 99,
     backgroundColor: '#fff',
     paddingHorizontal: 20,
   },
