@@ -28,9 +28,9 @@ export interface PetCardProps {
   gender: string;
   isFavorite:any;
   onFavoriteToggle: () => void;
-  favoriteIcon: any; // Type this based on your icon assets, or use `ImageSourcePropType` from `react-native`
-  unfavoriteIcon: any; // Same as above
-  locationIcon: any; // Same as above
+  favoriteIcon: any; 
+  unfavoriteIcon: any; 
+  locationIcon: any; 
   onPress: () => void;
 }
 export interface TabItem {
@@ -49,3 +49,27 @@ export interface TermsCheckboxProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
 }
+
+
+export interface Pet {
+  id: string;
+  petBreed: string;
+  amount: string;
+  location: string;
+  gender: string;
+  isFavorite: boolean;
+  imageUrl: string;
+  age: string;
+  weight: string;
+  vaccinated: boolean;
+  type: string;
+  description: string;
+  petType: string;
+}
+
+export interface CustomBottomSheetProps {
+  isVisible: boolean;
+  onClose: () => void;
+  selectedPet?: Pet | null;
+}
+

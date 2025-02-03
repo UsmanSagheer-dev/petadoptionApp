@@ -1,57 +1,28 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   Animated,
-  Dimensions,
+  Image,
 } from 'react-native';
-
-const {height} = Dimensions.get('screen');
-
-interface Pet {
-  id: string;
-  petBreed: string;
-  amount: string;
-  location: string;
-  gender: string;
-  isFavorite: boolean;
-  imageUrl: string;
-  age: string; // Added
-  weight: string; // Added
-  vaccinated: boolean; // Added
-  type: string; // Added
-}
-
-interface CustomBottomSheetProps {
-  isVisible: boolean;
-  onClose: () => void;
-  selectedPet?: Pet | null;
-}
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux/store';
+import auth from '@react-native-firebase/auth';
+import IMAGES from '../../assets/images';
+import {useCustomBottomSheet} from '../../hooks/useCustomBottomSheet';
+import {CustomBottomSheetProps} from '../../types/componentTypes';
+import COLOR from '../../constant/constant';
 
 const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
   isVisible,
   onClose,
   selectedPet,
 }) => {
-  const translateY = useRef(new Animated.Value(height)).current;
-
-  React.useEffect(() => {
-    if (isVisible) {
-      Animated.timing(translateY, {
-        toValue: height * 0.4, // Adjust this value based on your desired content area
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.timing(translateY, {
-        toValue: height,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [isVisible]);
+  const {translateY} = useCustomBottomSheet(isVisible);
+  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+  const firebaseUser = auth().currentUser;
 
   if (!selectedPet) {
     return null;
@@ -70,35 +41,58 @@ const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
           <Text style={styles.title}>{selectedPet.petBreed}</Text>
           <Text style={styles.price}>${selectedPet.amount}</Text>
         </View>
-        <Text style={styles.type}>{selectedPet.type}</Text>
-        <Text style={styles.subtitle}>{selectedPet.location}</Text>
 
+        <View style={styles.typeContainer}>
+          <Text style={styles.type}>{selectedPet.petType}</Text>
+        </View>
+
+        {/* Description Section */}
         <View style={styles.infoContainer}>
           <View style={styles.infoBox}>
-            <Text>Age</Text>
-            <Text>{selectedPet.age}</Text>
+            <Text style={styles.labelTitle}>Age</Text>
+            <Text style={styles.labelSub}>{selectedPet.age}</Text>
           </View>
           <View style={styles.infoBox}>
-            <Text>Gender</Text>
-            <Text>{selectedPet.gender}</Text>
+            <Text style={styles.labelTitle}>Gender</Text>
+            <Text style={styles.labelSub}>{selectedPet.gender}</Text>
           </View>
           <View style={styles.infoBox}>
-            <Text>Weight</Text>
-            <Text>{selectedPet.weight}</Text>
+            <Text style={styles.labelTitle}>Weight</Text>
+            <Text style={styles.labelSub}>{selectedPet.weight}</Text>
           </View>
           <View style={styles.infoBox}>
-            <Text>Vaccinated</Text>
-            <Text>{selectedPet.vaccinated ? 'Yes' : 'No'}</Text>
+            <Text style={styles.labelTitle}>Vaccinated</Text>
+            <Text style={styles.labelSub}>
+              {selectedPet.vaccinated ? 'Yes' : 'No'}
+            </Text>
           </View>
-        </View>
-        <View>
-          <View style={styles.profileContainer}>
-            <View style={styles.profile} ></View>
-            <View></View>
-          </View>
-          <View></View>
         </View>
 
+        {/* Logged-in User Profile Section */}
+        <View style={styles.profileContainer}>
+          <View style={styles.profileSet}>
+            <View style={styles.profile}></View>
+            <View>
+              <Text style={styles.userName}>
+                {currentUser?.displayName ||
+                  firebaseUser?.displayName ||
+                  currentUser?.email ||
+                  'Guest User'}
+              </Text>
+              <Text>Owner</Text>
+            </View>
+          </View>
+          <View style={styles.locationContainer}>
+            <Image
+              source={IMAGES.LOCATION_VECTOR}
+              style={styles.imageLocation}
+            />
+            <Text style={styles.subtitle}>{selectedPet.location}</Text>
+          </View>
+        </View>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.description}>{selectedPet.description}</Text>
+        </View>
         <TouchableOpacity style={styles.button} onPress={onClose}>
           <Text style={styles.buttonText}>Adopt Now</Text>
         </TouchableOpacity>
@@ -108,12 +102,7 @@ const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
 };
 
 const styles = StyleSheet.create({
-  profileContainer: {
-    width: '100%',
-   
-    backgroundColor: '#F8F9FA',
-   
-  },
+  // Overlay & Bottom Sheet
   overlay: {
     position: 'absolute',
     bottom: 350,
@@ -121,12 +110,6 @@ const styles = StyleSheet.create({
     right: 0,
     height: '100%',
     justifyContent: 'flex-end',
-  },
-  details: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 10,
-    borderRadius: 10,
   },
   bottomSheet: {
     width: '100%',
@@ -140,29 +123,122 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  header: {alignItems: 'center', marginBottom: 10},
-  handle: {width: 100, height: 7, backgroundColor: '#ccc', borderRadius: 10},
-  title: {fontSize: 24, fontWeight: 'bold'},
-  subtitle: {fontSize: 16, color: 'gray'},
+
+  // Header & Handle
+  header: {
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  handle: {
+    width: 100,
+    height: 7,
+    backgroundColor: '#ccc',
+    borderRadius: 10,
+  },
+
+  // Details Section
+  details: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderRadius: 10,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 700,
+    color: COLOR.primary,
+    fontFamily: 'MontserratRegular',
+  },
   price: {
     fontSize: 22,
     color: '#FFA500',
     fontWeight: 'bold',
-    marginVertical: 5,
   },
+
+  // Pet Type
+  typeContainer: {
+    marginBottom: 16,
+  },
+  type: {
+    fontSize: 14,
+    fontFamily: 'MontserratRegular',
+    color: COLOR.primary,
+  },
+
+  labelTitle: {
+    fontSize: 14,
+    fontFamily: 'MontserratRegular',
+    color: COLOR.infoText,
+  },
+  labelSub: {
+    fontSize: 14,
+    fontFamily: 'MontserratRegular',
+    color: COLOR.primary,
+  },
+  // Info Section
   infoContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 10,
   },
   infoBox: {
-    backgroundColor: '#F5F5F5',
-    padding: 10,
+    backgroundColor: COLOR.infoBar,
+    padding: 9,
     borderRadius: 10,
     alignItems: 'center',
     flex: 1,
-    margin: 5,
+    margin: 2,
   },
+
+  // Description
+  descriptionContainer: {
+    marginVertical: 8,
+    paddingHorizontal: 16,
+  },
+  description: {
+    fontSize: 14,
+
+    textAlign: 'center',
+  },
+
+  // Profile Section
+  profileContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  profileSet: {
+    flexDirection: 'row',
+  },
+  profile: {
+    width: 38,
+    height: 38,
+    borderRadius: 50,
+    backgroundColor: 'gray',
+    marginRight: 10,
+  },
+  userName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  // Location
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  imageLocation: {
+    width: 11,
+    height: 17,
+    resizeMode: 'contain',
+  },
+  subtitle: {
+    fontSize: 16,
+    color: 'gray',
+  },
+
+  // Button
   button: {
     backgroundColor: 'black',
     padding: 15,
@@ -170,15 +246,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
   },
-  buttonText: {color: 'white', fontSize: 16, fontWeight: 'bold'},
-  type: {fontSize: 18, fontWeight: 'bold', marginBottom: 10},
-  // Added properties for age, weight, vaccinated, and gender
-
-  profile: {
-    width: 38,
-    height: 37,
-    borderRadius: 50,
-    backgroundColor: 'gray',
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

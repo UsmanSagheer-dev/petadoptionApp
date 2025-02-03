@@ -90,12 +90,16 @@ const DonateScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       <Text style={styles.label}>Description</Text>
       <CustomInput type="text" placeholder="Description" value={description} onChange={setDescription} />
+      <View>
+  <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
+    {!imageUri && <Text style={styles.uploadText}>Select Image</Text>}
+    {imageUri && <Image source={{ uri: imageUri }} style={styles.imagePreview} />}
+  </TouchableOpacity>
+</View>
 
-      <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
-        <Text style={styles.uploadText}>Select Image</Text>
-      </TouchableOpacity>
 
-      {imageUri && <Image source={{ uri: imageUri }} style={styles.imagePreview} />}
+     
+    
 
       <TouchableOpacity style={styles.button} onPress={handleDonate} disabled={loading}>
         <Text style={styles.buttonText}>{loading ? "Submitting..." : "Donate"}</Text>
@@ -138,15 +142,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#F0F0F0",
     height: 161,
     borderRadius: 10,
+    marginTop: 20,
+
   },
   uploadText: {
     fontSize: 16,
     color: "#000",
   },
   imagePreview: {
-    width: 100,
-    height: 100,
-    resizeMode: "cover",
+    width: '100%',
+    height:'100%',
+  
   },
   button: {
     backgroundColor: "#000",
