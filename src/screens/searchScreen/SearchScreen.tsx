@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, ActivityIndicator, Text } from 'react-native';
 import SearchInput from '../../components/searcInput/SearchInput';
 import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
@@ -11,8 +11,10 @@ const SearchScreen = () => {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const [selectedPet, setSelectedPet] = useState(null);
   const [selectedTab, setSelectedTab] = useState<string>('Dogs');
-  const scrollViewRef = useRef<ScrollView>(null);
+  const [searchText, setSearchText] = useState<string>(''); // Search state added
+  const [allPets, setAllPets] = useState<any[]>([]); // Store all pets
 
+  const scrollViewRef = useRef<ScrollView>(null);
   const { pets, loading, error } = useFetchPets(selectedTab);
 
   const tabs = [
@@ -23,21 +25,45 @@ const SearchScreen = () => {
     { id: 'Turtles', label: 'Turtles' },
   ];
 
+  // Updated useEffect to only add pets when they exist
+  useEffect(() => {
+    if (pets?.length > 0) {
+      setAllPets(prevPets => {
+        const uniquePets = [...prevPets, ...pets].filter(
+          (pet, index, self) => index === self.findIndex(p => p.id === pet.id)
+        );
+        return uniquePets;
+      });
+    }
+  }, [pets]);
+
+  // Updated handleTabPress to manage allPets
   const handleTabPress = (tabId: string) => {
     setSelectedTab(tabId);
+    if (!searchText.trim()) {
+      setAllPets([]); // Clear allPets only if there's no search text
+    }
   };
 
   const handlePetPress = (pet: any) => {
-    console.log("Selected Pet Data:", JSON.stringify(pet, null, 2)); // Logs pet data in formatted JSON
+    console.log("Selected Pet Data:", JSON.stringify(pet, null, 2));
     setSelectedPet(pet);
     setIsBottomSheetVisible(true);
   };
-  
+
+  // Updated Search Logic - Search across all tabs
+  const filteredPets = searchText.trim()
+    ? allPets.filter(pet =>
+        pet.petBreed.toLowerCase().includes(searchText.toLowerCase()) ||
+        pet.location.toLowerCase().includes(searchText.toLowerCase()) ||
+        pet.gender.toLowerCase().includes(searchText.toLowerCase())
+      )
+    : pets; // If search is empty, show selected tab's pets
 
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
-        <SearchInput />
+        <SearchInput searchText={searchText} setSearchText={setSearchText} />
       </View>
       <View style={styles.tabsContainer}>
         <HorizontalTabs tabs={tabs} onTabPress={handleTabPress} selectedTab={selectedTab} />
@@ -49,7 +75,7 @@ const SearchScreen = () => {
         <Text style={styles.errorText}>{error}</Text>
       ) : (
         <ScrollView ref={scrollViewRef} style={styles.petCardsContainer}>
-          {pets.map(pet => (
+          {filteredPets.map(pet => (
             <PetCard
               key={pet.id}
               imageUrl={pet.imageUrl}
