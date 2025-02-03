@@ -34,4 +34,6 @@ export interface PetDonation {
   description: string;
   errorText?: string;
   imageUrl?: string;
+  age?:any;
+  
 }

@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import auth from '@react-native-firebase/auth';
-import { LoginScreenNavigationProp } from '../types/navigation';
-
+import {LoginScreenNavigationProp} from '../types/navigation';
 const useLogin = (navigation: LoginScreenNavigationProp) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -9,7 +8,6 @@ const useLogin = (navigation: LoginScreenNavigationProp) => {
   const [error, setError] = useState<string | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [termsError, setTermsError] = useState('');
-
   const handleLogin = async () => {
     setLoading(true);
     setError(null);
@@ -23,7 +21,6 @@ const useLogin = (navigation: LoginScreenNavigationProp) => {
       setLoading(false);
       return;
     }
-
     setTermsError('');
     try {
       await auth().signInWithEmailAndPassword(email, password);
@@ -35,7 +32,6 @@ const useLogin = (navigation: LoginScreenNavigationProp) => {
       setLoading(false);
     }
   };
-
   return {
     email,
     setEmail,

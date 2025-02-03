@@ -5,11 +5,13 @@ import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-nati
 interface Tab {
   id: string;
   label: string;
+  
 }
 
 interface TabsProps {
   tabs: Tab[];
   onTabPress: (tabId: string) => void;
+  selectedTab: string;
 }
 
 const HorizontalTabs: React.FC<TabsProps> = ({ tabs, onTabPress }) => {
@@ -31,14 +33,14 @@ const HorizontalTabs: React.FC<TabsProps> = ({ tabs, onTabPress }) => {
           key={tab.id}
           style={[
             styles.tab,
-            selectedTab === tab.id && styles.selectedTab, // Highlight selected tab
+            selectedTab === tab.id && styles.selectedTab, 
           ]}
           onPress={() => handleTabPress(tab.id)}
         >
           <Text 
             style={[
               styles.tabText,
-              selectedTab === tab.id && styles.selectedTabText, // Highlight text of selected tab
+              selectedTab === tab.id && styles.selectedTabText,
             ]}
           >
             {tab.label}

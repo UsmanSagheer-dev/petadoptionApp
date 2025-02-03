@@ -11,5 +11,7 @@ const COLOR={
     info: '#1E90FF',
     warning: '#FFD700',
     BorderBack:'#E2E2E2',
+    infoBar:'#fef6ea',
+    infoText:'#F6A530'
 }
 export default COLOR;

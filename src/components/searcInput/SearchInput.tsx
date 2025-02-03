@@ -1,28 +1,29 @@
-import { View, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
-import useSearchInput from '../../hooks/useSearchInput'
-import IMAGES from '../../assets/images'
-import COLOR from '../../constant/constant'
+import { View, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React from 'react';
+import IMAGES from '../../assets/images';
+import COLOR from '../../constant/constant';
 
-const SearchInput = () => {
-  const { searchText, setSearchText, inputRef, handleSearch } = useSearchInput()
+interface SearchInputProps {
+  searchText: string;
+  setSearchText: (text: string) => void;
+}
 
+const SearchInput: React.FC<SearchInputProps> = ({ searchText, setSearchText }) => {
   return (
     <View style={styles.container}>
       <TextInput
-        ref={inputRef}
         style={styles.input}
         value={searchText}
         onChangeText={setSearchText}
         placeholder="Search for a pet"
         placeholderTextColor="#aaa"
       />
-      <TouchableOpacity onPress={handleSearch} style={styles.iconContainer}>
+      <TouchableOpacity style={styles.iconContainer}>
         <Image source={IMAGES.SEARCHICON} style={styles.icon} />
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -55,6 +56,6 @@ const styles = StyleSheet.create({
     width: 25,
     height: 35,
   },
-})
+});
 
-export default SearchInput
+export default SearchInput;

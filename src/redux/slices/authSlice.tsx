@@ -7,7 +7,7 @@ const initialState: AuthState = {
   currentUser: null,
   isAuthenticated: false,
   error: null,
-  showSplash: true, // Added the missing property
+  showSplash: true, 
 };
 
 // Signup
