@@ -28,9 +28,11 @@ const SearchScreen = () => {
   };
 
   const handlePetPress = (pet: any) => {
+    console.log("Selected Pet Data:", JSON.stringify(pet, null, 2)); // Logs pet data in formatted JSON
     setSelectedPet(pet);
     setIsBottomSheetVisible(true);
   };
+  
 
   return (
     <View style={styles.container}>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore';
-
 interface Pet {
   id: string;
   name: string;

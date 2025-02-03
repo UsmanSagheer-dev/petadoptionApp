@@ -1,5 +1,4 @@
-import COLOR from "constant/constant";
-import React, { useRef } from "react";
+import React, {useRef} from 'react';
 import {
   View,
   Text,
@@ -7,23 +6,28 @@ import {
   TouchableOpacity,
   Animated,
   Dimensions,
-} from "react-native";
+} from 'react-native';
 
-const { height } = Dimensions.get("screen");
+const {height} = Dimensions.get('screen');
+
 interface Pet {
   id: string;
-  name: string;
-  type: string;
-  age: string;
+  petBreed: string;
+  amount: string;
+  location: string;
   gender: string;
-  weight: string;
-  price: string;
-  vaccinated: boolean;
+  isFavorite: boolean;
+  imageUrl: string;
+  age: string; // Added
+  weight: string; // Added
+  vaccinated: boolean; // Added
+  type: string; // Added
 }
+
 interface CustomBottomSheetProps {
   isVisible: boolean;
   onClose: () => void;
-  selectedPet?: Pet |any;  
+  selectedPet?: Pet | null;
 }
 
 const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
@@ -49,22 +53,25 @@ const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
     }
   }, [isVisible]);
 
-  if (!selectedPet) return null;
+  if (!selectedPet) {
+    return null;
+  }
 
   return (
-    <Animated.View style={[styles.overlay, { transform: [{ translateY }] }]}>
+    <Animated.View style={[styles.overlay, {transform: [{translateY}]}]}>
       <View style={styles.bottomSheet}>
         <View style={styles.header}>
           <TouchableOpacity onPress={onClose}>
             <View style={styles.handle} />
           </TouchableOpacity>
         </View>
-<View style={styles.details} >
-<Text style={styles.title}>{selectedPet.name}</Text>
-<Text style={styles.subtitle}>{selectedPet.type}</Text>
-</View>
-       
-        <Text style={styles.price}>${selectedPet.price}</Text>
+
+        <View style={styles.details}>
+          <Text style={styles.title}>{selectedPet.petBreed}</Text>
+          <Text style={styles.price}>${selectedPet.amount}</Text>
+        </View>
+        <Text style={styles.type}>{selectedPet.type}</Text>
+        <Text style={styles.subtitle}>{selectedPet.location}</Text>
 
         <View style={styles.infoContainer}>
           <View style={styles.infoBox}>
@@ -80,9 +87,16 @@ const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
             <Text>{selectedPet.weight}</Text>
           </View>
           <View style={styles.infoBox}>
-            <Text>Vaccine</Text>
-            <Text>{selectedPet.vaccinated ? "Yes" : "No"}</Text>
+            <Text>Vaccinated</Text>
+            <Text>{selectedPet.vaccinated ? 'Yes' : 'No'}</Text>
           </View>
+        </View>
+        <View>
+          <View style={styles.profileContainer}>
+            <View style={styles.profile} ></View>
+            <View></View>
+          </View>
+          <View></View>
         </View>
 
         <TouchableOpacity style={styles.button} onPress={onClose}>
@@ -94,38 +108,78 @@ const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
 };
 
 const styles = StyleSheet.create({
+  profileContainer: {
+    width: '100%',
+   
+    backgroundColor: '#F8F9FA',
+   
+  },
   overlay: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 350,
     left: 0,
     right: 0,
-    height: "100%",
-    justifyContent: "flex-end", // Ensures the sheet slides up from the bottom
+    height: '100%',
+    justifyContent: 'flex-end',
   },
   details: {
-    backgroundColor:'gray'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+    borderRadius: 10,
   },
   bottomSheet: {
-    width: "100%",
-    backgroundColor: "white",
+    width: '100%',
+    backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: -2 },
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: -2},
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 5,
   },
-  header: { alignItems: "center", marginBottom: 10 },
-  handle: { width: 100, height: 7, backgroundColor: "#ccc", borderRadius: 10 },
-  title: { fontSize: 24, fontWeight: "bold" },
-  subtitle: { fontSize: 16, color: "gray" },
-  price: { fontSize: 22, color: "#FFA500", fontWeight: "bold", marginVertical: 5 },
-  infoContainer: { flexDirection: "row", justifyContent: "space-between", marginVertical: 10 },
-  infoBox: { backgroundColor: "#F5F5F5", padding: 10, borderRadius: 10, alignItems: "center", flex: 1, margin: 5 },
-  button: { backgroundColor: "black", padding: 15, borderRadius: 10, marginTop: 10, alignItems: "center" },
-  buttonText: { color: "white", fontSize: 16, fontWeight: "bold" },
+  header: {alignItems: 'center', marginBottom: 10},
+  handle: {width: 100, height: 7, backgroundColor: '#ccc', borderRadius: 10},
+  title: {fontSize: 24, fontWeight: 'bold'},
+  subtitle: {fontSize: 16, color: 'gray'},
+  price: {
+    fontSize: 22,
+    color: '#FFA500',
+    fontWeight: 'bold',
+    marginVertical: 5,
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+  },
+  infoBox: {
+    backgroundColor: '#F5F5F5',
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    flex: 1,
+    margin: 5,
+  },
+  button: {
+    backgroundColor: 'black',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  buttonText: {color: 'white', fontSize: 16, fontWeight: 'bold'},
+  type: {fontSize: 18, fontWeight: 'bold', marginBottom: 10},
+  // Added properties for age, weight, vaccinated, and gender
+
+  profile: {
+    width: 38,
+    height: 37,
+    borderRadius: 50,
+    backgroundColor: 'gray',
+  },
 });
 
 export default CustomBottomSheet;
