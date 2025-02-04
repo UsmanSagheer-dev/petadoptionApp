@@ -9,15 +9,12 @@ const PetCard: React.FC<PetCardProps> = ({
   age,
   location,
   gender,
-  isFavorite,
-  onFavoriteToggle,
-  favoriteIcon,
-  unfavoriteIcon,
+  deleteIcon,
   locationIcon,
-  onPress,
+  onPress, // ✅ Now used for delete button
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.imageContainer}>
         {imageUrl ? (
           <Image source={{ uri: imageUrl }} style={styles.image} />
@@ -35,22 +32,20 @@ const PetCard: React.FC<PetCardProps> = ({
           </View>
           <View style={styles.genderContainer}>
             <Text style={styles.gender}>{gender}</Text>
-            <TouchableOpacity onPress={onFavoriteToggle} style={styles.heartButton}>
-              <Image
-                source={isFavorite ? favoriteIcon : unfavoriteIcon}
-                style={styles.heartIcon}
-              />
+
+            {/* ✅ Delete Icon with Click Functionality */}
+            <TouchableOpacity onPress={onPress} style={styles.deleteButton}>
+              <Image source={deleteIcon} style={styles.deleteIcon} />
             </TouchableOpacity>
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
-
-
 export default PetCard;
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -74,7 +69,6 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'cover',
   },
-  placeholder: {},
   infoCard: {
     flex: 1,
     backgroundColor: '#FFFFFF',
@@ -124,14 +118,24 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666666',
   },
-  heartButton: {},
-  heartIcon: {
-    width: 20,
-    height: 20,
+  deleteButton: {
+    padding: 5,
+    borderRadius: 5,
+  },
+  deleteIcon: {
+    width: 24,
+    height: 24,
+    tintColor: 'red',
   },
   genderContainer: {
     flexDirection: 'row',
-    gap: 50,
+    justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  placeholder: {
+    width: 194,
+    height: 171,
+    backgroundColor: '#C4C4C4',
+    borderRadius: 20,
   },
 });

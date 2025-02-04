@@ -1,14 +1,21 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types/navigation'; // اپنی types والی فائل کا صحیح path دیں
 import COLOR from '../../constant/constant';
-import {CustomeHeaderProps} from '../../types/componentTypes';
+import { CustomeHeaderProps } from '../../types/componentTypes';
 
-const CustomeHeader: React.FC<CustomeHeaderProps> = ({title}) => {
+type NavigationProps = NativeStackNavigationProp<RootStackParamList, 'DonateScreen'>;
+
+const CustomeHeader: React.FC<CustomeHeaderProps> = ({ title }) => {
+  const navigation = useNavigation<NavigationProps>(); // ✅ Correctly Typed Navigation
+
   return (
     <View>
       <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>{title}</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('DonateScreen')}>
           <Text style={styles.plus}>+</Text>
         </TouchableOpacity>
       </View>

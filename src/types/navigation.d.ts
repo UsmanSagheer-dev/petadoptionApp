@@ -9,6 +9,7 @@ export type RootStackParamList = {
   App: any;
   PasswordUpdate: undefined;
   ProfileTab: undefined;
+  DonateScreen: undefined;
 };
 
 export type AuthStackParamList = {
@@ -22,6 +23,7 @@ export type AppStackParamList = {
   Main: undefined;
   PasswordUpdate: undefined;
   DonateScreen:any;
+  Detail:any;
   Profiles: {
     userId?: string;
     name?: string;

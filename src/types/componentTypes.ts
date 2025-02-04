@@ -16,6 +16,7 @@ export interface LoginButtonStyles {
 }
 export interface CustomeHeaderProps {
   title: string;
+  DonateScreen?: boolean;
 }
 
 
@@ -29,9 +30,11 @@ export interface PetCardProps {
   isFavorite:any;
   onFavoriteToggle: () => void;
   favoriteIcon: any; 
-  unfavoriteIcon: any; 
-  locationIcon: any; 
+  deleteIcon: any; 
+  locationIcon: any;
   onPress: () => void;
+  onDelete?: () => void;  // ✅ Make onDelete optional
+  onDeletePress?: () => void;  // ✅ Make onDeletePress optional
 }
 export interface TabItem {
   id: string;
