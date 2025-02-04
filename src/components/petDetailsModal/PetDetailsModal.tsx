@@ -15,7 +15,7 @@ import {useCustomBottomSheet} from '../../hooks/useCustomBottomSheet';
 import {CustomBottomSheetProps} from '../../types/componentTypes';
 import COLOR from '../../constant/constant';
 
-const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
+const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
   isVisible,
   onClose,
   selectedPet,
@@ -253,4 +253,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomBottomSheet;
+export default PetDetailsModal;

@@ -2,14 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, ActivityIndicator, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 import SearchInput from '../../components/searcInput/SearchInput';
 import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
 import PetCard from '../../components/petCard/PetCard';
+import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import IMAGES from '../../assets/images/index';
 import useFetchPets from '../../hooks/useFetchPets';
 
-// Define navigation types
 type RootStackParamList = {
   Search: undefined;
   Detail: { pet: any };
@@ -19,8 +18,11 @@ type SearchScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Searc
 
 const SearchScreen = () => {
   const [selectedTab, setSelectedTab] = useState<string>('Dogs');
-  const [searchText, setSearchText] = useState<string>(''); 
-  const [allPets, setAllPets] = useState<any[]>([]); 
+  const [searchText, setSearchText] = useState<string>('');
+  const [allPets, setAllPets] = useState<any[]>([]);
+  // Add these new state variables for the modal
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPet, setSelectedPet] = useState(null);
 
   const scrollViewRef = useRef<ScrollView>(null);
   const { pets, loading, error } = useFetchPets(selectedTab);
@@ -48,13 +50,14 @@ const SearchScreen = () => {
   const handleTabPress = (tabId: string) => {
     setSelectedTab(tabId);
     if (!searchText.trim()) {
-      setAllPets([]); 
+      setAllPets([]);
     }
   };
 
+  // Update the handlePetPress function to show modal instead of navigating
   const handlePetPress = (pet: any) => {
-    console.log("Navigating to DetailScreen with pet data:", pet);
-    navigation.navigate("Detail", { pet }); 
+    setSelectedPet(pet);
+    setModalVisible(true);
   };
 
   const filteredPets = searchText.trim()
@@ -63,7 +66,7 @@ const SearchScreen = () => {
         pet.location.toLowerCase().includes(searchText.toLowerCase()) ||
         pet.gender.toLowerCase().includes(searchText.toLowerCase())
       )
-    : pets; 
+    : pets;
 
   return (
     <View style={styles.container}>
@@ -98,9 +101,18 @@ const SearchScreen = () => {
           ))}
         </ScrollView>
       )}
+
+      {/* Add the PetDetailsModal component */}
+      <PetDetailsModal
+        isVisible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        selectedPet={selectedPet}
+      />
     </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: {

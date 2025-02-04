@@ -33,8 +33,8 @@ export interface PetCardProps {
   deleteIcon: any; 
   locationIcon: any;
   onPress: () => void;
-  onDelete?: () => void;  // ✅ Make onDelete optional
-  onDeletePress?: () => void;  // ✅ Make onDeletePress optional
+  onDelete?: () => void;  
+  onDeletePress?: () => void; 
 }
 export interface TabItem {
   id: string;

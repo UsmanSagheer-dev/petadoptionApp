@@ -11,40 +11,37 @@ const PetCard: React.FC<PetCardProps> = ({
   gender,
   deleteIcon,
   locationIcon,
-  onPress, // ✅ Now used for delete button
+  onPress,
 }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        {imageUrl ? (
-          <Image source={{ uri: imageUrl }} style={styles.image} />
-        ) : (
-          <View style={styles.placeholder} />
-        )}
-      </View>
-      <View style={styles.infoCard}>
-        <View style={styles.details}>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.age}>{age}</Text>
-          <View style={styles.locationRow}>
-            <Image source={locationIcon} style={styles.locationIcon} />
-            <Text style={styles.location}>{location}</Text>
-          </View>
-          <View style={styles.genderContainer}>
-            <Text style={styles.gender}>{gender}</Text>
-
-            {/* ✅ Delete Icon with Click Functionality */}
-            <TouchableOpacity onPress={onPress} style={styles.deleteButton}>
+    // Make the entire card clickable by wrapping it in TouchableOpacity
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          {imageUrl ? (
+            <Image source={{ uri: imageUrl }} style={styles.image} />
+          ) : (
+            <View style={styles.placeholder} />
+          )}
+        </View>
+        <View style={styles.infoCard}>
+          <View style={styles.details}>
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.age}>{age}</Text>
+            <View style={styles.locationRow}>
+              <Image source={locationIcon} style={styles.locationIcon} />
+              <Text style={styles.location}>{location}</Text>
+            </View>
+            <View style={styles.genderContainer}>
+              <Text style={styles.gender}>{gender}</Text>
               <Image source={deleteIcon} style={styles.deleteIcon} />
-            </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
-
-export default PetCard;
 
 const styles = StyleSheet.create({
   container: {
@@ -118,10 +115,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666666',
   },
-  deleteButton: {
-    padding: 5,
-    borderRadius: 5,
-  },
   deleteIcon: {
     width: 24,
     height: 24,
@@ -139,3 +132,5 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
 });
+
+export default PetCard;
