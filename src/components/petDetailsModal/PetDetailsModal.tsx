@@ -68,7 +68,6 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
           </View>
         </View>
 
-        {/* Logged-in User Profile Section */}
         <View style={styles.profileContainer}>
           <View style={styles.profileSet}>
             <View style={styles.profile}></View>

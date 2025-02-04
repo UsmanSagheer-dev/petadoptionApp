@@ -1,22 +1,45 @@
 import React, { useState, useRef } from 'react';
-import { View, ScrollView, StyleSheet, ActivityIndicator, Text } from 'react-native';
+import { View, ScrollView, StyleSheet, ActivityIndicator, Text, Alert } from 'react-native';
 import CustomeHeader from '../../components/customeHeader/CustomeHeader';
 import PetCard from '../../components/petCard/PetCard';
 import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import IMAGES from '../../assets/images/index';
-import useFetchAllPets from '../../hooks/useFetchAllPets';  // 🔹 Import new hook
+import useFetchAllPets from '../../hooks/useFetchAllPets';
 
 const MyDonationScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPet, setSelectedPet] = useState(null);
   const scrollViewRef = useRef<ScrollView>(null);
-
-  // Saare pets fetch karne wala hook
-  const { pets, loading, error } = useFetchAllPets(); 
+  const { pets, loading, error, deletePet } = useFetchAllPets(); // Assuming deletePet function exists in your hook
 
   const handlePetClick = (pet) => {
     setSelectedPet(pet);
     setModalVisible(true);
+  };
+
+  const handleDelete = (petId) => {
+    Alert.alert(
+      "Delete Donation",
+      "Are you sure you want to delete this donation?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await deletePet(petId); // Call your delete API function
+              // The pets list should automatically update if you're using proper state management
+            } catch (error) {
+              Alert.alert("Error", "Failed to delete the donation. Please try again.");
+            }
+          }
+        }
+      ]
+    );
   };
 
   return (
@@ -44,6 +67,7 @@ const MyDonationScreen = () => {
                 deleteIcon={IMAGES.DELETEICON}
                 locationIcon={IMAGES.LOCATION_VECTOR}
                 onPress={() => handlePetClick(pet)}
+                onDelete={() => handleDelete(pet.id)} // Add this new prop
               />
             ))
           ) : (
@@ -60,6 +84,7 @@ const MyDonationScreen = () => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

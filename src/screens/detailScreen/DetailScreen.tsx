@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import CustomBottomSheet from '../../components/petDetailsModal/PetDetailsModal';
+import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLOR from '../../constant/constant';
@@ -22,7 +22,7 @@ const DetailScreen = ({route, navigation}) => {
         </TouchableOpacity>
       </View>
 
-      <CustomBottomSheet
+      <PetDetailsModal
         isVisible={isBottomSheetVisible}
         onClose={() => setIsBottomSheetVisible(false)}
         selectedPet={pet}
