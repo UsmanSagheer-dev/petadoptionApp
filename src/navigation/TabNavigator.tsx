@@ -180,10 +180,10 @@ const TabNavigator = () => {
         }}
       />
       <Drawer.Screen
-        name="Add Pet"
+        name="My Donation"
         component={MyDonationScreen}
         options={{
-          drawerLabel: 'Add Pet',
+          drawerLabel: 'My Donation',
         }}
       />
     </Drawer.Navigator>

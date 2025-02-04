@@ -1,21 +1,32 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, ActivityIndicator, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import SearchInput from '../../components/searcInput/SearchInput';
 import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
 import PetCard from '../../components/petCard/PetCard';
-import CustomBottomSheet from '../../components/petDetailsModal/PetDetailsModal';
+import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import IMAGES from '../../assets/images/index';
 import useFetchPets from '../../hooks/useFetchPets';
 
+type RootStackParamList = {
+  Search: undefined;
+  Detail: { pet: any };
+};
+
+type SearchScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Search'>;
+
 const SearchScreen = () => {
-  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-  const [selectedPet, setSelectedPet] = useState(null);
   const [selectedTab, setSelectedTab] = useState<string>('Dogs');
-  const [searchText, setSearchText] = useState<string>(''); // Search state added
-  const [allPets, setAllPets] = useState<any[]>([]); // Store all pets
+  const [searchText, setSearchText] = useState<string>('');
+  const [allPets, setAllPets] = useState<any[]>([]);
+  // Add these new state variables for the modal
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPet, setSelectedPet] = useState(null);
 
   const scrollViewRef = useRef<ScrollView>(null);
   const { pets, loading, error } = useFetchPets(selectedTab);
+  const navigation = useNavigation<SearchScreenNavigationProp>();
 
   const tabs = [
     { id: 'Dogs', label: 'Dogs' },
@@ -25,7 +36,6 @@ const SearchScreen = () => {
     { id: 'Turtles', label: 'Turtles' },
   ];
 
-  // Updated useEffect to only add pets when they exist
   useEffect(() => {
     if (pets?.length > 0) {
       setAllPets(prevPets => {
@@ -37,28 +47,26 @@ const SearchScreen = () => {
     }
   }, [pets]);
 
-  // Updated handleTabPress to manage allPets
   const handleTabPress = (tabId: string) => {
     setSelectedTab(tabId);
     if (!searchText.trim()) {
-      setAllPets([]); // Clear allPets only if there's no search text
+      setAllPets([]);
     }
   };
 
+  // Update the handlePetPress function to show modal instead of navigating
   const handlePetPress = (pet: any) => {
-    console.log("Selected Pet Data:", JSON.stringify(pet, null, 2));
     setSelectedPet(pet);
-    setIsBottomSheetVisible(true);
+    setModalVisible(true);
   };
 
-  // Updated Search Logic - Search across all tabs
   const filteredPets = searchText.trim()
     ? allPets.filter(pet =>
         pet.petBreed.toLowerCase().includes(searchText.toLowerCase()) ||
         pet.location.toLowerCase().includes(searchText.toLowerCase()) ||
         pet.gender.toLowerCase().includes(searchText.toLowerCase())
       )
-    : pets; // If search is empty, show selected tab's pets
+    : pets;
 
   return (
     <View style={styles.container}>
@@ -86,7 +94,7 @@ const SearchScreen = () => {
               isFavorite={pet.isFavorite}
               onFavoriteToggle={() => {}}
               favoriteIcon={IMAGES.ONCLICKFAV}
-              unfavoriteIcon={IMAGES.OFCLICKFAV}
+              deleteIcon={IMAGES.OFCLICKFAV}
               locationIcon={IMAGES.LOCATION_VECTOR}
               onPress={() => handlePetPress(pet)}
             />
@@ -94,14 +102,17 @@ const SearchScreen = () => {
         </ScrollView>
       )}
 
-      <CustomBottomSheet
-        isVisible={isBottomSheetVisible}
-        onClose={() => setIsBottomSheetVisible(false)}
+      {/* Add the PetDetailsModal component */}
+      <PetDetailsModal
+        isVisible={modalVisible}
+        onClose={() => setModalVisible(false)}
         selectedPet={selectedPet}
       />
     </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: {

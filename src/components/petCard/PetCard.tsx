@@ -9,38 +9,33 @@ const PetCard: React.FC<PetCardProps> = ({
   age,
   location,
   gender,
-  isFavorite,
-  onFavoriteToggle,
-  favoriteIcon,
-  unfavoriteIcon,
+  deleteIcon,
   locationIcon,
   onPress,
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
-      <View style={styles.imageContainer}>
-        {imageUrl ? (
-          <Image source={{ uri: imageUrl }} style={styles.image} />
-        ) : (
-          <View style={styles.placeholder} />
-        )}
-      </View>
-      <View style={styles.infoCard}>
-        <View style={styles.details}>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.age}>{age}</Text>
-          <View style={styles.locationRow}>
-            <Image source={locationIcon} style={styles.locationIcon} />
-            <Text style={styles.location}>{location}</Text>
-          </View>
-          <View style={styles.genderContainer}>
-            <Text style={styles.gender}>{gender}</Text>
-            <TouchableOpacity onPress={onFavoriteToggle} style={styles.heartButton}>
-              <Image
-                source={isFavorite ? favoriteIcon : unfavoriteIcon}
-                style={styles.heartIcon}
-              />
-            </TouchableOpacity>
+    // Make the entire card clickable by wrapping it in TouchableOpacity
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          {imageUrl ? (
+            <Image source={{ uri: imageUrl }} style={styles.image} />
+          ) : (
+            <View style={styles.placeholder} />
+          )}
+        </View>
+        <View style={styles.infoCard}>
+          <View style={styles.details}>
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.age}>{age}</Text>
+            <View style={styles.locationRow}>
+              <Image source={locationIcon} style={styles.locationIcon} />
+              <Text style={styles.location}>{location}</Text>
+            </View>
+            <View style={styles.genderContainer}>
+              <Text style={styles.gender}>{gender}</Text>
+              <Image source={deleteIcon} style={styles.deleteIcon} />
+            </View>
           </View>
         </View>
       </View>
@@ -48,9 +43,6 @@ const PetCard: React.FC<PetCardProps> = ({
   );
 };
 
-
-
-export default PetCard;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -74,7 +66,6 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'cover',
   },
-  placeholder: {},
   infoCard: {
     flex: 1,
     backgroundColor: '#FFFFFF',
@@ -124,14 +115,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666666',
   },
-  heartButton: {},
-  heartIcon: {
-    width: 20,
-    height: 20,
+  deleteIcon: {
+    width: 24,
+    height: 24,
+    tintColor: 'red',
   },
   genderContainer: {
     flexDirection: 'row',
-    gap: 50,
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
+  placeholder: {
+    width: 194,
+    height: 171,
+    backgroundColor: '#C4C4C4',
+    borderRadius: 20,
+  },
 });
+
+export default PetCard;
