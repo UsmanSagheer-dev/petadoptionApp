@@ -5,7 +5,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import SearchInput from '../../components/searcInput/SearchInput';
 import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
 import PetCard from '../../components/petCard/PetCard';
-import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import IMAGES from '../../assets/images/index';
 import useFetchPets from '../../hooks/useFetchPets';
 
@@ -20,10 +19,6 @@ const SearchScreen = () => {
   const [selectedTab, setSelectedTab] = useState<string>('Dogs');
   const [searchText, setSearchText] = useState<string>('');
   const [allPets, setAllPets] = useState<any[]>([]);
-  // Add these new state variables for the modal
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedPet, setSelectedPet] = useState(null);
-
   const scrollViewRef = useRef<ScrollView>(null);
   const { pets, loading, error } = useFetchPets(selectedTab);
   const navigation = useNavigation<SearchScreenNavigationProp>();
@@ -54,10 +49,9 @@ const SearchScreen = () => {
     }
   };
 
-  // Update the handlePetPress function to show modal instead of navigating
+  // 🟢 Updated function to navigate to DetailScreen
   const handlePetPress = (pet: any) => {
-    setSelectedPet(pet);
-    setModalVisible(true);
+    navigation.navigate('Detail', { pet });
   };
 
   const filteredPets = searchText.trim()
@@ -96,23 +90,14 @@ const SearchScreen = () => {
               favoriteIcon={IMAGES.ONCLICKFAV}
               deleteIcon={IMAGES.OFCLICKFAV}
               locationIcon={IMAGES.LOCATION_VECTOR}
-              onPress={() => handlePetPress(pet)}
+              onPress={() => handlePetPress(pet)} 
             />
           ))}
         </ScrollView>
       )}
-
-      {/* Add the PetDetailsModal component */}
-      <PetDetailsModal
-        isVisible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        selectedPet={selectedPet}
-      />
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: {
