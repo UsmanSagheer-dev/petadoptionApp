@@ -1,85 +1,70 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { TabParamList } from '../../types/navigation';
+import React from 'react';
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
-import COLOR from '../../constant/constant';
 import LoginButton from '../../components/button/CustomButton';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../../redux/slices/userSlice';
-import { RootState, AppDispatch } from '../../redux/store'; 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import useProfileScreen from '../../hooks/useProfileScreen';
+import COLOR from '../../constant/constant';
 
-type ProfileScreenProps = BottomTabScreenProps<TabParamList, 'ProfileTab'>;
-
-const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
-  const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch here
-  
-  // Select user details from the Redux store
-  const { userDetails, loading, error } = useSelector((state: RootState) => state.user);
-
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-
-  useEffect(() => {
-    // Dispatch the fetchUser action when the component mounts
-    dispatch(fetchUser());
-  }, [dispatch]);
-
-  useEffect(() => {
-    // If userDetails is available, update the state with the fetched data
-    if (userDetails) {
-      setName(userDetails.displayName || '');
-      setEmail(userDetails.email || '');
-    }
-  }, [userDetails]);
+const ProfileScreen = ({ navigation }) => {
+  const { name, setName, email, setEmail, imageUri, pickImage, loading } =
+    useProfileScreen(navigation);
 
   const handleUpdateProfile = () => {
     navigation.navigate('PasswordUpdate');
   };
 
   if (loading) {
-    return <ActivityIndicator size="large" color={COLOR.primary} style={styles.loader} />;
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color={COLOR.primary} />
+      </View>
+    );
   }
 
   return (
     <View style={styles.container}>
-      {/* Profile Title */}
       <View style={styles.titleContainer}>
         <CustomText title="Profile Settings" style={styles.title} />
       </View>
 
-      {/* Profile Logo Placeholder */}
-      <View style={styles.profileLogo}>
+      <TouchableOpacity onPress={pickImage} style={styles.profileLogo}>
+        {imageUri ? (
+          <Image source={{ uri: imageUri }} style={styles.profileImage} />
+        ) : (
+          <MaterialIcons name="add-a-photo" size={40} color={COLOR.primary} />
+        )}
+      </TouchableOpacity>
 
-      </View>
-
-      {/* Input Fields */}
       <View style={styles.inputFields}>
-        {/* Username Input */}
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Username</Text>
+          <CustomText title="Username" style={styles.label} />
           <CustomInput
             type="text"
             placeholder="Enter your name"
             value={name}
-            onChange={setName}
+            onChange={text => setName(text)}
           />
         </View>
 
-        {/* Email Input */}
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email</Text>
+          <CustomText title="Email" style={styles.label} />
           <CustomInput
             type="email"
             placeholder="Enter your Email Address"
             value={email}
-            onChange={setEmail}
+            onChange={text => setEmail(text)}
           />
         </View>
       </View>
 
-      {/* Update Profile Button */}
       <View style={styles.buttonContainer}>
         <LoginButton
           onClick={handleUpdateProfile}
@@ -118,6 +103,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderStyle: 'dashed',
     backgroundColor: COLOR.BorderBack,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
   inputFields: {
     marginTop: 42,
@@ -135,7 +128,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     alignItems: 'center',
   },
-  loader: {
+  loaderContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

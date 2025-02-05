@@ -8,6 +8,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
   error: null,
   showSplash: true, 
+user: null
 };
 
 // Signup
