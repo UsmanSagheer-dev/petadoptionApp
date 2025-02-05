@@ -6,7 +6,7 @@ import CustomInput from '../../components/input/customInput';
 import COLOR from '../../constant/constant';
 import LoginButton from '../../components/button/CustomButton';
 import { usePasswordUpdate } from '../../hooks/usePasswordUpdate';
-import { RootStackParamList } from '../types';
+import { RootStackParamList } from '../../types/navigation';
 
 type PasswordUpdateScreenProps = NativeStackScreenProps<RootStackParamList, 'PasswordUpdate'>;
 

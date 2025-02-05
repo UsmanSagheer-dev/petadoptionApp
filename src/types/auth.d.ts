@@ -10,6 +10,7 @@ export interface AuthState {
   isAuthenticated: boolean;
   error: string | null;
   showSplash: boolean;
+
 }
 
 export interface SignupPayload {

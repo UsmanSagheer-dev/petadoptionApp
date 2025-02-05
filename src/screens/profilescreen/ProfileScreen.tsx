@@ -1,22 +1,46 @@
-// ProfileScreen.tsx
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { TabParamList } from '../../types/navigation';
 import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
 import COLOR from '../../constant/constant';
 import LoginButton from '../../components/button/CustomButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from '../../redux/slices/userSlice';
+import { RootState, AppDispatch } from '../../redux/store'; 
 
 type ProfileScreenProps = BottomTabScreenProps<TabParamList, 'ProfileTab'>;
 
-const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
+const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
+  const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch here
+  
+  // Select user details from the Redux store
+  const { userDetails, loading, error } = useSelector((state: RootState) => state.user);
+
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
 
+  useEffect(() => {
+    // Dispatch the fetchUser action when the component mounts
+    dispatch(fetchUser());
+  }, [dispatch]);
+
+  useEffect(() => {
+    // If userDetails is available, update the state with the fetched data
+    if (userDetails) {
+      setName(userDetails.displayName || '');
+      setEmail(userDetails.email || '');
+    }
+  }, [userDetails]);
+
   const handleUpdateProfile = () => {
-   navigation.navigate('PasswordUpdate')
+    navigation.navigate('PasswordUpdate');
   };
+
+  if (loading) {
+    return <ActivityIndicator size="large" color={COLOR.primary} style={styles.loader} />;
+  }
 
   return (
     <View style={styles.container}>
@@ -26,7 +50,9 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
       </View>
 
       {/* Profile Logo Placeholder */}
-      <View style={styles.profileLogo} />
+      <View style={styles.profileLogo}>
+
+      </View>
 
       {/* Input Fields */}
       <View style={styles.inputFields}>
@@ -67,7 +93,6 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
   );
 };
 
-// Styles remain the same
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -108,6 +133,11 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 50,
+    alignItems: 'center',
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });

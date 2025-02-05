@@ -39,6 +39,7 @@ export type TabParamList = {
   FavouriteTab: undefined;
   ProfileTab: undefined;
   PasswordUpdate: undefined;
+
 };
 
 export type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
