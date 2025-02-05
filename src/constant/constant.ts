@@ -15,3 +15,21 @@ const COLOR={
     infoText:'#F6A530'
 }
 export default COLOR;
+
+
+export const PET_TABS = [
+    { id: 'Dogs', label: 'Dogs' },
+    { id: 'Cats', label: 'Cats' },
+    { id: 'Bunnies', label: 'Bunnies' },
+    { id: 'Birds', label: 'Birds' },
+    { id: 'Turtles', label: 'Turtles' },
+  ];
+  
+  export const PET_TYPE_MAP: Record<string, string> = {
+    Dogs: 'dog',
+    Cats: 'cat',
+    Bunnies: 'bunnies',
+    Birds: 'birds',
+    Turtles: 'turtle',
+  };
+  

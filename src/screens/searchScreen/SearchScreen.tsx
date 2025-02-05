@@ -7,10 +7,12 @@ import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
 import PetCard from '../../components/petCard/PetCard';
 import IMAGES from '../../assets/images/index';
 import useFetchPets from '../../hooks/useFetchPets';
+import { PET_TABS } from '../../constant/constant';
+import { Pet } from '../../types/componentTypes';
 
 type RootStackParamList = {
   Search: undefined;
-  Detail: { pet: any };
+  Detail: { pet: Pet };
 };
 
 type SearchScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Search'>;
@@ -18,21 +20,13 @@ type SearchScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Searc
 const SearchScreen = () => {
   const [selectedTab, setSelectedTab] = useState<string>('Dogs');
   const [searchText, setSearchText] = useState<string>('');
-  const [allPets, setAllPets] = useState<any[]>([]);
+  const [allPets, setAllPets] = useState<Pet[]>([]);
   const scrollViewRef = useRef<ScrollView>(null);
   const { pets, loading, error } = useFetchPets(selectedTab);
   const navigation = useNavigation<SearchScreenNavigationProp>();
 
-  const tabs = [
-    { id: 'Dogs', label: 'Dogs' },
-    { id: 'Cats', label: 'Cats' },
-    { id: 'Bunnies', label: 'Bunnies' },
-    { id: 'Birds', label: 'Birds' },
-    { id: 'Turtles', label: 'Turtles' },
-  ];
-
   useEffect(() => {
-    if (pets?.length > 0) {
+    if (pets.length > 0) {
       setAllPets(prevPets => {
         const uniquePets = [...prevPets, ...pets].filter(
           (pet, index, self) => index === self.findIndex(p => p.id === pet.id)
@@ -49,8 +43,7 @@ const SearchScreen = () => {
     }
   };
 
-  // 🟢 Updated function to navigate to DetailScreen
-  const handlePetPress = (pet: any) => {
+  const handlePetPress = (pet: Pet) => {
     navigation.navigate('Detail', { pet });
   };
 
@@ -68,7 +61,7 @@ const SearchScreen = () => {
         <SearchInput searchText={searchText} setSearchText={setSearchText} />
       </View>
       <View style={styles.tabsContainer}>
-        <HorizontalTabs tabs={tabs} onTabPress={handleTabPress} selectedTab={selectedTab} />
+        <HorizontalTabs tabs={PET_TABS} onTabPress={handleTabPress} selectedTab={selectedTab} />
       </View>
 
       {loading ? (
@@ -90,7 +83,7 @@ const SearchScreen = () => {
               favoriteIcon={IMAGES.ONCLICKFAV}
               deleteIcon={IMAGES.OFCLICKFAV}
               locationIcon={IMAGES.LOCATION_VECTOR}
-              onPress={() => handlePetPress(pet)} 
+              onPress={() => handlePetPress(pet)}
             />
           ))}
         </ScrollView>

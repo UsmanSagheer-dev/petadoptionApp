@@ -13,6 +13,7 @@ import COLOR from '../../constant/constant';
 type RootStackParamList = {
   SignUp: undefined;
   Login: undefined;
+  setLoading:any
   App: any;
   Main: undefined;
 };
@@ -20,6 +21,8 @@ type SignUpScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 
 
 interface Props {
   navigation: SignUpScreenNavigationProp;
+
+  
 }
 
 const SignUpScreen: React.FC<Props> = ({ navigation }) => {
@@ -31,12 +34,14 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
     password,
     setPassword,
     loading,
+    setLoading, 
     handleRegister,
     showError,
     emailError,
     termsAccepted,
     setTermsAccepted,
   } = useSignUp();
+  
   
   const dispatch = useDispatch<AppDispatch>();
   const { isAuthenticated, error } = useSelector((state: any) => state.auth);
@@ -52,13 +57,22 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
       Alert.alert('Please accept the terms and conditions.');
       return;
     }
+  
+    setLoading(true); 
+  
     const userData = await handleRegister();
+    
     if (userData) {
+      console.log('User Registered:', userData);
       dispatch(signup(userData));
     } else {
       Alert.alert('Please fill in all fields correctly.');
     }
+  
+    setLoading(false); // Loading stop karein
   };
+  
+  
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
