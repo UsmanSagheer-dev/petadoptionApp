@@ -4,7 +4,8 @@ import COLOR from '../../constant/constant';
 import PetCard from '../../components/petCard/PetCard';
 import CustomeHeader from '../../components/customeHeader/CustomeHeader';
 import IMAGES from '../../assets/images/index';
-import CustomBottomSheet from '../../components/petDetailsModal/PetDetailsModal';
+
+import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 
 const pets = [
   {
@@ -59,13 +60,13 @@ const FavouriteScreen = () => {
             onFavoriteToggle={() => console.log(`Favorite toggled for pet: ${pet.id}`)}
             onPress={() => handlePetClick(pet)} 
             favoriteIcon={IMAGES.ONCLICKFAV}
-            unfavoriteIcon={IMAGES.OFCLICKFAV}
+            deleteIcon={IMAGES.OFCLICKFAV}
             locationIcon={IMAGES.LOCATION_VECTOR}
           />
         ))}
       </ScrollView>
 
-      <CustomBottomSheet 
+      <PetDetailsModal 
         isVisible={isModalVisible} 
         onClose={() => setModalVisible(false)} 
         selectedPet={selectedPet} 

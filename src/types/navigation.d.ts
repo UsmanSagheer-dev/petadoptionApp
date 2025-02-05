@@ -10,6 +10,9 @@ export type RootStackParamList = {
   PasswordUpdate: undefined;
   ProfileTab: undefined;
   DonateScreen: undefined;
+  MyDonationScreen: undefined;
+  MyDonationScreen: undefined;
+  Detail: { pet: any };
 };
 
 export type AuthStackParamList = {

@@ -1,28 +1,39 @@
-import React, { useState, useRef } from 'react';
-import { View, ScrollView, StyleSheet, ActivityIndicator, Text } from 'react-native';
+import React, { useRef } from 'react';
+import { View, ScrollView, StyleSheet, ActivityIndicator, Text, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import CustomeHeader from '../../components/customeHeader/CustomeHeader';
 import PetCard from '../../components/petCard/PetCard';
-import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import IMAGES from '../../assets/images/index';
-import useFetchAllPets from '../../hooks/useFetchAllPets';  // 🔹 Import new hook
+import useFetchAllPets from '../../hooks/useFetchAllPets';
+import { RootStackParamList } from '../../types/navigation'; 
+
+type NavigationProp = StackNavigationProp<RootStackParamList, 'MyDonationScreen'>;
 
 const MyDonationScreen = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedPet, setSelectedPet] = useState(null);
   const scrollViewRef = useRef<ScrollView>(null);
+  const { pets, loading, error, deletePet } = useFetchAllPets();
+  const navigation = useNavigation<NavigationProp>(); 
 
-  // Saare pets fetch karne wala hook
-  const { pets, loading, error } = useFetchAllPets(); 
+  const handlePetClick = (pet: any) => {
+    navigation.navigate('Detail', { pet });
+  };
 
-  const handlePetClick = (pet) => {
-    setSelectedPet(pet);
-    setModalVisible(true);
+  // ✅ Delete Confirmation Function
+  const handleDeletePet = (petId: string) => {
+    Alert.alert(
+      'Confirm Deletion',
+      'Are you sure you want to delete this pet?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Delete', onPress: () => deletePet(petId), style: 'destructive' },
+      ]
+    );
   };
 
   return (
     <View style={styles.container}>
       <CustomeHeader title="My Donations" />
-
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : error ? (
@@ -43,7 +54,8 @@ const MyDonationScreen = () => {
                 favoriteIcon={IMAGES.DELETEICON}
                 deleteIcon={IMAGES.DELETEICON}
                 locationIcon={IMAGES.LOCATION_VECTOR}
-                onPress={() => handlePetClick(pet)}
+                onPress={() => handlePetClick(pet)} // ✅ Only Handles Navigation
+                onDelete={() => handleDeletePet(pet.id)} // ✅ Calls Delete Function with Confirmation
               />
             ))
           ) : (
@@ -51,35 +63,15 @@ const MyDonationScreen = () => {
           )}
         </ScrollView>
       )}
-
-      <PetDetailsModal 
-        isVisible={modalVisible} 
-        onClose={() => setModalVisible(false)} 
-        selectedPet={selectedPet} 
-      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  petCardsContainer: {
-    padding: 15,
-  },
-  errorText: {
-    color: 'red',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  noDataText: {
-    textAlign: 'center',
-    fontSize: 16,
-    color: '#555',
-    marginTop: 20,
-  },
+  container: { flex: 1, backgroundColor: '#fff' },
+  petCardsContainer: { padding: 15 },
+  errorText: { color: 'red', textAlign: 'center', marginTop: 20 },
+  noDataText: { textAlign: 'center', fontSize: 16, color: '#555', marginTop: 20 },
 });
 
 export default MyDonationScreen;

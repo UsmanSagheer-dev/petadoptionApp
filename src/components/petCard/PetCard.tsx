@@ -12,9 +12,14 @@ const PetCard: React.FC<PetCardProps> = ({
   deleteIcon,
   locationIcon,
   onPress,
+  onDelete, // Add new prop for delete handling
 }) => {
+  const handleDeletePress = (e) => {
+    e.stopPropagation(); // Prevent card click when delete is pressed
+    onDelete && onDelete();
+  };
+
   return (
-    // Make the entire card clickable by wrapping it in TouchableOpacity
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
@@ -34,7 +39,12 @@ const PetCard: React.FC<PetCardProps> = ({
             </View>
             <View style={styles.genderContainer}>
               <Text style={styles.gender}>{gender}</Text>
-              <Image source={deleteIcon} style={styles.deleteIcon} />
+              <TouchableOpacity 
+                onPress={handleDeletePress}
+                style={styles.deleteButton}
+              >
+                <Image source={deleteIcon} style={styles.deleteIcon} />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -42,7 +52,6 @@ const PetCard: React.FC<PetCardProps> = ({
     </TouchableOpacity>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -130,6 +139,15 @@ const styles = StyleSheet.create({
     height: 171,
     backgroundColor: '#C4C4C4',
     borderRadius: 20,
+  },
+  deleteButton: {
+    width: 30,
+    height: 30,
+
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
   },
 });
 

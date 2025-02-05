@@ -2,14 +2,13 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../types/navigation'; // اپنی types والی فائل کا صحیح path دیں
+import { RootStackParamList } from '../../types/navigation'; 
 import COLOR from '../../constant/constant';
 import { CustomeHeaderProps } from '../../types/componentTypes';
-
 type NavigationProps = NativeStackNavigationProp<RootStackParamList, 'DonateScreen'>;
 
 const CustomeHeader: React.FC<CustomeHeaderProps> = ({ title }) => {
-  const navigation = useNavigation<NavigationProps>(); // ✅ Correctly Typed Navigation
+  const navigation = useNavigation<NavigationProps>(); 
 
   return (
     <View>

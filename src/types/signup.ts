@@ -9,8 +9,7 @@ export interface SignUpState {
   showError: boolean;
   emailError: string | null;
   handleRegister: () => Promise<{ name: string; email: string; password: string } | undefined>;
-  
-  // Added types for termsAccepted and setTermsAccepted
   termsAccepted: boolean;
   setTermsAccepted: (termsAccepted: boolean) => void;
+  setLoading: (loading: boolean) => void;
 }
