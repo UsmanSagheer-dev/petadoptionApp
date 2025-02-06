@@ -12,7 +12,20 @@
           "package_name": "com.adoption"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "835900712525-u504nr66m3333p69n1kjneg14ca7gtca.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adoption",
+            "certificate_hash": "f010b3062b38ac145639f91ac5a2788b5b770ee0"
+          }
+        },
+        {
+          "client_id": "835900712525-b97q3pta58qfpl0i87b2dvrd69kb0dpu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDUpL1mD3K0TybRtvnB8nkhAih66bwnTt4"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835900712525-b97q3pta58qfpl0i87b2dvrd69kb0dpu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

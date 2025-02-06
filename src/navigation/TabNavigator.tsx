@@ -23,6 +23,7 @@ import ProfileScreen from '../screens/profilescreen/ProfileScreen';
 import SearchInput from '../components/searcInput/SearchInput';
 import DonateScreen from '../screens/donateScreen/DonateScreen';
 import MyDonationScreen from '../screens/myDonationScreen/MyDonationScreen';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 type TabParamList = {
   HomeTab: undefined;
   SearchTab: undefined;
@@ -82,10 +83,24 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
 
 const CustomDrawerContent: React.FC<any> = props => {
   const handleLogout = () => {
+    // Sign out from Firebase
     auth()
       .signOut()
-      .then(() => console.log('User signed out!'))
-      .catch(error => console.error('Error signing out: ', error));
+      .then(() => {
+        console.log('User signed out from Firebase!');
+        
+        // Sign out from Google
+        GoogleSignin.signOut()
+          .then(() => {
+            console.log('User signed out from Google!');
+          })
+          .catch(error => {
+            console.error('Error signing out from Google: ', error);
+          });
+      })
+      .catch(error => {
+        console.error('Error signing out from Firebase: ', error);
+      });
   };
 
   return (

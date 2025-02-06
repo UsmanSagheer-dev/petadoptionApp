@@ -22,14 +22,8 @@ import LoginButton from '../../components/button/CustomButton';
 import COLOR from '../../constant/constant';
 import OrDivider from '../../components/onDivider/OnDivider';
 import IMAGES from '../../assets/images/index';
+import useGoogleSignIn from '../../hooks/useGoogleSignIn';
 
-interface GoogleSignInResponse {
-  idToken?: string;
-  user: {
-    name?: string;
-    email: string;
-  };
-}
 type RootStackParamList = {
   SignUp: undefined;
   Login: undefined;
@@ -62,13 +56,13 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
     termsAccepted,
     setTermsAccepted,
   } = useSignUp();
-
+  const { onGoogleButtonPress } = useGoogleSignIn(); // Use the hook
   const dispatch = useDispatch<AppDispatch>();
   const { isAuthenticated, error } = useSelector((state: any) => state.auth);
 
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: 'AIzaSyDUpL1mD3K0TybRtvnB8nkhAih66bwnTt4',
+      webClientId: '835900712525-b97q3pta58qfpl0i87b2dvrd69kb0dpu.apps.googleusercontent.com', 
     });
   }, []);
 
@@ -98,41 +92,8 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
     setLoading(false);
   };
 
-  // ✅ Google Sign-In Handler
   
-  const handleGoogleSignIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
   
-      // ✅ Type assertion to SignInResponse
-      const response = await GoogleSignin.signIn() as any;
-  
-      // ✅ Extract properties safely
-      const idToken = response?.idToken;
-      const user = response?.user;
-  
-      if (!idToken || !user) {
-        throw new Error('Google Sign-In failed: No idToken or user data received');
-      }
-  
-      const userInfo = {
-        idToken,
-        name: user.name || '',
-        email: user.email || '',
-      };
-  
-      dispatch(googleSignup(userInfo));
-    } catch (error: any) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        Alert.alert('Sign-In cancelled');
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        Alert.alert('Sign-In in progress');
-      } else {
-        console.error('Google Sign-In Error:', error);
-        Alert.alert('Google Sign-In failed. Please try again.');
-      }
-    }
-  };
   
   
   
@@ -209,7 +170,7 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
           </View>
           {/* ✅ Google Sign-In Button */}
           <View>
-            <TouchableOpacity onPress={handleGoogleSignIn}>
+            <TouchableOpacity onPress={ onGoogleButtonPress}>
               <Image source={IMAGES.GOOGLEIMG} style={styles.googleimg} />
             </TouchableOpacity>
           </View>
