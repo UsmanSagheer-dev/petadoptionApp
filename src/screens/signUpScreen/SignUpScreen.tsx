@@ -1,28 +1,49 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, ActivityIndicator, Alert } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+  ActivityIndicator,
+  Alert,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
-import { signup } from '../../redux/slices/authSlice';
+import { signup, googleSignup } from '../../redux/slices/authSlice';
 import useSignUp from '../../hooks/useSignup';
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
 import LoginButton from '../../components/button/CustomButton';
 import COLOR from '../../constant/constant';
+import OrDivider from '../../components/onDivider/OnDivider';
+import IMAGES from '../../assets/images/index';
 
+interface GoogleSignInResponse {
+  idToken?: string;
+  user: {
+    name?: string;
+    email: string;
+  };
+}
 type RootStackParamList = {
   SignUp: undefined;
   Login: undefined;
-  setLoading:any
+  setLoading: any;
   App: any;
   Main: undefined;
 };
-type SignUpScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
+type SignUpScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'SignUp'
+>;
 
 interface Props {
   navigation: SignUpScreenNavigationProp;
-
-  
 }
 
 const SignUpScreen: React.FC<Props> = ({ navigation }) => {
@@ -34,17 +55,22 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
     password,
     setPassword,
     loading,
-    setLoading, 
+    setLoading,
     handleRegister,
     showError,
     emailError,
     termsAccepted,
     setTermsAccepted,
   } = useSignUp();
-  
-  
+
   const dispatch = useDispatch<AppDispatch>();
   const { isAuthenticated, error } = useSelector((state: any) => state.auth);
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: 'AIzaSyDUpL1mD3K0TybRtvnB8nkhAih66bwnTt4',
+    });
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -57,41 +83,97 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
       Alert.alert('Please accept the terms and conditions.');
       return;
     }
-  
-    setLoading(true); 
-  
+
+    setLoading(true);
+
     const userData = await handleRegister();
-    
+
     if (userData) {
       console.log('User Registered:', userData);
       dispatch(signup(userData));
     } else {
       Alert.alert('Please fill in all fields correctly.');
     }
-  
-    setLoading(false); // Loading stop karein
+
+    setLoading(false);
   };
+
+  // ✅ Google Sign-In Handler
+  
+  const handleGoogleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+  
+      // ✅ Type assertion to SignInResponse
+      const response = await GoogleSignin.signIn() as any;
+  
+      // ✅ Extract properties safely
+      const idToken = response?.idToken;
+      const user = response?.user;
+  
+      if (!idToken || !user) {
+        throw new Error('Google Sign-In failed: No idToken or user data received');
+      }
+  
+      const userInfo = {
+        idToken,
+        name: user.name || '',
+        email: user.email || '',
+      };
+  
+      dispatch(googleSignup(userInfo));
+    } catch (error: any) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        Alert.alert('Sign-In cancelled');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        Alert.alert('Sign-In in progress');
+      } else {
+        console.error('Google Sign-In Error:', error);
+        Alert.alert('Google Sign-In failed. Please try again.');
+      }
+    }
+  };
+  
+  
   
   
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <Text style={styles.title}>Sign Up</Text>
         <View style={styles.form}>
           <View style={styles.maininputContainer}>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Username</Text>
-              <CustomInput type="text" placeholder="" value={name} onChange={text => setName(text)} />
+              <CustomInput
+                type="text"
+                placeholder=""
+                value={name}
+                onChange={text => setName(text)}
+              />
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Email</Text>
-              <CustomInput type="email" placeholder="" value={email} onChange={text => setEmail(text)} />
+              <CustomInput
+                type="email"
+                placeholder=""
+                value={email}
+                onChange={text => setEmail(text)}
+              />
               {emailError && <Text style={styles.errorText}>{emailError}</Text>}
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Password</Text>
-              <CustomInput type="password" placeholder="" value={password} onChange={text => setPassword(text)} secureTextEntry={true} />
+              <CustomInput
+                type="password"
+                placeholder=""
+                value={password}
+                onChange={text => setPassword(text)}
+                secureTextEntry={true}
+              />
             </View>
           </View>
           <View style={styles.termsContainer}>
@@ -106,9 +188,30 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
               width={185}
               disabled={!termsAccepted || loading}
             />
-            {loading && <ActivityIndicator size="large" color={COLOR.primary} style={styles.loader} />}
+            {loading && (
+              <ActivityIndicator
+                size="large"
+                color={COLOR.primary}
+                style={styles.loader}
+              />
+            )}
             {showError && <Text style={styles.errorText}>{error}</Text>}
-            <LoginButton onClick={() => navigation.navigate('Login')} title="Login" backgroundColor={COLOR.white} textColor={COLOR.primary} width={'100%'} />
+            <LoginButton
+              onClick={() => navigation.navigate('Login')}
+              title="Login"
+              backgroundColor={COLOR.white}
+              textColor={COLOR.primary}
+              width={'100%'}
+            />
+          </View>
+          <View>
+            <OrDivider />
+          </View>
+          {/* ✅ Google Sign-In Button */}
+          <View>
+            <TouchableOpacity onPress={handleGoogleSignIn}>
+              <Image source={IMAGES.GOOGLEIMG} style={styles.googleimg} />
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
@@ -166,6 +269,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 4,
     fontFamily: 'MontserratRegular',
+  },
+  googleimg: {
+    width: 40,
+    height: 36,
+    marginBottom: 24,
   },
 });
 
