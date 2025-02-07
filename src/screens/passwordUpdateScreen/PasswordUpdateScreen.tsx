@@ -1,14 +1,15 @@
 import { View, StyleSheet, Text } from 'react-native';
 import React from 'react';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { PasswordUpdateNavigationProp } from '../../types/navigation'; // ✅ Correct type import
 import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
 import COLOR from '../../constant/constant';
 import LoginButton from '../../components/button/CustomButton';
 import { usePasswordUpdate } from '../../hooks/usePasswordUpdate';
-import { RootStackParamList } from '../types';
 
-type PasswordUpdateScreenProps = NativeStackScreenProps<RootStackParamList, 'PasswordUpdate'>;
+type PasswordUpdateScreenProps = {
+  navigation: PasswordUpdateNavigationProp;
+};
 
 const PasswordUpdateScreen: React.FC<PasswordUpdateScreenProps> = ({ navigation }) => {
   const { state, setState, handleUpdateProfile } = usePasswordUpdate(navigation);
@@ -23,30 +24,30 @@ const PasswordUpdateScreen: React.FC<PasswordUpdateScreenProps> = ({ navigation 
           <Text style={styles.label}>Current Password</Text>
           <CustomInput
             type="password"
-            placeholder=""
+            placeholder="Enter current password"
             value={state.oldPassword}
             onChange={value => setState(prev => ({ ...prev, oldPassword: value }))}
-            secureTextEntry={true}
+            secureTextEntry
           />
         </View>
         <View>
           <Text style={styles.label}>New Password</Text>
           <CustomInput
             type="password"
-            placeholder=""
+            placeholder="Enter new password"
             value={state.newPassword}
             onChange={value => setState(prev => ({ ...prev, newPassword: value }))}
-            secureTextEntry={true}
+            secureTextEntry
           />
         </View>
         <View style={styles.inputContainer1}>
           <Text style={styles.label}>Confirm New Password</Text>
           <CustomInput
             type="password"
-            placeholder=""
+            placeholder="Confirm new password"
             value={state.confirmNewPassword}
             onChange={value => setState(prev => ({ ...prev, confirmNewPassword: value }))}
-            secureTextEntry={true}
+            secureTextEntry
           />
         </View>
       </View>

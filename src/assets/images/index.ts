@@ -11,6 +11,6 @@ OFCLICKFAV:require('./offclickfav.png'),
 LOCATION_VECTOR:require('./locationvector.png'),
 UPLOADIMG:require('./Uploadimg.png'),
 DELETEICON:require('./Deleteicon.png'),
-
+GOOGLEIMG:require('./googleimg.jpg')
 }
 export default IMAGES

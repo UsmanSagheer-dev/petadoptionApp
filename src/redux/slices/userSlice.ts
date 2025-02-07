@@ -1,38 +1,41 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-import { User } from '../../types/auth';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
+import { User } from "../../types/auth";
 
-// Fetch Logged-in User Details
+// ✅ Async Thunk to Fetch Logged-in User Details
 export const fetchUser = createAsyncThunk(
-  'user/fetchUser',
+  "user/fetchUser",
   async (_, { rejectWithValue }) => {
     try {
       const currentUser = auth().currentUser;
       if (!currentUser) {
-        throw new Error('No user is currently logged in.');
+        throw new Error("No user is currently logged in.");
       }
-      
-      const userDoc = await firestore().collection('users').doc(currentUser.uid).get();
+
+      const userDoc = await firestore().collection("users").doc(currentUser.uid).get();
       if (!userDoc.exists) {
-        throw new Error('User data not found.');
+        throw new Error("User data not found.");
       }
-      
+
+      console.log("Fetched User Data:", userDoc.data());
+
       return {
         uid: currentUser.uid,
         email: currentUser.email,
-        displayName: currentUser.displayName || userDoc.data()?.name,
+        displayName: currentUser.displayName || userDoc.data()?.name || "",
         photoURL: currentUser.photoURL || null,
         ...userDoc.data(),
-      } as User;
+      };
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
   }
 );
 
+// ✅ User Slice
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState: {
     userDetails: null as User | null,
     loading: false,

@@ -6,18 +6,30 @@ import CustomeHeader from '../../components/customeHeader/CustomeHeader';
 import PetCard from '../../components/petCard/PetCard';
 import IMAGES from '../../assets/images/index';
 import useFetchAllPets from '../../hooks/useFetchAllPets';
-import { RootStackParamList } from '../../types/navigation'; 
+import { AppStackParamList } from '../../types/navigation'; 
+import { CompositeNavigationProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+// import { CompositeNavigationProp } from '@react-navigation/native';
 
-type NavigationProp = StackNavigationProp<RootStackParamList, 'MyDonationScreen'>;
+// import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+
+type MyDonationScreenNavigationProp = CompositeNavigationProp<
+  DrawerNavigationProp<AppStackParamList, 'MyDonationScreen'>,
+  NativeStackNavigationProp<AppStackParamList>
+>;
+
 
 const MyDonationScreen = () => {
+  
   const scrollViewRef = useRef<ScrollView>(null);
   const { pets, loading, error, deletePet } = useFetchAllPets();
-  const navigation = useNavigation<NavigationProp>(); 
+  const navigation = useNavigation<MyDonationScreenNavigationProp>(); 
 
-  const handlePetClick = (pet: any) => {
-    navigation.navigate('Detail', { pet });
+  const handlePetClick = (pet: { id: string; name: string }) => {
+    navigation.navigate("Detail", { id: pet.id, name: pet.name });
   };
+  
 
   // ✅ Delete Confirmation Function
   const handleDeletePet = (petId: string) => {

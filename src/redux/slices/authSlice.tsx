@@ -1,6 +1,9 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+
 import {User, AuthState, SignupPayload, SigninPayload} from '../../types/auth';
 
 const initialState: AuthState = {
@@ -8,7 +11,41 @@ const initialState: AuthState = {
   isAuthenticated: false,
   error: null,
   showSplash: true, 
+user: null
 };
+export const googleSignup = createAsyncThunk(
+  'auth/googleSignup',
+  async (userInfo: { idToken: string; name: string; email: string }, { rejectWithValue }) => {
+    try {
+      const { idToken, name, email } = userInfo;
+
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      const userCredential = await auth().signInWithCredential(googleCredential);
+      const newUser = userCredential.user;
+
+      if (!newUser) {
+        throw new Error('Google Sign-Up failed.');
+      }
+
+      await firestore().collection('users').doc(newUser.uid).set({
+        id: newUser.uid,
+        name,
+        email,
+        createdAt: firestore.Timestamp.now(),
+      });
+
+      return {
+        uid: newUser.uid,
+        email: newUser.email,
+        displayName: newUser.displayName || name,
+        photoURL: newUser.photoURL || null,
+      } as User;
+    } catch (error: any) {
+      return rejectWithValue(error.code || error.message);
+    }
+  }
+);
+
 
 // Signup
 export const signup = createAsyncThunk(
@@ -137,6 +174,15 @@ const authSlice = createSlice({
   },
   extraReducers: builder => {
     builder
+
+    .addCase(googleSignup.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
+      state.isAuthenticated = true;
+      state.error = null;
+    })
+    .addCase(googleSignup.rejected, (state, action) => {
+      state.error = action.payload as string;
+    })
       .addCase(signup.fulfilled, (state, action) => {
         state.currentUser = action.payload;
         state.isAuthenticated = true;

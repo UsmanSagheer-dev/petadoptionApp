@@ -1,46 +1,51 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-
+export type DrawerNavigationProp={
+  current: 'HomeTab' | 'SearchTab' | 'FavouriteTab' | 'ProfileTab',
+  index: number,
+}
 export type RootStackParamList = {
-  Login: undefined;
-  Home: undefined;
-  SignUp: undefined;
-  Recover: undefined;
-  App: any;
-  PasswordUpdate: undefined;
-  ProfileTab: undefined;
-  DonateScreen: undefined;
-  MyDonationScreen: undefined;
-  MyDonationScreen: undefined;
-  Detail: { pet: any };
+  Login: {}; // ✅ Empty object instead of undefined
+  Home: {};
+  SignUp: {};
+  Recover: {};
+  App: RootStackParamList; // ✅ Strongly typed reference
+  ProfileTab: {};
+  DonateScreen: {};
+  MyDonationScreen: {};
+  Detail: { pet: string }; // ✅ Strongly typed pet parameter
 };
 
 export type AuthStackParamList = {
-  Login: undefined;
-  SignUp: undefined;
-  Recover: undefined;
-  App: undefined;
+  PasswordUpdate:{},
+  Login: {};
+  SignUp: {};
+  Recover: {};
+  App: {};
 };
 
 export type AppStackParamList = {
-  Main: undefined;
-  PasswordUpdate: undefined;
-  DonateScreen:any;
-  Detail:any;
+  HomeStack:{},
+  Drawer: {};
+  Main: {};
+  PasswordUpdate: {}; // ✅ No more undefined
+  DonateScreen: {};
+  MyDonationScreen: {};
+  Detail: { id: string; name: string }; // ✅ Strongly typed detail params
   Profiles: {
-    userId?: string;
-    name?: string;
+    userId: string;
+    name: string;
   };
 };
 
 export type TabParamList = {
-  HomeTab: undefined;
-  SearchTab: undefined;
-  FavouriteTab: undefined;
-  ProfileTab: undefined;
-  PasswordUpdate: undefined;
+  HomeTab: {};
+  SearchTab: {};
+  FavouriteTab: {};
+  ProfileTab: {};
 };
 
-export type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
+// ✅ Specific type for PasswordUpdate navigation
+export type PasswordUpdateNavigationProp = NativeStackNavigationProp<AppStackParamList, 'PasswordUpdate'>;
 
 export type { BottomTabBarProps };
