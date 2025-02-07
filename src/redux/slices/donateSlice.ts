@@ -18,18 +18,28 @@ export const donatePet = createAsyncThunk<PetDonation, PetDonation>(
       const user = auth().currentUser;
       if (!user) throw new Error('User not authenticated');
 
-      const docRef = await firestore().collection('donations').add({
+      // User's donations subcollection reference
+      const userDonationsRef = firestore()
+        .collection('donations')
+        .doc(user.uid) // User document
+        .collection('usersDonations'); // User's donations subcollection
+
+      // Adding pet donation data to the user's donations subcollection
+      const docRef = await userDonationsRef.add({
         userId: user.uid,
+        isFavorite:false,
         ...petData,
         createdAt: firestore.FieldValue.serverTimestamp(),
       });
 
+      // Returning the new donation data
       return { id: docRef.id, ...petData };
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
   }
 );
+
 
 // Redux slice ka initial state
 const initialState: DonationState = {

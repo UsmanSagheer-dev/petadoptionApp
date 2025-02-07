@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 interface Pet {
   id: string;
@@ -31,9 +32,19 @@ const useFetchAllPets = () => {
         setLoading(true);
         setError(null);
 
-        const petCollection = firestore().collection('donations');
-        const snapshot = await petCollection.get();
-        console.log('Fetching all pets, total:', snapshot.size);
+        const user = auth().currentUser;
+        if (!user) {
+          setError('User not authenticated');
+          return;
+        }
+
+        const userDonationsRef = firestore()
+          .collection('donations')
+          .doc(user.uid)
+          .collection('usersDonations');
+
+        const snapshot = await userDonationsRef.get();
+        console.log('Fetching all pets for user:', user.uid, 'Total:', snapshot.size);
 
         const fetchedPets: Pet[] = snapshot.docs.map(doc => ({
           id: doc.id,
@@ -60,7 +71,19 @@ const useFetchAllPets = () => {
   // ✅ Delete function to remove pet from Firestore and update state
   const deletePet = async (petId: string) => {
     try {
-      await firestore().collection('donations').doc(petId).delete();
+      const user = auth().currentUser;
+      if (!user) {
+        setError('User not authenticated');
+        return;
+      }
+
+      await firestore()
+        .collection('donations')
+        .doc(user.uid)
+        .collection('usersDonations')
+        .doc(petId)
+        .delete();
+
       console.log(`Pet ${petId} deleted successfully`);
 
       // 🔹 Delete pet from state

@@ -5,6 +5,7 @@ import SignUpScreen from '../screens/signUpScreen/SignUpScreen';
 import RecoverPasswordScreen from '../screens/recoverPasswordScreen/RecoverPasswordScreen';
 import AppNavigator from './AppNavigator';
 import { AuthStackParamList } from '../types/navigation';
+import PasswordUpdateScreen from '../screens/passwordUpdateScreen/PasswordUpdateScreen';
 
 const Stack = createStackNavigator<AuthStackParamList>();
 
@@ -14,6 +15,7 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="Recover" component={RecoverPasswordScreen} />
+      <Stack.Screen name="PasswordUpdate" component={PasswordUpdateScreen} />
       <Stack.Screen name="App" component={AppNavigator} />
     </Stack.Navigator>
   );

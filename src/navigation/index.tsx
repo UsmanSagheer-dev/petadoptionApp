@@ -23,15 +23,13 @@ const RootNavigator = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {showSplash ? (
-          <Stack.Screen name="Splash" component={SplashScreen} />
-        ) : user ? (
-          <Stack.Screen name="App" component={AppNavigator} />
-        ) : (
-          <Stack.Screen name="Auth" component={AuthNavigator} />
-        )}
-      </Stack.Navigator>
+      {showSplash ? (
+        <SplashScreen />
+      ) : user ? (
+        <AppNavigator /> // ✅ Directly return AppNavigator
+      ) : (
+        <AuthNavigator />
+      )}
     </NavigationContainer>
   );
 };
