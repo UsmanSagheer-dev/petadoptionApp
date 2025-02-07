@@ -27,14 +27,13 @@ export interface PetCardProps {
   age: string;
   location: string;
   gender: string;
-  isFavorite:any;
-  onFavoriteToggle: () => void;
-  favoriteIcon: any; 
-  deleteIcon: any; 
+
+ 
+ 
   locationIcon: any;
   onPress: () => void;
-  onDelete?: () => void;  
-  onDeletePress?: () => void; 
+  onIconPress:any
+  icon: any;
 }
 export interface TabItem {
   id: string;

@@ -28,6 +28,7 @@ export interface SigninPayload {
 }
 
 export interface PetDonation {
+  id?: string;
   petType: string;
   gender: string;
   vaccinated: string;
@@ -39,5 +40,6 @@ export interface PetDonation {
   errorText?: string;
   imageUrl?: string;
   age?:any;
-  
+  isFavorite?:boolean
+  toggleFavoriteStatus:any,
 }

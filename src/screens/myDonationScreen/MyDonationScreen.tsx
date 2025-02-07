@@ -1,35 +1,35 @@
 import React, { useRef } from 'react';
-import { View, ScrollView, StyleSheet, ActivityIndicator, Text, Alert } from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  ActivityIndicator,
+  Text,
+  Alert,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { CompositeNavigationProp } from '@react-navigation/native';
 import CustomeHeader from '../../components/customeHeader/CustomeHeader';
 import PetCard from '../../components/petCard/PetCard';
 import IMAGES from '../../assets/images/index';
 import useFetchAllPets from '../../hooks/useFetchAllPets';
-import { AppStackParamList } from '../../types/navigation'; 
-import { CompositeNavigationProp } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-// import { CompositeNavigationProp } from '@react-navigation/native';
-
-// import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { AppStackParamList } from '../../types/navigation';
 
 type MyDonationScreenNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<AppStackParamList, 'MyDonationScreen'>,
   NativeStackNavigationProp<AppStackParamList>
 >;
 
-
 const MyDonationScreen = () => {
-  
   const scrollViewRef = useRef<ScrollView>(null);
   const { pets, loading, error, deletePet } = useFetchAllPets();
-  const navigation = useNavigation<MyDonationScreenNavigationProp>(); 
+  const navigation = useNavigation<MyDonationScreenNavigationProp>();
 
   const handlePetClick = (pet: { id: string; name: string }) => {
-    navigation.navigate("Detail", { id: pet.id, name: pet.name });
+    navigation.navigate('Detail', { id: pet.id, name: pet.name });
   };
-  
 
   // ✅ Delete Confirmation Function
   const handleDeletePet = (petId: string) => {
@@ -39,7 +39,7 @@ const MyDonationScreen = () => {
       [
         { text: 'Cancel', style: 'cancel' },
         { text: 'Delete', onPress: () => deletePet(petId), style: 'destructive' },
-      ]
+      ],
     );
   };
 
@@ -53,22 +53,20 @@ const MyDonationScreen = () => {
       ) : (
         <ScrollView ref={scrollViewRef} style={styles.petCardsContainer}>
           {pets.length > 0 ? (
-            pets.map((pet) => (
-              <PetCard
-                key={pet.id}
-                imageUrl={pet.imageUrl}
-                name={pet.petBreed}
-                age={pet.amount}
-                location={pet.location}
-                gender={pet.gender}
-                isFavorite={pet.isFavorite}
-                onFavoriteToggle={() => {}}
-                favoriteIcon={IMAGES.DELETEICON}
-                deleteIcon={IMAGES.DELETEICON}
-                locationIcon={IMAGES.LOCATION_VECTOR}
-                onPress={() => handlePetClick(pet)} // ✅ Only Handles Navigation
-                onDelete={() => handleDeletePet(pet.id)} // ✅ Calls Delete Function with Confirmation
-              />
+            pets.map(pet => (
+              <View key={pet.id} style={styles.petCardWrapper}>
+                <PetCard
+                  imageUrl={pet.imageUrl}
+                  name={pet.petBreed}
+                  age={pet.age}
+                  location={pet.location}
+                  gender={pet.gender}
+                  icon={IMAGES.DELETEICON} // ✅ Delete icon
+                  locationIcon={IMAGES.LOCATION_VECTOR}
+                  onPress={() => handlePetClick(pet)} // ✅ Card click navigates to detail
+                  onIconPress={() => handleDeletePet(pet.id)} // ✅ Delete only on icon click
+                />
+              </View>
             ))
           ) : (
             <Text style={styles.noDataText}>No donations found.</Text>
@@ -82,6 +80,9 @@ const MyDonationScreen = () => {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   petCardsContainer: { padding: 15 },
+  petCardWrapper: {
+    
+  },
   errorText: { color: 'red', textAlign: 'center', marginTop: 20 },
   noDataText: { textAlign: 'center', fontSize: 16, color: '#555', marginTop: 20 },
 });
