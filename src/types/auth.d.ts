@@ -48,4 +48,5 @@ export interface PetDonation {
   subtitle: string;
   createdAt?: FirebaseFirestoreTypes.Timestamp | null; // 🔥 Handle undefined/null
   money?: number;
+ 
 }

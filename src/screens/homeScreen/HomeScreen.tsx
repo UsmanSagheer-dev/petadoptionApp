@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import { useState } from 'react';
 // import React, { useState } from 'react';
 import SearchInput from '../../components/searcInput/SearchInput';
 import IMAGES from '../../assets/images';
@@ -65,7 +66,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       label: 'Profile',
     },
   ];
-
+  const [selectedTab, setSelectedTab] = useState('');
+  
   return (
     <KeyboardAvoidingView
       style={styles.container}

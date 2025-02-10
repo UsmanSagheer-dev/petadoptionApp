@@ -29,18 +29,18 @@ const CardSection: React.FC = () => {
       ) : (
         donations.map((donation: PetDonation, index: number) => (
           <Card
-  key={donation.id || index}
-  title={donation.petBreed}
-  subtitle={donation.petType}
-  date={
-    donation?.createdAt?.seconds
-      ? new Date(donation.createdAt.seconds * 1000).toISOString().split('T')[0]
-      : 'N/A'
-  }
-  money={`$${donation.amount || 0}`}
-/>
-
-        
+            key={donation.id || index}
+            title={donation.petBreed}
+            subtitle={donation.petType}
+            date={
+              donation?.createdAt && donation.createdAt.seconds
+                ? new Date(donation.createdAt.seconds * 1000)
+                    .toISOString()
+                    .split('T')[0]
+                : 'Pending...'
+            }
+            money={`$${donation.amount || 0}`}
+          />
         ))
       )}
     </ScrollView>

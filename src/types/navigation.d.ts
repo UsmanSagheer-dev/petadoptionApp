@@ -1,51 +1,81 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-export type DrawerNavigationProp={
-  current: 'HomeTab' | 'SearchTab' | 'FavouriteTab' | 'ProfileTab',
-  index: number,
-}
+import { 
+  NativeStackNavigationProp,
+  NativeStackScreenProps 
+} from '@react-navigation/native-stack';
+import { 
+  BottomTabBarProps,
+  BottomTabNavigationProp 
+} from '@react-navigation/bottom-tabs';
+import { 
+  DrawerNavigationProp,
+  DrawerScreenProps 
+} from '@react-navigation/drawer';
+
+// Consolidated root stack type
 export type RootStackParamList = {
-  Login: {}; // ✅ Empty object instead of undefined
-  Home: {};
-  SignUp: {};
-  Recover: {};
-  App: RootStackParamList; // ✅ Strongly typed reference
-  ProfileTab: {};
-  DonateScreen: {};
-  MyDonationScreen: {};
-  Detail: { pet: string }; // ✅ Strongly typed pet parameter
+  DonateScreen:undefined,
+  Auth: undefined;
+  App: undefined;
+  Splash: undefined;
 };
 
+// Auth stack type
 export type AuthStackParamList = {
-  PasswordUpdate:{},
-  Login: {};
-  SignUp: {};
-  Recover: {};
-  App: {};
+  App:undefined;
+  Login: undefined;
+  SignUp: undefined;
+  Recover: undefined;
+  PasswordUpdate: undefined;
 };
 
+// Main app stack type
 export type AppStackParamList = {
-  HomeStack:{},
-  Drawer: {};
-  Main: {};
-  PasswordUpdate: {}; // ✅ No more undefined
-  DonateScreen: {};
-  MyDonationScreen: {};
-  Detail: { id: string; name: string }; // ✅ Strongly typed detail params
-  Profiles: {
-    userId: string;
-    name: string;
+  DonateScreen:undefined;
+  MyDonationScreen: undefined;
+  Main: undefined;
+  Drawer: undefined;
+  PasswordUpdate: undefined;
+  Detail: { 
+    id: string;  // ✅ Make `id` required
+    name: string;  // ✅ Make `name` required
+    petType?: string; // Optional additional parameter
   };
+  Donate: { donationType?: string };
+  MyDonations: { filter?: 'active' | 'completed' };
 };
 
+// Drawer navigation type
+export type DrawerParamList = {
+  MainTabs: undefined;
+  Profile: undefined;
+  Settings: undefined;
+  MainStack: undefined;
+  Donate: { donationType?: string;
+
+};
+MyDonation: { donationType?: string};
+}
+
+// Tab navigation type
 export type TabParamList = {
-  HomeTab: {};
-  SearchTab: {};
-  FavouriteTab: {};
-  ProfileTab: {};
+  Home: undefined;
+  Search: undefined;
+  Favorites: undefined;
+  Profile: undefined;
 };
 
-// ✅ Specific type for PasswordUpdate navigation
-export type PasswordUpdateNavigationProp = NativeStackNavigationProp<AppStackParamList, 'PasswordUpdate'>;
+// Consolidated navigation props
+export type RootStackNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+export type AuthStackNavigationProp = NativeStackNavigationProp<AuthStackParamList>;
+export type AppStackNavigationProp = NativeStackNavigationProp<AppStackParamList>;
+export type DrawerNavigationProp = DrawerNavigationProp<DrawerParamList>;
+export type TabNavigationProp = BottomTabNavigationProp<TabParamList>;
 
+// Screen props types
+export type PasswordUpdateScreenProps = NativeStackScreenProps<AuthStackParamList, 'PasswordUpdate'>;
+export type DetailScreenProps = NativeStackScreenProps<AppStackParamList, 'Detail'>;
+export type DonateScreenProps = NativeStackScreenProps<AppStackParamList, 'Donate'>;
+export type MyDonationsScreenProps = NativeStackScreenProps<AppStackParamList, 'MyDonations'>;
+
+// Bottom tab bar props (keep if you need direct access)
 export type { BottomTabBarProps };

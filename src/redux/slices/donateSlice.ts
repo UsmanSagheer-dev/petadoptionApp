@@ -24,12 +24,12 @@ export const donatePet = createAsyncThunk<PetDonation, PetDonation>(
         .doc(user.uid)
         .collection('usersDonations');
 
-      const docRef = await userDonationsRef.add({
-        userId: user.uid,
-        isFavorite: false,
-        ...petData,
-        createdAt: serverTimestamp(),
-      });
+        const docRef = await userDonationsRef.add({
+          userId: user.uid,
+          isFavorite: false,
+          ...petData,
+          createdAt: serverTimestamp(), // يہاں سرور ٹائم سٹيمپ استعمال ہو رہا ہے
+        });
 
       return { id: docRef.id, ...petData };
     } catch (error) {
