@@ -2,15 +2,16 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { PetDonation } from '../../types/auth';
+import { serverTimestamp } from "firebase/firestore";
 
-// Initial state ke liye type define karein
+// Initial state ka type
 interface DonationState {
   loading: boolean;
   error: string | null;
   donations: PetDonation[];
 }
 
-// Firestore me data save karne ke liye async function
+// **Pet donate karne ka function** (Already added)
 export const donatePet = createAsyncThunk<PetDonation, PetDonation>(
   'donation/donatePet',
   async (petData, { rejectWithValue }) => {
@@ -18,21 +19,18 @@ export const donatePet = createAsyncThunk<PetDonation, PetDonation>(
       const user = auth().currentUser;
       if (!user) throw new Error('User not authenticated');
 
-      // User's donations subcollection reference
       const userDonationsRef = firestore()
         .collection('donations')
-        .doc(user.uid) // User document
-        .collection('usersDonations'); // User's donations subcollection
+        .doc(user.uid)
+        .collection('usersDonations');
 
-      // Adding pet donation data to the user's donations subcollection
       const docRef = await userDonationsRef.add({
         userId: user.uid,
-        isFavorite:false,
+        isFavorite: false,
         ...petData,
-        createdAt: firestore.FieldValue.serverTimestamp(),
+        createdAt: serverTimestamp(),
       });
 
-      // Returning the new donation data
       return { id: docRef.id, ...petData };
     } catch (error) {
       return rejectWithValue((error as Error).message);
@@ -40,15 +38,34 @@ export const donatePet = createAsyncThunk<PetDonation, PetDonation>(
   }
 );
 
+// **Firestore se saara donation data fetch karna** (NEW FUNCTION)
+export const fetchDonations = createAsyncThunk<PetDonation[], void>(
+  'donation/fetchDonations',
+  async (_, { rejectWithValue }) => {
+    try {
+      const donationsRef = firestore().collectionGroup('usersDonations');
+      const snapshot = await donationsRef.get();
 
-// Redux slice ka initial state
+      const donations: PetDonation[] = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as PetDonation[];
+
+      return donations;
+    } catch (error) {
+      return rejectWithValue((error as Error).message);
+    }
+  }
+);
+
+// Redux slice ka **initial state**
 const initialState: DonationState = {
   loading: false,
   error: null,
   donations: [],
 };
 
-
+// **Redux Slice**
 const donateSlice = createSlice({
   name: 'donation',
   initialState,
@@ -64,6 +81,20 @@ const donateSlice = createSlice({
         state.donations.push(action.payload);
       })
       .addCase(donatePet.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      // **Fetch Donations Cases (NEW)**
+      .addCase(fetchDonations.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchDonations.fulfilled, (state, action: PayloadAction<PetDonation[]>) => {
+        state.loading = false;
+        state.donations = action.payload;
+      })
+      .addCase(fetchDonations.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

@@ -1,3 +1,4 @@
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 export interface User {
   uid: string;
   email: string | null;
@@ -41,5 +42,10 @@ export interface PetDonation {
   imageUrl?: string;
   age?:any;
   isFavorite?:boolean
-  toggleFavoriteStatus:any,
+  toggleFavoriteStatus?:any,
+  id?: string;
+  title: string;
+  subtitle: string;
+  createdAt?: FirebaseFirestoreTypes.Timestamp | null; // 🔥 Handle undefined/null
+  money?: number;
 }

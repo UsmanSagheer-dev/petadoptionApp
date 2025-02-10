@@ -27,24 +27,22 @@ const useFetchAllPets = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchAllPets = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+    const user = auth().currentUser;
+    if (!user) {
+      setError('User not authenticated');
+      setLoading(false);
+      return;
+    }
 
-        const user = auth().currentUser;
-        if (!user) {
-          setError('User not authenticated');
-          return;
-        }
+    const userDonationsRef = firestore()
+      .collection('donations')
+      .doc(user.uid)
+      .collection('usersDonations');
 
-        const userDonationsRef = firestore()
-          .collection('donations')
-          .doc(user.uid)
-          .collection('usersDonations');
-
-        const snapshot = await userDonationsRef.get();
-        console.log('Fetching all pets for user:', user.uid, 'Total:', snapshot.size);
+    // ✅ Real-time listener added
+    const unsubscribe = userDonationsRef.onSnapshot(
+      (snapshot) => {
+        console.log('Live updates received:', snapshot.size);
 
         const fetchedPets: Pet[] = snapshot.docs.map(doc => ({
           id: doc.id,
@@ -52,20 +50,16 @@ const useFetchAllPets = () => {
         })) as Pet[];
 
         setPets(fetchedPets);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error('Error fetching all pets:', err.message);
-          setError('Failed to fetch pets: ' + err.message);
-        } else {
-          console.error('Unknown error fetching pets');
-          setError('An unknown error occurred');
-        }
-      } finally {
+        setLoading(false);
+      },
+      (error) => {
+        console.error('Error fetching real-time updates:', error.message);
+        setError('Failed to fetch pets: ' + error.message);
         setLoading(false);
       }
-    };
+    );
 
-    fetchAllPets();
+    return () => unsubscribe(); // 🔹 Cleanup function to unsubscribe
   }, []);
 
   // ✅ Delete function to remove pet from Firestore and update state
@@ -85,9 +79,6 @@ const useFetchAllPets = () => {
         .delete();
 
       console.log(`Pet ${petId} deleted successfully`);
-
-      // 🔹 Delete pet from state
-      setPets((prevPets) => prevPets.filter(pet => pet.id !== petId));
     } catch (error) {
       console.error('Error deleting pet:', error);
     }

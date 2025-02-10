@@ -1,38 +1,55 @@
-import { ScrollView, StyleSheet } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
+import {ScrollView, StyleSheet, Text} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState, AppDispatch} from '../../redux/store';
+import {fetchDonations} from '../../redux/slices/donateSlice';
 import Card from '../../components/card/Card';
+import {PetDonation} from '../../types/auth';
+// import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+const CardSection: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
 
-const CardSection = () => {
-  const cardData = [
-    { title: 'Card 1', subtitle: 'This is card 1', date: '2025-01-15', money: '$100' },
-    { title: 'Card 2', subtitle: 'This is card 2', date: '2025-01-16', money: '$200' },
-    { title: 'Card 3', subtitle: 'This is card 3', date: '2025-01-17', money: '$300' },
-    { title: 'Card 4', subtitle: 'This is card 4', date: '2025-01-18', money: '$400' },
-    { title: 'Card 5', subtitle: 'This is card 5', date: '2025-01-19', money: '$500' },
-  ];
+  // Redux state ko fetch karna
+  const {donations, loading, error} = useSelector(
+    (state: RootState) => state.donation,
+  );
+
+  useEffect(() => {
+    dispatch(fetchDonations());
+  }, [dispatch]);
 
   return (
-    <ScrollView 
-      showsVerticalScrollIndicator={false} 
-      contentContainerStyle={styles.scrollContainer}
-    >
-      {cardData.map((item, index) => (
-        <Card
-          key={index}
-          title={item.title}
-          subtitle={item.subtitle}
-          date={item.date}
-          money={item.money}
-        />
-      ))}
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.scrollContainer}>
+      {loading ? (
+        <Text>Loading...</Text>
+      ) : error ? (
+        <Text>Error: {error}</Text>
+      ) : (
+        donations.map((donation: PetDonation, index: number) => (
+          <Card
+  key={donation.id || index}
+  title={donation.petBreed}
+  subtitle={donation.petType}
+  date={
+    donation?.createdAt?.seconds
+      ? new Date(donation.createdAt.seconds * 1000).toISOString().split('T')[0]
+      : 'N/A'
+  }
+  money={`$${donation.amount || 0}`}
+/>
+
+        
+        ))
+      )}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    // No padding to keep it clean
-   
+    padding: 10,
   },
 });
 
