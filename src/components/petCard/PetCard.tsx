@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { PetCardProps } from '../../types/componentTypes';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {PetCardProps} from '../../types/componentTypes';
 import COLOR from '../../constant/constant';
 
 const PetCard: React.FC<PetCardProps> = ({
@@ -9,22 +9,17 @@ const PetCard: React.FC<PetCardProps> = ({
   age,
   location,
   gender,
-  deleteIcon,
+  icon, // 'icon' instead of 'favoriteIcon'
   locationIcon,
   onPress,
-  onDelete, // Add new prop for delete handling
+  onIconPress,
 }) => {
-  const handleDeletePress = (e) => {
-    e.stopPropagation(); // Prevent card click when delete is pressed
-    onDelete && onDelete();
-  };
-
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
           {imageUrl ? (
-            <Image source={{ uri: imageUrl }} style={styles.image} />
+            <Image source={{uri: imageUrl}} style={styles.image} />
           ) : (
             <View style={styles.placeholder} />
           )}
@@ -39,12 +34,11 @@ const PetCard: React.FC<PetCardProps> = ({
             </View>
             <View style={styles.genderContainer}>
               <Text style={styles.gender}>{gender}</Text>
-              <TouchableOpacity 
-                onPress={handleDeletePress}
-                style={styles.deleteButton}
-              >
-                <Image source={deleteIcon} style={styles.deleteIcon} />
-              </TouchableOpacity>
+              <View style={styles.genderContainer}>
+                <TouchableOpacity onPress={onIconPress}>
+                  <Image source={icon} style={styles.deleteIcon} />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
@@ -52,6 +46,7 @@ const PetCard: React.FC<PetCardProps> = ({
     </TouchableOpacity>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -61,30 +56,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     marginBottom: 12,
-  },
+    borderRadius: 10, // Thoda smooth look dene ke liye
+   
+},
+
   imageContainer: {
-    width: 194,
-    height: 171,
+   width:200,
+    // height: ,
     backgroundColor: '#C4C4C4',
     borderRadius: 20,
-    overflow: 'hidden',
+    // overflow: 'hidden',
     zIndex: 999,
+   
   },
   image: {
-    width: '100%',
+    // width: '100%',
     height: '100%',
     resizeMode: 'cover',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 }, // Shadow ko neeche shift karne ke liye
+    shadowOpacity: 5, // Shadow ki intensity
+    shadowRadius: 6, // Blur effect
+    elevation: 8, // Android ke liye shado
   },
   infoCard: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    borderRadius: 20,
+    borderRadius: 20, // Yeh puri card ke liye radius hai
+    borderTopRightRadius:20,  // Sirf top left ke liye
+    borderBottomRightRadius: 20,  // Sirf bottom left ke liye
     padding: 12,
     marginLeft: -10,
     height: 126,
     width: 200,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
@@ -120,6 +126,11 @@ const styles = StyleSheet.create({
   location: {
     fontSize: 14,
   },
+  genderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   gender: {
     fontSize: 14,
     color: '#666666',
@@ -129,25 +140,11 @@ const styles = StyleSheet.create({
     height: 24,
     tintColor: 'red',
   },
-  genderContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   placeholder: {
     width: 194,
     height: 171,
     backgroundColor: '#C4C4C4',
     borderRadius: 20,
-  },
-  deleteButton: {
-    width: 30,
-    height: 30,
-
-    borderRadius: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 8,
   },
 });
 

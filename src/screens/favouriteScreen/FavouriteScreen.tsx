@@ -1,75 +1,62 @@
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
-import React, { useState } from 'react';
-import COLOR from '../../constant/constant';
-import PetCard from '../../components/petCard/PetCard';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
+import React from 'react';
 import CustomeHeader from '../../components/customeHeader/CustomeHeader';
-import IMAGES from '../../assets/images/index';
-
+import PetCard from '../../components/petCard/PetCard';
 import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
-
-const pets = [
-  {
-    id: '1',
-    name: 'Cavachon',
-    age: '4 Months',
-    location: 'FSD',
-    gender: 'Male',
-    weight: '5 kg',
-    vaccinated: true,
-    price: '200',
-    isFavorite: false,
-  },
-  {
-    id: '2',
-    name: 'Persian Cat',
-    age: '2 Months',
-    location: 'LHR',
-    gender: 'Female',
-    weight: '3 kg',
-    vaccinated: false,
-    price: '300',
-    isFavorite: true,
-  },
-];
+import useFavorites from '../../hooks/useFavourite';
+import IMAGES from '../../assets/images/index';
+import COLOR from '../../constant/constant';
 
 const FavouriteScreen = () => {
-  const [selectedPet, setSelectedPet] = useState(null);
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const handlePetClick = (pet: any) => {
-    setSelectedPet(pet);
-    setModalVisible(true);
-  };
+  const {
+    favorites,
+    selectedPet,
+    isModalVisible,
+    handlePetClick,
+    toggleFavorite,
+    closeModal,
+    loading,
+  } = useFavorites();
 
   return (
     <View style={styles.container}>
-      <CustomeHeader 
-        title="Favourite Screen" 
-    
-      />
+      <CustomeHeader title="Favourite Screen" />
 
-      <ScrollView style={styles.petCardsContainer}>
-        {pets.map((pet) => (
-          <PetCard
-            key={pet.id}
-            name={pet.name}
-            age={pet.age}
-            location={pet.location}
-            gender={pet.gender}
-            isFavorite={pet.isFavorite}
-            onFavoriteToggle={() => console.log(`Favorite toggled for pet: ${pet.id}`)}
-            onPress={() => handlePetClick(pet)} 
-            favoriteIcon={IMAGES.ONCLICKFAV}
-            deleteIcon={IMAGES.OFCLICKFAV}
-            locationIcon={IMAGES.LOCATION_VECTOR}
-          />
-        ))}
-      </ScrollView>
+      {/* Agar loading ho rahi hai to loader dikhaye */}
+      {loading ? (
+        <ActivityIndicator size="large" color={COLOR.primary} />
+      ) : favorites.length === 0 ? (
+        // Agar koi favorite nahi hai to message show kare
+        <Text style={styles.noFavoritesText}>No favorites found</Text>
+      ) : (
+        <ScrollView style={styles.petCardsContainer}>
+          {favorites.map(pet => (
+            <PetCard
+              key={pet.id}
+              imageUrl={pet.imageUrl}
+              name={pet.name}
+              age={pet.age}
+              location={pet.location}
+              gender={pet.gender}
+              icon={pet.isFavorite ? IMAGES.ONCLICKFAV : IMAGES.OFCLICKFAV}
+              locationIcon={IMAGES.LOCATION_VECTOR}
+              onPress={() => handlePetClick(pet)}
+              onIconPress={() => toggleFavorite(pet)}
+            />
+          ))}
+        </ScrollView>
+      )}
 
-      <PetDetailsModal 
-        isVisible={isModalVisible} 
-        onClose={() => setModalVisible(false)} 
-        selectedPet={selectedPet} 
+      <PetDetailsModal
+        isVisible={isModalVisible}
+        onClose={closeModal}
+        selectedPet={selectedPet}
       />
     </View>
   );
@@ -77,11 +64,19 @@ const FavouriteScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 17,
+  
     flex: 1,
     backgroundColor: COLOR.white,
+   
   },
   petCardsContainer: {
+    marginTop: 20,
+    paddingHorizontal: 17,
+  },
+  noFavoritesText: {
+    fontSize: 18,
+    color: 'gray',
+    textAlign: 'center',
     marginTop: 20,
   },
 });
