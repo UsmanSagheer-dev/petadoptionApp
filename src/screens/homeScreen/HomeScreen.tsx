@@ -8,6 +8,8 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import { useState } from 'react';
+// import React, { useState } from 'react';
 import SearchInput from '../../components/searcInput/SearchInput';
 import IMAGES from '../../assets/images';
 import ImgWithText from '../../components/imgWithText/ImgWithText';
@@ -23,6 +25,8 @@ type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 interface HomeScreenProps {
   navigation: HomeScreenNavigationProp;
 }
+// const [searchText, setSearchText] = useState('');
+
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const details = [
     {
@@ -62,7 +66,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       label: 'Profile',
     },
   ];
-
+  const [selectedTab, setSelectedTab] = useState('');
+  
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -78,7 +83,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
             <Text style={styles.heading}>Find an Awesome Pets for You</Text>
           </View>
           <View style={styles.searchContainer}>
-            <SearchInput />
+            {/* <SearchInput /> */}
           </View>
           <View>
             <ScrollView

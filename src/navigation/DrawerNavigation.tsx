@@ -1,40 +1,39 @@
 import React from 'react';
-import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerContentComponentProps } from '@react-navigation/drawer';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { DrawerParamList } from '../types/navigation';
 
-const CustomDrawer: React.FC<DrawerContentComponentProps> = (props) => {
+const CustomDrawer = ({ navigation }: DrawerContentComponentProps) => {
   const handleLogout = () => {
-    auth()
-      .signOut()
-      .then(() => {
-        console.log('User signed out from Firebase!');
-        GoogleSignin.signOut()
-          .then(() => console.log('User signed out from Google!'))
-          .catch(error => console.error('Google sign-out error: ', error));
-      })
-      .catch(error => console.error('Firebase sign-out error: ', error));
+    auth().signOut();
+    GoogleSignin.signOut();
   };
 
   return (
-    <DrawerContentScrollView {...props}>
-      <View style={styles.searchContainer}>
-        {/* Add search input here if needed */}
+    <DrawerContentScrollView>
+      <View style={styles.container}>
+        <TouchableOpacity onPress={() => navigation.navigate('MainStack')}>
+          <Text>Home</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Donate')}>
+          <Text>Donate</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('MyDonation')}>
+          <Text>My Donations</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleLogout}>
+          <Text style={styles.logout}>Log Out</Text>
+        </TouchableOpacity>
       </View>
-      <DrawerItemList {...props} />
-      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-        <Text style={styles.logoutText}>Log Out</Text>
-      </TouchableOpacity>
     </DrawerContentScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  searchContainer: { marginVertical: 10 },
-  logoutButton: { marginTop: 20, marginHorizontal: 20 },
-  logoutText: { color: 'red' },
+  container: { padding: 20 },
+  logout: { color: 'red', marginTop: 20 }
 });
 
 export default CustomDrawer;
