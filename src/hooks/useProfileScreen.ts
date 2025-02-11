@@ -4,60 +4,57 @@ import { AppDispatch, RootState } from "../redux/store";
 import { updateProfile, fetchProfile } from "../redux/slices/profileImageSlice";
 import { fetchUser } from "../redux/slices/userSlice";
 import { launchImageLibrary } from "react-native-image-picker";
-import { Image as RNImage } from "react-native-compressor";
-import firestore from "@react-native-firebase/firestore";
+import { readFile } from 'react-native-fs';
 import { Alert } from "react-native";
 
 const useProfileScreen = (navigation: any) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { userDetails, loading: userLoading } = useSelector((state: RootState) => state.user);
+  const { userDetails } = useSelector((state: RootState) => state.user);
   const { profileData, loading: profileLoading } = useSelector((state: RootState) => state.profile);
+  const [uploading, setUploading] = useState(false);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [imageUri, setImageUri] = useState<string | null>(null);
-  const loading = userLoading || profileLoading;
 
-  // ✅ Fetch user data from Redux
   useEffect(() => {
-    dispatch(fetchUser());
+    dispatch(fetchProfile());
   }, [dispatch]);
 
-  // ✅ Update local state when userDetails or profileData is available
   useEffect(() => {
     if (userDetails || profileData) {
-      setTimeout(() => {
-        setName(profileData?.name || userDetails?.displayName || "");
-        setEmail(profileData?.email || userDetails?.email || "");
-        setImageUri(profileData?.imageUrl || userDetails?.photoURL || null);
-      }, 500);
+      setName(profileData?.name || userDetails?.displayName || "");
+      setEmail(profileData?.email || userDetails?.email || "");
+      setImageUri(profileData?.imageUrl || userDetails?.photoURL || null);
     }
   }, [userDetails, profileData]);
 
-  // ✅ Image Picker
   const pickImage = async () => {
-    launchImageLibrary({ mediaType: "photo", quality: 1 }, async (response) => {
-      if (response.didCancel) return;
-      if (response.assets && response.assets.length > 0) {
-        const originalUri = response.assets[0].uri;
-        if (!originalUri) {
-          console.log("No image selected");
-          return;
-        }
-        try {
-          const compressedUri = await RNImage.compress(originalUri, {
-            compressionMethod: "auto",
-            quality: 0.6,
-            maxWidth: 800,
-            maxHeight: 800,
-          });
-          setImageUri(compressedUri);
-        } catch (error) {
-          console.log("Image compression error:", error);
-          Alert.alert("Error", "Failed to process image");
-        }
+    try {
+      setUploading(true);
+      const result = await launchImageLibrary({ 
+        mediaType: "photo", 
+        quality: 0.7 
+      });
+
+      if (result.assets?.[0]?.uri) {
+        const base64 = await readFile(result.assets[0].uri, 'base64');
+        const imageString = `data:image/jpeg;base64,${base64}`;
+        console.log("dshgkjfds",imageString);
+        
+        await dispatch(updateProfile({ 
+          name, 
+          imageUrl: imageString 
+        })).unwrap();
+        
+        setImageUri(imageString);
       }
-    });
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Failed to upload image");
+    } finally {
+      setUploading(false);
+    }
   };
 
   return {
@@ -67,7 +64,7 @@ const useProfileScreen = (navigation: any) => {
     setEmail,
     imageUri,
     pickImage,
-    loading,
+    loading: profileLoading || uploading,
   };
 };
 

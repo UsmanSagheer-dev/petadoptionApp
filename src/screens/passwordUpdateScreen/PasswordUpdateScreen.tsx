@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text } from 'react-native';
 import React from 'react';
-import { PasswordUpdateNavigationProp } from '../../types/navigation'; // ✅ Correct type import
+import { PasswordUpdateNavigationProp } from '../../types/componentTypes'; // ✅ Correct type import
 import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
 import COLOR from '../../constant/constant';

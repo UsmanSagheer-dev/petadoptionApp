@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {
   View,
   StyleSheet,
@@ -6,17 +6,19 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+
 import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
 import LoginButton from '../../components/button/CustomButton';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import useProfileScreen from '../../hooks/useProfileScreen';
 import COLOR from '../../constant/constant';
+import { useState } from 'react';
 
 const ProfileScreen = ({ navigation }) => {
   const { name, setName, email, setEmail, imageUri, pickImage, loading } =
     useProfileScreen(navigation);
-
+    const [imageLoading, setImageLoading] = useState(false); // Add this line
   const handleUpdateProfile = () => {
     navigation.navigate('PasswordUpdate');
   };
@@ -36,8 +38,15 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <TouchableOpacity onPress={pickImage} style={styles.profileLogo}>
-        {imageUri ? (
-          <Image source={{ uri: imageUri }} style={styles.profileImage} />
+        {loading ? (
+          <ActivityIndicator size="small" color={COLOR.primary} />
+        ) : imageUri ? (
+          <Image 
+            source={{ uri: imageUri }} 
+            style={styles.profileImage} 
+            onLoadStart={() => setImageLoading(true)}
+            onLoadEnd={() => setImageLoading(false)}
+          />
         ) : (
           <MaterialIcons name="add-a-photo" size={40} color={COLOR.primary} />
         )}

@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import firestore from '@react-native-firebase/firestore';
+import firestore, { serverTimestamp } from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 interface ProfileState {
   loading: boolean;
   error: string | null;
   profileData: {
     name: string;
-    email: string;
+    email?: string;
     imageUrl: string | null;
   } | null;
 }
@@ -18,24 +19,17 @@ const initialState: ProfileState = {
 };
 
 // Fetch profile data
-export const fetchProfile = createAsyncThunk<ProfileState['profileData'], string, { rejectValue: string }>(
+export const fetchProfile = createAsyncThunk(
   'profile/fetchProfile',
-  async (userId: string, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const profileDoc = await firestore()
-        .collection('profiles')
-        .where('userId', '==', userId)
-        .orderBy('updatedAt', 'desc')
-        .limit(1)
-        .get();
+      const userId = auth().currentUser?.uid;
+      if (!userId) throw new Error('User not authenticated');
 
-      if (!profileDoc.empty) {
-        const data = profileDoc.docs[0].data();
-        return {
-          name: data.name,
-          email: data.email,
-          imageUrl: data.imageUrl,
-        };
+      const doc = await firestore().collection('profiles').doc(userId).get();
+      
+      if (doc.exists) {
+        return doc.data() as ProfileState['profileData'];
       }
       return null;
     } catch (error) {
@@ -45,22 +39,21 @@ export const fetchProfile = createAsyncThunk<ProfileState['profileData'], string
 );
 
 // Update profile data
-export const updateProfile = createAsyncThunk<ProfileState['profileData'], { userId: string, name: string, email: string, imageUrl: string }, { rejectValue: string }>(
+export const updateProfile = createAsyncThunk(
   'profile/updateProfile',
-  async (profileData, { rejectWithValue }) => {
+  async ({ name,  imageUrl }: { name: string;imageUrl: string }, 
+  { rejectWithValue }) => {
     try {
-      await firestore()
-        .collection('profiles')
-        .add({
-          ...profileData,
-          updatedAt: firestore.FieldValue.serverTimestamp(),
-        });
+      const userId = auth().currentUser?.uid;
+      if (!userId) throw new Error('User not authenticated');
 
-      return {
-        name: profileData.name,
-        email: profileData.email,
-        imageUrl: profileData.imageUrl,
-      };
+      await firestore().collection('users').doc(userId).set({
+        name,
+        imageUrl,
+        updatedAt:serverTimestamp(),
+      }, { merge: true });
+
+      return { name, imageUrl };
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
