@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {
   View,
   StyleSheet,
@@ -6,21 +6,19 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+
 import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
 import LoginButton from '../../components/button/CustomButton';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import useProfileScreen from '../../hooks/useProfileScreen';
 import COLOR from '../../constant/constant';
+import { useState } from 'react';
 
-const ProfileScreen = ({ navigation }) => {
-  const { name, setName, email, setEmail, imageUri, pickImage, loading } =
-    useProfileScreen(navigation);
-
-  const handleUpdateProfile = () => {
-    navigation.navigate('PasswordUpdate');
-  };
-
+const ProfileScreen = () => {
+  const { name, setName, email, setEmail, imageUri, pickImage, handleUpdateProfile, loading } =
+    useProfileScreen();
+  
   if (loading) {
     return (
       <View style={styles.loaderContainer}>
@@ -36,7 +34,9 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <TouchableOpacity onPress={pickImage} style={styles.profileLogo}>
-        {imageUri ? (
+        {loading ? (
+          <ActivityIndicator size="small" color={COLOR.primary} />
+        ) : imageUri ? (
           <Image source={{ uri: imageUri }} style={styles.profileImage} />
         ) : (
           <MaterialIcons name="add-a-photo" size={40} color={COLOR.primary} />
@@ -66,8 +66,8 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <LoginButton
-          onClick={handleUpdateProfile}
+      <LoginButton
+          onClick={handleUpdateProfile} 
           title="Update Profile"
           backgroundColor={COLOR.primary}
           textColor={COLOR.white}
@@ -123,7 +123,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLOR.primary,
     marginBottom: 8,
+    alignSelf: 'flex-start', 
   },
+  
   buttonContainer: {
     marginTop: 50,
     alignItems: 'center',

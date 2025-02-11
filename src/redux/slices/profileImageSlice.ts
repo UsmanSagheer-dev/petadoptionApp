@@ -1,12 +1,14 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import firestore from '@react-native-firebase/firestore';
+import firestore, { serverTimestamp } from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
+// Types
 interface ProfileState {
   loading: boolean;
   error: string | null;
   profileData: {
     name: string;
-    email: string;
+    email?: string;
     imageUrl: string | null;
   } | null;
 }
@@ -17,25 +19,18 @@ const initialState: ProfileState = {
   profileData: null
 };
 
-// Fetch profile data
-export const fetchProfile = createAsyncThunk<ProfileState['profileData'], string, { rejectValue: string }>(
+// Thunks
+export const fetchProfile = createAsyncThunk(
   'profile/fetchProfile',
-  async (userId: string, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const profileDoc = await firestore()
-        .collection('profiles')
-        .where('userId', '==', userId)
-        .orderBy('updatedAt', 'desc')
-        .limit(1)
-        .get();
+      const userId = auth().currentUser?.uid;
+      if (!userId) throw new Error('User not authenticated');
 
-      if (!profileDoc.empty) {
-        const data = profileDoc.docs[0].data();
-        return {
-          name: data.name,
-          email: data.email,
-          imageUrl: data.imageUrl,
-        };
+      const doc = await firestore().collection('users').doc(userId).get();
+      
+      if (doc.exists) {
+        return doc.data() as ProfileState['profileData'];
       }
       return null;
     } catch (error) {
@@ -44,29 +39,28 @@ export const fetchProfile = createAsyncThunk<ProfileState['profileData'], string
   }
 );
 
-// Update profile data
-export const updateProfile = createAsyncThunk<ProfileState['profileData'], { userId: string, name: string, email: string, imageUrl: string }, { rejectValue: string }>(
+export const updateProfile = createAsyncThunk(
   'profile/updateProfile',
-  async (profileData, { rejectWithValue }) => {
+  async ({ name, imageUrl }: { name: string; imageUrl: string }, 
+  { rejectWithValue }) => {
     try {
-      await firestore()
-        .collection('profiles')
-        .add({
-          ...profileData,
-          updatedAt: firestore.FieldValue.serverTimestamp(),
-        });
+      const userId = auth().currentUser?.uid;
+      if (!userId) throw new Error('User not authenticated');
 
-      return {
-        name: profileData.name,
-        email: profileData.email,
-        imageUrl: profileData.imageUrl,
-      };
+      await firestore().collection('users').doc(userId).set({
+        name,
+        imageUrl,
+        updatedAt: serverTimestamp(),
+      }, { merge: true });
+
+      return { name, imageUrl };
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
   }
 );
 
+// Slice
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
@@ -84,7 +78,6 @@ const profileSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fetch Profile Cases
       .addCase(fetchProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -97,14 +90,18 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Update Profile Cases
       .addCase(updateProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.loading = false;
-        state.profileData = action.payload;
+        if (state.profileData) {
+          state.profileData = { 
+            ...state.profileData, 
+            ...action.payload 
+          };
+        }
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.loading = false;

@@ -7,6 +7,7 @@ import {
   Animated,
   Image,
 } from 'react-native';
+import { useEffect } from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux/store';
 import auth from '@react-native-firebase/auth';
@@ -14,6 +15,10 @@ import IMAGES from '../../assets/images';
 import {useCustomBottomSheet} from '../../hooks/useCustomBottomSheet';
 import {CustomBottomSheetProps} from '../../types/componentTypes';
 import COLOR from '../../constant/constant';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
+import { useDispatch,  } from 'react-redux';
+import type {  AppDispatch } from '../../redux/store'; // Ensure correct path
+import { fetchProfile } from '../../redux/slices/profileImageSlice';
 
 const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
   isVisible,
@@ -27,7 +32,13 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
   if (!selectedPet) {
     return null;
   }
-
+  const dispatch = useDispatch<AppDispatch>(); // Correctly typed useDispatch
+   const profileData = useSelector((state: RootState) => state.profile.profileData);
+    const loading = useSelector((state: RootState) => state.profile.loading);
+     useEffect(() => {
+        dispatch(fetchProfile()); // Now correctly typed
+      }, [dispatch]);
+    
   return (
     <Animated.View style={[styles.overlay, {transform: [{translateY}]}]}>
       <View style={styles.bottomSheet}>
@@ -70,7 +81,17 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
 
         <View style={styles.profileContainer}>
           <View style={styles.profileSet}>
-            <View style={styles.profile}></View>
+          <TouchableOpacity>
+              <Image
+                source={
+                  profileData?.imageUrl
+                    ? {uri: profileData.imageUrl}
+                    : IMAGES.PROFILEIMG
+                }
+                style={styles.profile}
+                onError={() => console.log('Error loading profile image')}
+              />
+            </TouchableOpacity>
             <View>
               <Text style={styles.userName}>
                 {currentUser?.displayName ||

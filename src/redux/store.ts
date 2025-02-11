@@ -11,6 +11,7 @@ const store = configureStore({
     user: userReducer,
     profile:profileReducer,
     favorites: favoritesReducer,
+    
   },
 });
 
