@@ -14,6 +14,7 @@ export const fetchUser = createAsyncThunk(
       }
 
       const userDoc = await firestore().collection("users").doc(currentUser.uid).get();
+      console.log("🚀 ~ userDoc:", userDoc)
       if (!userDoc.exists) {
         throw new Error("User data not found.");
       }
@@ -24,7 +25,7 @@ export const fetchUser = createAsyncThunk(
         uid: currentUser.uid,
         email: currentUser.email,
         displayName: currentUser.displayName || userDoc.data()?.name || "",
-        photoURL: currentUser.photoURL || null,
+        imageUrl: currentUser.photoURL || null,
         ...userDoc.data(),
       };
     } catch (error: any) {

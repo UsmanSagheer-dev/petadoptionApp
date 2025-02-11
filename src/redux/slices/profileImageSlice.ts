@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import firestore, { serverTimestamp } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
+// Types
 interface ProfileState {
   loading: boolean;
   error: string | null;
@@ -18,7 +19,7 @@ const initialState: ProfileState = {
   profileData: null
 };
 
-// Fetch profile data
+// Thunks
 export const fetchProfile = createAsyncThunk(
   'profile/fetchProfile',
   async (_, { rejectWithValue }) => {
@@ -26,7 +27,7 @@ export const fetchProfile = createAsyncThunk(
       const userId = auth().currentUser?.uid;
       if (!userId) throw new Error('User not authenticated');
 
-      const doc = await firestore().collection('profiles').doc(userId).get();
+      const doc = await firestore().collection('users').doc(userId).get();
       
       if (doc.exists) {
         return doc.data() as ProfileState['profileData'];
@@ -38,10 +39,9 @@ export const fetchProfile = createAsyncThunk(
   }
 );
 
-// Update profile data
 export const updateProfile = createAsyncThunk(
   'profile/updateProfile',
-  async ({ name,  imageUrl }: { name: string;imageUrl: string }, 
+  async ({ name, imageUrl }: { name: string; imageUrl: string }, 
   { rejectWithValue }) => {
     try {
       const userId = auth().currentUser?.uid;
@@ -50,7 +50,7 @@ export const updateProfile = createAsyncThunk(
       await firestore().collection('users').doc(userId).set({
         name,
         imageUrl,
-        updatedAt:serverTimestamp(),
+        updatedAt: serverTimestamp(),
       }, { merge: true });
 
       return { name, imageUrl };
@@ -60,6 +60,7 @@ export const updateProfile = createAsyncThunk(
   }
 );
 
+// Slice
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
@@ -77,7 +78,6 @@ const profileSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fetch Profile Cases
       .addCase(fetchProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -90,14 +90,18 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Update Profile Cases
       .addCase(updateProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.loading = false;
-        state.profileData = action.payload;
+        if (state.profileData) {
+          state.profileData = { 
+            ...state.profileData, 
+            ...action.payload 
+          };
+        }
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.loading = false;

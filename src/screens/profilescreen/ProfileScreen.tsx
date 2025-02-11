@@ -15,14 +15,10 @@ import useProfileScreen from '../../hooks/useProfileScreen';
 import COLOR from '../../constant/constant';
 import { useState } from 'react';
 
-const ProfileScreen = ({ navigation }) => {
-  const { name, setName, email, setEmail, imageUri, pickImage, loading } =
-    useProfileScreen(navigation);
-    const [imageLoading, setImageLoading] = useState(false); // Add this line
-  const handleUpdateProfile = () => {
-    navigation.navigate('PasswordUpdate');
-  };
-
+const ProfileScreen = () => {
+  const { name, setName, email, setEmail, imageUri, pickImage, handleUpdateProfile, loading } =
+    useProfileScreen();
+  
   if (loading) {
     return (
       <View style={styles.loaderContainer}>
@@ -41,12 +37,7 @@ const ProfileScreen = ({ navigation }) => {
         {loading ? (
           <ActivityIndicator size="small" color={COLOR.primary} />
         ) : imageUri ? (
-          <Image 
-            source={{ uri: imageUri }} 
-            style={styles.profileImage} 
-            onLoadStart={() => setImageLoading(true)}
-            onLoadEnd={() => setImageLoading(false)}
-          />
+          <Image source={{ uri: imageUri }} style={styles.profileImage} />
         ) : (
           <MaterialIcons name="add-a-photo" size={40} color={COLOR.primary} />
         )}
@@ -75,8 +66,8 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <LoginButton
-          onClick={handleUpdateProfile}
+      <LoginButton
+          onClick={handleUpdateProfile} 
           title="Update Profile"
           backgroundColor={COLOR.primary}
           textColor={COLOR.white}
@@ -132,7 +123,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLOR.primary,
     marginBottom: 8,
+    alignSelf: 'flex-start', 
   },
+  
   buttonContainer: {
     marginTop: 50,
     alignItems: 'center',
