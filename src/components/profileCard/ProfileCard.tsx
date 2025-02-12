@@ -7,6 +7,7 @@ import { fetchProfile } from "../../redux/slices/profileImageSlice";
 import COLOR from "../../constant/constant";
 import LoginButton from "../../components/button/CustomButton";
 import IMAGES from "../../assets/images/index";
+
 interface ProfileData {
   name: string;
   email?: string;
