@@ -4,6 +4,7 @@ import donateReducer from './slices/donateSlice';
 import userReducer from './slices/userSlice';
 import profileReducer from './slices/profileImageSlice'
 import favoritesReducer from './slices/favoritesSlice'
+import adoptionRequestsReducer from "./slices/adoptionRequestsSlice";
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -11,7 +12,7 @@ const store = configureStore({
     user: userReducer,
     profile:profileReducer,
     favorites: favoritesReducer,
-    
+    adoptionRequests: adoptionRequestsReducer,
   },
 });
 

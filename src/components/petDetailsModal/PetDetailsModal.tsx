@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,40 +7,69 @@ import {
   Animated,
   Image,
 } from 'react-native';
-import { useEffect } from 'react';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../redux/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../../redux/store';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import IMAGES from '../../assets/images';
-import {useCustomBottomSheet} from '../../hooks/useCustomBottomSheet';
-import {CustomBottomSheetProps} from '../../types/componentTypes';
+import { useCustomBottomSheet } from '../../hooks/useCustomBottomSheet';
+import { CustomBottomSheetProps } from '../../types/componentTypes';
 import COLOR from '../../constant/constant';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
-import { useDispatch,  } from 'react-redux';
-import type {  AppDispatch } from '../../redux/store'; // Ensure correct path
+import { useNavigation } from '@react-navigation/native';
 import { fetchProfile } from '../../redux/slices/profileImageSlice';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../types/navigation';
 
 const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
   isVisible,
   onClose,
   selectedPet,
 }) => {
-  const {translateY} = useCustomBottomSheet(isVisible);
+  const { translateY } = useCustomBottomSheet(isVisible);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
   const currentUser = useSelector((state: RootState) => state.auth.currentUser);
   const firebaseUser = auth().currentUser;
+  const profileData = useSelector((state: RootState) => state.profile.profileData);
+
+  useEffect(() => {
+    dispatch(fetchProfile());
+  }, [dispatch]);
 
   if (!selectedPet) {
     return null;
   }
-  const dispatch = useDispatch<AppDispatch>(); // Correctly typed useDispatch
-   const profileData = useSelector((state: RootState) => state.profile.profileData);
-    const loading = useSelector((state: RootState) => state.profile.loading);
-     useEffect(() => {
-        dispatch(fetchProfile()); // Now correctly typed
-      }, [dispatch]);
-    
+
+  const handleAdoptNow = async () => {
+    if (!firebaseUser) {
+      console.error('User not logged in');
+      return;
+    }
+    try {
+      await firestore().collection('adoptionRequests').add({
+        userId: firebaseUser.uid,
+        userName: currentUser?.displayName || firebaseUser?.displayName || 'Guest User',
+        userEmail: currentUser?.email || firebaseUser?.email,
+        petId: selectedPet.id,
+        petName: selectedPet.petBreed,
+        petType: selectedPet.petType,
+        petAge: selectedPet.age,
+        petGender: selectedPet.gender,
+        petWeight: selectedPet.weight,
+        petVaccinated: selectedPet.vaccinated,
+        petLocation: selectedPet.location,
+        timestamp: firestore.FieldValue.serverTimestamp(),
+      });
+      console.log('Adoption request submitted successfully');
+      navigation.navigate('AdoptNow');
+    } catch (error) {
+      console.error('Error submitting adoption request:', error);
+    }
+  };
+
   return (
-    <Animated.View style={[styles.overlay, {transform: [{translateY}]}]}>
+    <Animated.View style={[styles.overlay, { transform: [{ translateY }] }]}>
       <View style={styles.bottomSheet}>
         <View style={styles.header}>
           <TouchableOpacity onPress={onClose}>
@@ -57,63 +86,37 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
           <Text style={styles.type}>{selectedPet.petType}</Text>
         </View>
 
-        {/* Description Section */}
         <View style={styles.infoContainer}>
-          <View style={styles.infoBox}>
-            <Text style={styles.labelTitle}>Age</Text>
-            <Text style={styles.labelSub}>{selectedPet.age}</Text>
-          </View>
-          <View style={styles.infoBox}>
-            <Text style={styles.labelTitle}>Gender</Text>
-            <Text style={styles.labelSub}>{selectedPet.gender}</Text>
-          </View>
-          <View style={styles.infoBox}>
-            <Text style={styles.labelTitle}>Weight</Text>
-            <Text style={styles.labelSub}>{selectedPet.weight}</Text>
-          </View>
-          <View style={styles.infoBox}>
-            <Text style={styles.labelTitle}>Vaccinated</Text>
-            <Text style={styles.labelSub}>
-              {selectedPet.vaccinated ? 'Yes' : 'No'}
-            </Text>
-          </View>
+          <View style={styles.infoBox}><Text style={styles.labelTitle}>Age</Text><Text style={styles.labelSub}>{selectedPet.age}</Text></View>
+          <View style={styles.infoBox}><Text style={styles.labelTitle}>Gender</Text><Text style={styles.labelSub}>{selectedPet.gender}</Text></View>
+          <View style={styles.infoBox}><Text style={styles.labelTitle}>Weight</Text><Text style={styles.labelSub}>{selectedPet.weight}</Text></View>
+          <View style={styles.infoBox}><Text style={styles.labelTitle}>Vaccinated</Text><Text style={styles.labelSub}>{selectedPet.vaccinated ? 'Yes' : 'No'}</Text></View>
         </View>
 
         <View style={styles.profileContainer}>
           <View style={styles.profileSet}>
-          <TouchableOpacity>
+            <TouchableOpacity>
               <Image
-                source={
-                  profileData?.imageUrl
-                    ? {uri: profileData.imageUrl}
-                    : IMAGES.PROFILEIMG
-                }
+                source={profileData?.imageUrl ? { uri: profileData.imageUrl } : IMAGES.PROFILEIMG}
                 style={styles.profile}
-                onError={() => console.log('Error loading profile image')}
               />
             </TouchableOpacity>
             <View>
-              <Text style={styles.userName}>
-                {currentUser?.displayName ||
-                  firebaseUser?.displayName ||
-                  currentUser?.email ||
-                  'Guest User'}
-              </Text>
+              <Text style={styles.userName}>{currentUser?.displayName || firebaseUser?.displayName || 'Guest User'}</Text>
               <Text>Owner</Text>
             </View>
           </View>
           <View style={styles.locationContainer}>
-            <Image
-              source={IMAGES.LOCATION_VECTOR}
-              style={styles.imageLocation}
-            />
+            <Image source={IMAGES.LOCATION_VECTOR} style={styles.imageLocation} />
             <Text style={styles.subtitle}>{selectedPet.location}</Text>
           </View>
         </View>
+
         <View style={styles.descriptionContainer}>
           <Text style={styles.description}>{selectedPet.description}</Text>
         </View>
-        <TouchableOpacity style={styles.button} onPress={onClose}>
+
+        <TouchableOpacity style={styles.button} onPress={handleAdoptNow}>
           <Text style={styles.buttonText}>Adopt Now</Text>
         </TouchableOpacity>
       </View>
@@ -272,5 +275,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+
+
+
+
+
 
 export default PetDetailsModal;

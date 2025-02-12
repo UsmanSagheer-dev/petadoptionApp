@@ -3,14 +3,20 @@ import firestore, { serverTimestamp } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 // Types
+interface ProfileData {
+  name: string;
+  email?: string;
+  imageUrl: string | null;
+  petBreed?: string;
+  petType?: string;
+  location?: string;
+  dateJoined?: string;
+}
+
 interface ProfileState {
   loading: boolean;
   error: string | null;
-  profileData: {
-    name: string;
-    email?: string;
-    imageUrl: string | null;
-  } | null;
+  profileData: ProfileData | null;
 }
 
 const initialState: ProfileState = {
