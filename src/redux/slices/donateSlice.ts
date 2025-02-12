@@ -28,7 +28,7 @@ export const donatePet = createAsyncThunk<PetDonation, PetDonation>(
           userId: user.uid,
           isFavorite: false,
           ...petData,
-          createdAt: serverTimestamp(), // يہاں سرور ٹائم سٹيمپ استعمال ہو رہا ہے
+          createdAt: serverTimestamp(), 
         });
 
       return { id: docRef.id, ...petData };

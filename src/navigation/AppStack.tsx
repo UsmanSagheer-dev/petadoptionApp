@@ -6,6 +6,7 @@ import DetailScreen from '../screens/detailScreen/DetailScreen';
 import PasswordUpdateScreen from '../screens/passwordUpdateScreen/PasswordUpdateScreen';
 import MyDonationScreen from '../screens/myDonationScreen/MyDonationScreen';
 import DonateScreen from '../screens/donateScreen/DonateScreen';
+import AdoptNowScreen from '../screens/adoptNowScreen/AdoptNowScreen';
 const Stack = createNativeStackNavigator<AppStackParamList>();
 
 const AppStack = () => {
@@ -16,6 +17,7 @@ const AppStack = () => {
       <Stack.Screen name="PasswordUpdate" component={PasswordUpdateScreen} />
       <Stack.Screen name="MyDonationScreen" component={MyDonationScreen} />
       <Stack.Screen name="DonateScreen" component={DonateScreen} />
+      <Stack.Screen name="AdoptNow" component={AdoptNowScreen} />
     </Stack.Navigator>
   );
 };

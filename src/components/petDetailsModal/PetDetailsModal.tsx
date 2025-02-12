@@ -19,7 +19,8 @@ import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { useDispatch,  } from 'react-redux';
 import type {  AppDispatch } from '../../redux/store'; // Ensure correct path
 import { fetchProfile } from '../../redux/slices/profileImageSlice';
-
+import { RootStackParamList, } from '../../types/navigation';
+import { StackNavigationProp } from '@react-navigation/stack';
 const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
   isVisible,
   onClose,
@@ -32,13 +33,14 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
   if (!selectedPet) {
     return null;
   }
-  const dispatch = useDispatch<AppDispatch>(); // Correctly typed useDispatch
+  const dispatch = useDispatch<AppDispatch>(); 
    const profileData = useSelector((state: RootState) => state.profile.profileData);
     const loading = useSelector((state: RootState) => state.profile.loading);
      useEffect(() => {
-        dispatch(fetchProfile()); // Now correctly typed
+        dispatch(fetchProfile()); 
       }, [dispatch]);
-    
+      const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
   return (
     <Animated.View style={[styles.overlay, {transform: [{translateY}]}]}>
       <View style={styles.bottomSheet}>
@@ -113,7 +115,9 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
         <View style={styles.descriptionContainer}>
           <Text style={styles.description}>{selectedPet.description}</Text>
         </View>
-        <TouchableOpacity style={styles.button} onPress={onClose}>
+        <TouchableOpacity style={styles.button} onPress={()=>{
+           navigation.navigate('AdoptNow');
+        }}>
           <Text style={styles.buttonText}>Adopt Now</Text>
         </TouchableOpacity>
       </View>

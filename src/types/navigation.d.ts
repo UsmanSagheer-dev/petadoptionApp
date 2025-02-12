@@ -13,6 +13,7 @@ import {
 
 // Consolidated root stack type
 export type RootStackParamList = {
+  AdoptNow:undefined,
   DonateScreen:undefined,
   Auth: undefined;
   App: undefined;
@@ -30,6 +31,7 @@ export type AuthStackParamList = {
 
 // Main app stack type
 export type AppStackParamList = {
+  AdoptNow:undefined,
   DonateScreen:undefined;
   MyDonationScreen: undefined;
   Main: undefined;
