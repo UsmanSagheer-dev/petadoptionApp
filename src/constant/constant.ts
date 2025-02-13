@@ -12,7 +12,10 @@ const COLOR={
     warning: '#FFD700',
     BorderBack:'#E2E2E2',
     infoBar:'#fef6ea',
-    infoText:'#F6A530'
+    infoText:'#F6A530',
+    PRIMARY_RED: '#ff5733',
+
+   
 }
 export default COLOR;
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {Picker} from '@react-native-picker/picker';
-import COLOR from '../../constant/constant';
-import {PickerInputProps} from '../../types/componentTypes';
+import { View, Text } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import { PickerInputProps } from '../../types/componentTypes';
+import styles from './style';
 
 const PickerInput: React.FC<PickerInputProps> = ({
   label,
@@ -26,23 +26,5 @@ const PickerInput: React.FC<PickerInputProps> = ({
     </View>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 15,
-  },
-  label: {
-    fontSize: 18,
-    fontWeight: 600,
-    fontFamily: 'MontserratRegular',
-    color: COLOR.primary,
-  },
-  pickerContainer: {
-    borderBottomWidth: 2,
-    borderBottomColor: '#101C1D',
-  },
-  picker: {
-    fontSize: 16,
-  },
-});
 
 export default PickerInput;
