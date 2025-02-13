@@ -14,13 +14,13 @@ const AppStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Main" component={TabNavigator} />
-      {/* <Stack.Screen name="Detail" component={DetailScreen} /> */}
+      <Stack.Screen name="Detail" component={DetailScreen} />
       <Stack.Screen name="PasswordUpdate" component={PasswordUpdateScreen} />
       <Stack.Screen name="MyDonationScreen" component={MyDonationScreen} />
       <Stack.Screen name="DonateScreen" component={DonateScreen} />
       <Stack.Screen name="AdoptNow" component={AdoptNowScreen} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-      <Stack.Screen name="DetailScreen" component={DetailScreen}/>
+      {/* <Stack.Screen name="DetailScreen" component={DetailScreen}/> */}
     </Stack.Navigator>
   );
 };

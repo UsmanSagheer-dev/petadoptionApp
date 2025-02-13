@@ -15,19 +15,15 @@ const useFetchPets = (selectedTab: string) => {
         setLoading(true);
         setError(null);
 
-        const user = auth().currentUser;
-        if (!user) {
+        const currentUser = auth().currentUser;
+        if (!currentUser) {
           setError('User not authenticated');
           return;
         }
 
-        const petCollection = firestore()
-          .collection('donations')
-          .doc(user.uid) // Get user-specific donations
-          .collection('usersDonations'); // Fetch from user's donations
+        const petCollection = firestore().collectionGroup('usersDonations');
 
         const queryPetType = PET_TYPE_MAP[selectedTab];
-
         if (!queryPetType) {
           setError('Invalid pet type');
           return;
@@ -37,10 +33,9 @@ const useFetchPets = (selectedTab: string) => {
           .where('petType', '==', queryPetType)
           .get();
 
-        const fetchedPets: Pet[] = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as Pet[];
+        const fetchedPets: Pet[] = snapshot.docs
+          .map(doc => ({ id: doc.id, ...doc.data() } as Pet))
+          .filter(pet => pet.userId !== currentUser.uid); // Exclude current user's pets
 
         setPets(fetchedPets);
       } catch (err) {
