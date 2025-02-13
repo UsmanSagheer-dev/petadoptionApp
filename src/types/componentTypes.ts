@@ -56,7 +56,7 @@ export interface TermsCheckboxProps {
 
 export type Pet ={
   id: string;
-  userId:string;
+  userId?:string;
   petBreed: string;
   amount?: string;
   location: string;

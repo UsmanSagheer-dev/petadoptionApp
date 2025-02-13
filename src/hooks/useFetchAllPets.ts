@@ -21,7 +21,7 @@ interface Pet {
   error?: any;
 }
 
-const useFetchAllPets = () => {
+const useFetchUserDonations = () => {
   const [pets, setPets] = useState<Pet[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,13 +36,11 @@ const useFetchAllPets = () => {
 
     const userDonationsRef = firestore()
       .collection('donations')
-      .doc(user.uid)
-      .collection('usersDonations');
+      .where('userId', '==', user.uid); 
 
-    // ✅ Real-time listener added
     const unsubscribe = userDonationsRef.onSnapshot(
       (snapshot) => {
-        console.log('Live updates received:', snapshot.size);
+        console.log('User donations fetched:', snapshot.size);
 
         const fetchedPets: Pet[] = snapshot.docs.map(doc => ({
           id: doc.id,
@@ -53,31 +51,19 @@ const useFetchAllPets = () => {
         setLoading(false);
       },
       (error) => {
-        console.error('Error fetching real-time updates:', error.message);
+        console.error('Error fetching user donations:', error.message);
         setError('Failed to fetch pets: ' + error.message);
         setLoading(false);
       }
     );
 
-    return () => unsubscribe(); // 🔹 Cleanup function to unsubscribe
+    return () => unsubscribe(); 
   }, []);
 
-  // ✅ Delete function to remove pet from Firestore and update state
+
   const deletePet = async (petId: string) => {
     try {
-      const user = auth().currentUser;
-      if (!user) {
-        setError('User not authenticated');
-        return;
-      }
-
-      await firestore()
-        .collection('donations')
-        .doc(user.uid)
-        .collection('usersDonations')
-        .doc(petId)
-        .delete();
-
+      await firestore().collection('donations').doc(petId).delete();
       console.log(`Pet ${petId} deleted successfully`);
     } catch (error) {
       console.error('Error deleting pet:', error);
@@ -87,4 +73,4 @@ const useFetchAllPets = () => {
   return { pets, loading, error, deletePet };
 };
 
-export default useFetchAllPets;
+export default useFetchUserDonations;
