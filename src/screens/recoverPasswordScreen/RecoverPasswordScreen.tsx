@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import IMAGES from '../../assets/images';
 import COLOR from '../../constant/constant';
-import CustomInput from '../../components/input/CustomInput';
+import CustomInput from '../../components/input/customInput';
 import LoginButton from '../../components/button/CustomButton';
 import auth from '@react-native-firebase/auth';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';

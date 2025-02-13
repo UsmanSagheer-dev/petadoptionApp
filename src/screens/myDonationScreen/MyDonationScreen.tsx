@@ -27,9 +27,16 @@ const MyDonationScreen = () => {
   const { pets, loading, error, deletePet } = useFetchAllPets();
   const navigation = useNavigation<MyDonationScreenNavigationProp>();
 
-  const handlePetClick = (pet: { id: string; name: string }) => {
-    navigation.navigate('Detail', { id: pet.id, name: pet.name });
+  const handlePetClick = (pet) => {
+    navigation.navigate('Detail', {
+      id: pet.id,
+      name: pet.name,
+      pet, // Now allowed if AppStackParamList includes pet
+    });
   };
+  
+  
+  
 
   // ✅ Delete Confirmation Function
   const handleDeletePet = (petId: string) => {
