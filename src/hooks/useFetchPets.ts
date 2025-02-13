@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 import { Pet } from '../types/componentTypes';
 import { PET_TYPE_MAP } from '../constant/constant';
 
@@ -15,27 +14,23 @@ const useFetchPets = (selectedTab: string) => {
         setLoading(true);
         setError(null);
 
-        const currentUser = auth().currentUser;
-        if (!currentUser) {
-          setError('User not authenticated');
-          return;
-        }
-
-        const petCollection = firestore().collectionGroup('usersDonations');
-
         const queryPetType = PET_TYPE_MAP[selectedTab];
+
         if (!queryPetType) {
           setError('Invalid pet type');
           return;
         }
 
-        const snapshot = await petCollection
+        // Directly fetching from 'donations' collection
+        const snapshot = await firestore()
+          .collection('donations')
           .where('petType', '==', queryPetType)
           .get();
 
-        const fetchedPets: Pet[] = snapshot.docs
-          .map(doc => ({ id: doc.id, ...doc.data() } as Pet))
-          .filter(pet => pet.userId !== currentUser.uid); // Exclude current user's pets
+        const fetchedPets: Pet[] = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Pet[];
 
         setPets(fetchedPets);
       } catch (err) {
