@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
-import CustomInput from '../../components/input/CustomInput';
+import CustomInput from '../../components/input/customInput';
 import PickerInput from '../../components/pickerInput/PickerInput';
 import useDonateScreen from '../../hooks/useDonateScreen';
 import Icon from 'react-native-vector-icons/Ionicons';

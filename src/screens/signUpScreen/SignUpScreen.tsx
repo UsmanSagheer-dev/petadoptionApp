@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { signup, googleSignup } from '../../redux/slices/authSlice';
 import useSignUp from '../../hooks/useSignup';
-import CustomInput from '../../components/input/CustomInput';
+import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
 import LoginButton from '../../components/button/CustomButton';
 import COLOR from '../../constant/constant';

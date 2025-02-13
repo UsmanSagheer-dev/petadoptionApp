@@ -73,12 +73,13 @@ export type TabParamList = {
 };
 
 // Consolidated navigation props
+export type PasswordUpdateNavigationProp = StackNavigationProp<RootStackParamList, 'PasswordUpdate'>;
 export type RootStackNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 export type AuthStackNavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 export type AppStackNavigationProp = NativeStackNavigationProp<AppStackParamList>;
 export type DrawerNavigationProp = DrawerNavigationProp<DrawerParamList>;
 export type TabNavigationProp = BottomTabNavigationProp<TabParamList>;
-
+export type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 // Screen props types
 export type PasswordUpdateScreenProps = NativeStackScreenProps<AuthStackParamList, 'PasswordUpdate'>;
 export type DetailScreenProps = NativeStackScreenProps<AppStackParamList, 'Detail'>;

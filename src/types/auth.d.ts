@@ -1,4 +1,5 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { StackNavigationProp } from '@react-navigation/stack';
 export interface User {
   uid: string;
   email: string | null;
