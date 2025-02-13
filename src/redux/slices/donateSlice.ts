@@ -11,7 +11,7 @@ interface DonationState {
   donations: PetDonation[];
 }
 
-// **Pet donate karne ka function** (Already added)
+// **Pet donate karne ka function** (Updated: Subcollection removed)
 export const donatePet = createAsyncThunk<PetDonation, PetDonation>(
   'donation/donatePet',
   async (petData, { rejectWithValue }) => {
@@ -19,17 +19,19 @@ export const donatePet = createAsyncThunk<PetDonation, PetDonation>(
       const user = auth().currentUser;
       if (!user) throw new Error('User not authenticated');
 
-      const userDonationsRef = firestore()
-        .collection('donations')
-        .doc(user.uid)
-        .collection('usersDonations');
+      const donationsRef = firestore().collection('donations');
+      
+      // Document ka reference generate karna
+      const docRef = donationsRef.doc(); 
 
-        const docRef = await userDonationsRef.add({
-          userId: user.uid,
-          isFavorite: false,
-          ...petData,
-          createdAt: serverTimestamp(), 
-        });
+      // Firestore mein save karna
+      await docRef.set({
+        id: docRef.id, // Manually setting ID
+        userId: user.uid,
+        isFavorite: false,
+        ...petData,
+        createdAt: serverTimestamp(), 
+      });
 
       return { id: docRef.id, ...petData };
     } catch (error) {
@@ -38,12 +40,12 @@ export const donatePet = createAsyncThunk<PetDonation, PetDonation>(
   }
 );
 
-// **Firestore se saara donation data fetch karna** (NEW FUNCTION)
+// **Firestore se saara donation data fetch karna** (Updated)
 export const fetchDonations = createAsyncThunk<PetDonation[], void>(
   'donation/fetchDonations',
   async (_, { rejectWithValue }) => {
     try {
-      const donationsRef = firestore().collectionGroup('usersDonations');
+      const donationsRef = firestore().collection('donations'); // 🔄 Collection Group removed
       const snapshot = await donationsRef.get();
 
       const donations: PetDonation[] = snapshot.docs.map(doc => ({
@@ -85,7 +87,7 @@ const donateSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // **Fetch Donations Cases (NEW)**
+      // **Fetch Donations Cases (Updated)**
       .addCase(fetchDonations.pending, (state) => {
         state.loading = true;
         state.error = null;

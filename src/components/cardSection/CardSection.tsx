@@ -1,15 +1,15 @@
 import React, {useEffect} from 'react';
-import {ScrollView, StyleSheet, Text} from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState, AppDispatch} from '../../redux/store';
 import {fetchDonations} from '../../redux/slices/donateSlice';
 import Card from '../../components/card/Card';
 import {PetDonation} from '../../types/auth';
-// import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import styles from './style';
+
 const CardSection: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  // Redux state ko fetch karna
   const {donations, loading, error} = useSelector(
     (state: RootState) => state.donation,
   );
@@ -33,7 +33,7 @@ const CardSection: React.FC = () => {
             title={donation.petBreed}
             subtitle={donation.petType}
             date={
-              donation?.createdAt && donation.createdAt.seconds
+              donation?.createdAt?.seconds
                 ? new Date(donation.createdAt.seconds * 1000)
                     .toISOString()
                     .split('T')[0]
@@ -46,11 +46,5 @@ const CardSection: React.FC = () => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollContainer: {
-    padding: 10,
-  },
-});
 
 export default CardSection;

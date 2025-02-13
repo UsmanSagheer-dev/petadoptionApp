@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth'; // Firebase Auth import
 import { Pet } from '../types/componentTypes';
 import { PET_TYPE_MAP } from '../constant/constant';
 
@@ -14,34 +14,34 @@ const useFetchPets = (selectedTab: string) => {
       try {
         setLoading(true);
         setError(null);
-
-        const user = auth().currentUser;
-        if (!user) {
-          setError('User not authenticated');
-          return;
-        }
-
-        const petCollection = firestore()
-          .collection('donations')
-          .doc(user.uid) // Get user-specific donations
-          .collection('usersDonations'); // Fetch from user's donations
-
+    
         const queryPetType = PET_TYPE_MAP[selectedTab];
-
+    
         if (!queryPetType) {
           setError('Invalid pet type');
           return;
         }
-
-        const snapshot = await petCollection
+    
+        const snapshot = await firestore()
+          .collection('donations')
           .where('petType', '==', queryPetType)
           .get();
-
-        const fetchedPets: Pet[] = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as Pet[];
-
+    
+        // Logged-in user ka ID le lo
+        const currentUserId = auth().currentUser?.uid;
+    
+        // Logged-in user ka data hata do (filter on client-side)
+        const fetchedPets: Pet[] = snapshot.docs.map(doc => {
+          const data = doc.data() as Pet; // Ensure type safety
+          return {
+            ...data,  // Spread pehle karein
+            id: doc.id, // Fir 'id' ko last me rakhein, taake overwrite na ho
+          };
+        })
+        
+        
+          .filter(pet => pet.userId !== currentUserId); // Exclude logged-in user
+    
         setPets(fetchedPets);
       } catch (err) {
         if (err instanceof Error) {
@@ -55,6 +55,7 @@ const useFetchPets = (selectedTab: string) => {
         setLoading(false);
       }
     };
+    
 
     fetchPets();
   }, [selectedTab]);

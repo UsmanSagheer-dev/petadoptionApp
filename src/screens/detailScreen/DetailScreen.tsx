@@ -1,39 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, Alert, TouchableWithoutFeedback } from 'react-native';
-import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import COLOR from '../../constant/constant';
+import React, { useState, useEffect, useCallback } from "react";
+import { View, TouchableOpacity, Alert, TouchableWithoutFeedback } from "react-native";
+import PetDetailsModal from "../../components/petDetailsModal/PetDetailsModal";
+import Icon from "react-native-vector-icons/FontAwesome";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import COLOR from "../../constant/constant";
+import styles from "./style";
 
 const DetailScreen = ({ route, navigation }) => {
-  const { id, name, pet, deletePet } = route.params; // ✅ Accepting pet and deletePet
+  const { id, pet, deletePet } = route.params; 
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
   useEffect(() => {
     setIsBottomSheetVisible(true);
   }, []);
 
-  const handleDeletePet = () => {
-    Alert.alert(
-      'Confirm Deletion',
-      'Are you sure you want to delete this pet?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          onPress: async () => {
-            await deletePet(id); // ✅ Pet delete karega
-            setIsBottomSheetVisible(false);
-            navigation.goBack(); // ✅ Modal close + screen back
-          },
-          style: 'destructive',
+  const handleDeletePet = useCallback(() => {
+    Alert.alert("Confirm Deletion", "Are you sure you want to delete this pet?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        onPress: async () => {
+          await deletePet(id);
+          setIsBottomSheetVisible(false);
+          navigation.goBack();
         },
-      ]
-    );
-  };
+        style: "destructive",
+      },
+    ]);
+  }, [id, deletePet, navigation]);
 
   return (
-    <TouchableWithoutFeedback onPress={() => setIsBottomSheetVisible(false)}> 
+    <TouchableWithoutFeedback onPress={() => setIsBottomSheetVisible(false)}>
       <View style={styles.container}>
         <View style={styles.detailHeader}>
           <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
@@ -56,11 +53,5 @@ const DetailScreen = ({ route, navigation }) => {
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLOR.quaternary },
-  detailHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 20 },
-  backButton: {},
-});
 
 export default DetailScreen;

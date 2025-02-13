@@ -28,11 +28,10 @@ const FavouriteScreen = () => {
     <View style={styles.container}>
       <CustomeHeader title="Favourite Screen" />
 
-      {/* Agar loading ho rahi hai to loader dikhaye */}
+   
       {loading ? (
         <ActivityIndicator size="large" color={COLOR.primary} />
       ) : favorites.length === 0 ? (
-        // Agar koi favorite nahi hai to message show kare
         <Text style={styles.noFavoritesText}>No favorites found</Text>
       ) : (
         <ScrollView style={styles.petCardsContainer}>
@@ -40,7 +39,7 @@ const FavouriteScreen = () => {
             <PetCard
               key={pet.id}
               imageUrl={pet.imageUrl}
-              name={pet.name}
+              name={pet.petBreed}
               age={pet.age}
               location={pet.location}
               gender={pet.gender}

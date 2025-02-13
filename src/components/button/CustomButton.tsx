@@ -1,11 +1,14 @@
 import React from 'react';
-import {TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {TouchableOpacity, Text} from 'react-native';
 import {LoginButtonProps} from '../../types/componentTypes';
+import styles from './style';
+import COLOR from '../../constant/constant';
+
 const LoginButton = ({
   onClick,
   title,
-  backgroundColor = '#000',
-  textColor = '#fff',
+  backgroundColor =COLOR.black,
+  textColor = COLOR.white,
   width = '100%',
 }: LoginButtonProps) => {
   return (
@@ -21,20 +24,5 @@ const LoginButton = ({
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    paddingVertical: 12,
-    borderRadius: 37,
-    alignItems: 'center',
-    height: 79,
-    justifyContent: 'center',
-  },
-  buttonText: {
-    fontSize: 20,
-    fontWeight: '700',
-    fontFamily: 'MontserratRegular',
-  },
-});
 
 export default LoginButton;

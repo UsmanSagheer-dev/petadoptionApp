@@ -42,7 +42,11 @@ export type AppStackParamList = {
   Main: undefined;
   Drawer: undefined;
   PasswordUpdate: undefined;
-
+  Detail: { 
+    id: string;  // ✅ Make `id` required
+    name: string;  // ✅ Make `name` required
+    petType?: string; // Optional additional parameter
+  };
   Donate: { donationType?: string };
   MyDonations: { filter?: 'active' | 'completed' };
 };

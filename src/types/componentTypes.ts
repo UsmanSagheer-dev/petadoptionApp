@@ -24,7 +24,8 @@ export interface PetCardProps {
   
   imageUrl?: string;
   name: string;
-  age: string;
+  age?
+  : string;
   location: string;
   gender: string;
 
@@ -55,6 +56,7 @@ export interface TermsCheckboxProps {
 
 export type Pet ={
   id: string;
+  userId?:string;
   petBreed: string;
   amount?: string;
   location: string;

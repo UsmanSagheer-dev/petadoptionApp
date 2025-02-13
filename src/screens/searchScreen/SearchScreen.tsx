@@ -70,9 +70,9 @@ const SearchScreen = () => {
         ),
       );
 
-      console.log('✅ Favorite status updated in Firebase.');
+      console.log(' Favorite status updated in Firebase.');
     } catch (error) {
-      console.error('❌ Failed to toggle favorite:', error);
+      console.error(' Failed to toggle favorite:', error);
     }
   };
 
