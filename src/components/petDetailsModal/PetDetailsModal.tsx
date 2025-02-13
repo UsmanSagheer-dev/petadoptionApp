@@ -49,7 +49,7 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
     try {
       await firestore().collection('adoptionRequests').add({
         userId: firebaseUser.uid,
-        userName: currentUser?.displayName || firebaseUser?.displayName || 'Guest User',
+        userName: profileData?.name || 'Guest User',
         userEmail: currentUser?.email || firebaseUser?.email,
         petId: selectedPet.id,
         petName: selectedPet.petBreed,
@@ -102,7 +102,7 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
               />
             </TouchableOpacity>
             <View>
-              <Text style={styles.userName}>{currentUser?.displayName || firebaseUser?.displayName || 'Guest User'}</Text>
+              <Text style={styles.userName}>{profileData?.name  || 'Guest User'}</Text>
               <Text>Owner</Text>
             </View>
           </View>
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   // Overlay & Bottom Sheet
   overlay: {
     position: 'absolute',
-    bottom: 350,
+    bottom: 320,
     left: 0,
     right: 0,
     height: '100%',

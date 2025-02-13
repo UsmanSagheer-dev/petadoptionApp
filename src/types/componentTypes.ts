@@ -53,13 +53,13 @@ export interface TermsCheckboxProps {
 }
 
 
-export interface Pet {
+export type Pet ={
   id: string;
   petBreed: string;
-  amount: string;
+  amount?: string;
   location: string;
   gender: string;
-  isFavorite: boolean;
+  isFavorite?: boolean;
   imageUrl: string;
   age: string;
   weight: string;
@@ -68,6 +68,7 @@ export interface Pet {
   description: string;
   petType: string;
 }
+
 
 export interface CustomBottomSheetProps {
   isVisible: boolean;
