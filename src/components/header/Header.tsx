@@ -1,10 +1,17 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AppStackParamList } from '../../types/navigation';
 import useHeader from '../../hooks/useHeader';
 import IMAGES from '../../assets/images/index';
 
+// Define navigation type
+type NavigationProps = NativeStackNavigationProp<AppStackParamList, 'PasswordUpdate'>;
+
 const Header = () => {
   const { toggleDrawer, profileImage } = useHeader();
+  const navigation = useNavigation<NavigationProps>();
 
   return (
     <View style={styles.header}>
@@ -12,13 +19,13 @@ const Header = () => {
         <Image source={IMAGES.MODELTABL} alt="modeltab" />
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      {/* Navigate to PasswordUpdate screen when clicking on the profile image */}
+      <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
         <Image source={profileImage} style={styles.profile} />
       </TouchableOpacity>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   header: {
@@ -26,7 +33,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 15,
     backgroundColor: '#ffffff',
   },
   profile: {

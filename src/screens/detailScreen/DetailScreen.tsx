@@ -1,40 +1,59 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Alert, TouchableWithoutFeedback } from 'react-native';
 import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLOR from '../../constant/constant';
 
 const DetailScreen = ({ route, navigation }) => {
-  const { pet } = route.params;
+  const { id, name, pet, deletePet } = route.params; // ✅ Accepting pet and deletePet
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
-  // ✅ Automatically open modal when screen loads
   useEffect(() => {
     setIsBottomSheetVisible(true);
   }, []);
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.detailHeader}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Icon name="long-arrow-left" size={24} color={COLOR.white} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <MaterialIcons name="delete" size={24} color={COLOR.white} />
-        </TouchableOpacity>
-      </View>
+  const handleDeletePet = () => {
+    Alert.alert(
+      'Confirm Deletion',
+      'Are you sure you want to delete this pet?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          onPress: async () => {
+            await deletePet(id); // ✅ Pet delete karega
+            setIsBottomSheetVisible(false);
+            navigation.goBack(); // ✅ Modal close + screen back
+          },
+          style: 'destructive',
+        },
+      ]
+    );
+  };
 
-      {/* ✅ Modal Automatically Opens */}
-      <PetDetailsModal
-        isVisible={isBottomSheetVisible}
-        onClose={() => {
-          setIsBottomSheetVisible(false);
-          navigation.goBack(); // ✅ Screen Close ho jayegi jab Modal Band Hoga
-        }}
-        selectedPet={pet}
-      />
-    </View>
+  return (
+    <TouchableWithoutFeedback onPress={() => setIsBottomSheetVisible(false)}> 
+      <View style={styles.container}>
+        <View style={styles.detailHeader}>
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <Icon name="long-arrow-left" size={24} color={COLOR.white} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleDeletePet}>
+            <MaterialIcons name="delete" size={24} color={COLOR.white} />
+          </TouchableOpacity>
+        </View>
+
+        <PetDetailsModal
+          isVisible={isBottomSheetVisible}
+          onClose={() => {
+            setIsBottomSheetVisible(false);
+            navigation.goBack();
+          }}
+          selectedPet={pet}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

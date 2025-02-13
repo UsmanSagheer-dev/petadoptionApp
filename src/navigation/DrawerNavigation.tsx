@@ -1,30 +1,61 @@
-import React from 'react';
-import { DrawerContentScrollView, DrawerContentComponentProps } from '@react-navigation/drawer';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import {
+  DrawerContentScrollView,
+  DrawerContentComponentProps,
+} from '@react-navigation/drawer';
+import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import auth from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { DrawerParamList } from '../types/navigation';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Close Icon
+import {useState} from 'react';
+import SearchInput from '../components/searcInput/SearchInput';
+import COLOR from '../constant/constant';
 
-const CustomDrawer = ({ navigation }: DrawerContentComponentProps) => {
+const CustomDrawer = ({navigation}: DrawerContentComponentProps) => {
   const handleLogout = () => {
     auth().signOut();
     GoogleSignin.signOut();
   };
+  const [searchText, setSearchText] = useState('');
 
   return (
-    <DrawerContentScrollView>
+    <DrawerContentScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.navigate('MainStack')}>
-          <Text>Home</Text>
+        {/* Close Button */}
+        <TouchableOpacity
+          style={styles.closeButton}
+          onPress={() => navigation.closeDrawer()}>
+          <Icon name="close" size={24} color="#000" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Donate')}>
-          <Text>Donate</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('MyDonation')}>
-          <Text>My Donations</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleLogout}>
-          <Text style={styles.logout}>Log Out</Text>
+        <View>
+          <SearchInput searchText={searchText} setSearchText={setSearchText} />
+        </View>
+        {/* Menu Items */}
+        <View style={styles.menuContainer}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => navigation.navigate('MainStack')}>
+            <Text style={styles.menuText}>Home</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => navigation.navigate('Donate')}>
+            <Text style={styles.menuText}>Donate</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => navigation.navigate('MyDonation')}>
+            <Text style={styles.menuText}>My Donations</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => navigation.navigate('PasswordUpdate')}>
+            <Text style={styles.menuText}>PasswordUpdate</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Logout at Bottom */}
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutText}>Log Out</Text>
         </TouchableOpacity>
       </View>
     </DrawerContentScrollView>
@@ -32,8 +63,39 @@ const CustomDrawer = ({ navigation }: DrawerContentComponentProps) => {
 };
 
 const styles = StyleSheet.create({
-  container: { padding: 20 },
-  logout: { color: 'red', marginTop: 20 }
+  scrollContainer: {
+    flexGrow: 1, // Ensures full height
+    justifyContent: 'space-between',
+  },
+  container: {
+    flex: 1,
+
+
+    paddingVertical: 10,
+  },
+  closeButton: {
+    alignSelf: 'flex-start',
+    padding: 10,
+  },
+  menuContainer: {
+    flex: 1, // Ensures menu takes available space
+  },
+  menuItem: {
+    paddingVertical: 15,
+  
+  },
+  menuText: {
+    color:COLOR.primary,
+    fontSize: 16,
+  },
+  logoutButton: {
+    marginBottom: 30, // Space from bottom
+  },
+  logoutText: {
+    color: 'red',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
 export default CustomDrawer;

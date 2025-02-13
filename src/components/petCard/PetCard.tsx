@@ -9,7 +9,7 @@ const PetCard: React.FC<PetCardProps> = ({
   age,
   location,
   gender,
-  icon, // 'icon' instead of 'favoriteIcon'
+  icon, 
   locationIcon,
   onPress,
   onIconPress,
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     marginBottom: 12,
-    borderRadius: 10, // Thoda smooth look dene ke liye
+    borderRadius: 10, 
    
 },
 
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     // height: ,
     backgroundColor: '#C4C4C4',
     borderRadius: 20,
-    // overflow: 'hidden',
+    overflow: 'hidden',
     zIndex: 999,
    
   },
@@ -74,17 +74,17 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'cover',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 }, // Shadow ko neeche shift karne ke liye
-    shadowOpacity: 5, // Shadow ki intensity
-    shadowRadius: 6, // Blur effect
-    elevation: 8, // Android ke liye shado
+    shadowOffset: { width: 0, height: 4 }, 
+    shadowOpacity: 5,
+    shadowRadius: 6, 
+    elevation: 8, 
   },
   infoCard: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    borderRadius: 20, // Yeh puri card ke liye radius hai
-    borderTopRightRadius:20,  // Sirf top left ke liye
-    borderBottomRightRadius: 20,  // Sirf bottom left ke liye
+    borderRadius: 20, 
+    borderTopRightRadius:20,  
+    borderBottomRightRadius: 20,  
     padding: 12,
     marginLeft: -10,
     height: 126,
