@@ -31,14 +31,11 @@ const MyDonationScreen = () => {
     navigation.navigate('Detail', {
       id: pet.id,
       name: pet.name,
-      pet, // Now allowed if AppStackParamList includes pet
+      pet, 
     });
   };
   
-  
-  
 
-  // ✅ Delete Confirmation Function
   const handleDeletePet = (petId: string) => {
     Alert.alert(
       'Confirm Deletion',

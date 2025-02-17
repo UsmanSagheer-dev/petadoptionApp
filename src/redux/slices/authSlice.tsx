@@ -19,32 +19,45 @@ export const googleSignup = createAsyncThunk(
     try {
       const { idToken, name, email } = userInfo;
 
+      // Firebase Authentication
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       const userCredential = await auth().signInWithCredential(googleCredential);
       const newUser = userCredential.user;
 
-      if (!newUser) {
-        throw new Error('Google Sign-Up failed.');
+      if (!newUser || !newUser.uid) {
+        throw new Error('Google Sign-Up failed: No user data received.');
       }
 
-      await firestore().collection('users').doc(newUser.uid).set({
-        id: newUser.uid,
-        name,
-        email,
-        createdAt: firestore.Timestamp.now(),
-      });
+      const userDocRef = firestore().collection('users').doc(newUser.uid);
+      const userSnapshot = await userDocRef.get();
 
-      return {
-        uid: newUser.uid,
-        email: newUser.email,
-        displayName: newUser.displayName || name,
+      let userData = {
+        uid: newUser.uid, // ✅ Change `id` to `uid`
+        displayName: name || newUser.displayName || 'Unknown User', // ✅ Ensure `displayName` exists
+        email: email || newUser.email || '',
         photoURL: newUser.photoURL || null,
-      } as User;
+        favorites: [],
+        createdAt: firestore.FieldValue.serverTimestamp(),
+      };
+      
+      if (!userSnapshot.exists) {
+        // ✅ Firestore me user data save hoga
+        await userDocRef.set(userData);
+      } else {
+        // ✅ Agar user pehle se mojood hai, toh uska data fetch hoga
+        userData = userSnapshot.data() as typeof userData;
+      }
+        console.log("🚀 ~ userDocRef:", userDocRef)
+     
+
+      return userData;
     } catch (error: any) {
+      console.error('Google Sign-Up Error:', error);
       return rejectWithValue(error.code || error.message);
     }
   }
 );
+
 
 
 // Signup

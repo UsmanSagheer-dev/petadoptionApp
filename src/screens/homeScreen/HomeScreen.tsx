@@ -67,7 +67,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     },
   ];
   const [selectedTab, setSelectedTab] = useState('');
-  
+    const [searchText, setSearchText] = useState<string>('');
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -81,9 +81,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.heading}>Find an Awesome Pets for You</Text>
+            
           </View>
           <View style={styles.searchContainer}>
-            {/* <SearchInput /> */}
+          <SearchInput searchText={searchText} setSearchText={setSearchText} />
           </View>
           <View>
             <ScrollView
