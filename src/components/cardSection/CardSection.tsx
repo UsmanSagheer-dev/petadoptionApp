@@ -6,6 +6,7 @@ import {fetchDonations} from '../../redux/slices/donateSlice';
 import Card from '../../components/card/Card';
 import {PetDonation} from '../../types/auth';
 import styles from './style';
+import CustomLoader from '../../components/radarLoader/RadarLoader';
 
 const CardSection: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,7 +24,7 @@ const CardSection: React.FC = () => {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.scrollContainer}>
       {loading ? (
-        <Text>Loading...</Text>
+       <CustomLoader/>
       ) : error ? (
         <Text>Error: {error}</Text>
       ) : (

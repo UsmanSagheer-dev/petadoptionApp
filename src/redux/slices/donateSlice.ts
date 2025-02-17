@@ -20,13 +20,12 @@ export const donatePet = createAsyncThunk<PetDonation, PetDonation>(
       if (!user) throw new Error('User not authenticated');
 
       const donationsRef = firestore().collection('donations');
-      
-      // Document ka reference generate karna
+  
       const docRef = donationsRef.doc(); 
 
       // Firestore mein save karna
       await docRef.set({
-        id: docRef.id, // Manually setting ID
+        id: docRef.id, 
         userId: user.uid,
         isFavorite: false,
         ...petData,
@@ -45,7 +44,7 @@ export const fetchDonations = createAsyncThunk<PetDonation[], void>(
   'donation/fetchDonations',
   async (_, { rejectWithValue }) => {
     try {
-      const donationsRef = firestore().collection('donations'); // 🔄 Collection Group removed
+      const donationsRef = firestore().collection('donations'); 
       const snapshot = await donationsRef.get();
 
       const donations: PetDonation[] = snapshot.docs.map(doc => ({
