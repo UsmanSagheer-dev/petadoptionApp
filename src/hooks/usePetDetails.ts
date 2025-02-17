@@ -1,45 +1,45 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../redux/store';
-import { fetchProfile } from '../redux/slices/profileImageSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../redux/store';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigation';
+import { requestAdoption } from '../redux/slices/donateSlice';
+import { Pet } from '../types/componentTypes';
 
-export const usePetDetails = (selectedPet: any) => {
+interface ProfileData {
+  name: string;
+  imageUrl: string | null;
+}
+
+export const usePetDetails = (selectedPet?: Pet | null) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const firebaseUser = auth().currentUser;
-  
-  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
-  const profileData = useSelector((state: RootState) => state.profile.profileData);
 
-  useEffect(() => {
-    dispatch(fetchProfile());
-  }, [dispatch]);
+  const profileData: ProfileData = {
+    name: firebaseUser?.displayName || 'Guest User',
+    imageUrl: firebaseUser?.photoURL || null,
+  };
 
   const handleAdoptNow = async () => {
-    if (!firebaseUser) {
-      console.error('User not logged in');
+    if (!firebaseUser || !firebaseUser.email || !selectedPet) {
+      console.error('User not logged in or email not available or pet not selected');
       return;
     }
+
     try {
-      await firestore().collection('adoptionRequests').add({
-        userId: firebaseUser.uid,
-        userName: profileData?.name || 'Guest User',
-        userEmail: currentUser?.email || firebaseUser?.email,
-        petId: selectedPet.id,
-        petName: selectedPet.petBreed,
-        petType: selectedPet.petType,
-        petAge: selectedPet.age,
-        petGender: selectedPet.gender,
-        petWeight: selectedPet.weight,
-        petVaccinated: selectedPet.vaccinated,
-        petLocation: selectedPet.location,
-        timestamp: firestore.FieldValue.serverTimestamp(),
-      });
+      await dispatch(
+        requestAdoption({
+          donationId: selectedPet.id,
+          userData: {
+            uid: firebaseUser.uid,
+            name: firebaseUser.displayName || 'Guest User',
+            email: firebaseUser.email
+          }
+        })
+      ).unwrap();
+
       console.log('Adoption request submitted successfully');
       navigation.navigate('AdoptNow');
     } catch (error) {

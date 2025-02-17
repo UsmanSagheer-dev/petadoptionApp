@@ -51,6 +51,7 @@ export const updateProfile = createAsyncThunk(
   { rejectWithValue }) => {
     try {
       const userId = auth().currentUser?.uid;
+      console.log("🚀 ~ userId:", userId)
       if (!userId) throw new Error('User not authenticated');
 
       await firestore().collection('users').doc(userId).set({
