@@ -62,15 +62,15 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
             <TouchableOpacity>
               <Image
                 source={
-                  profileData?.imageUrl
-                    ? { uri: profileData.imageUrl }
+                  profileData?.photoURL
+                    ? { uri: profileData.photoURL }
                     : IMAGES.PROFILEIMG
                 }
                 style={styles.profile}
               />
             </TouchableOpacity>
             <View>
-              <Text style={styles.userName}>{profileData.name}</Text>
+              <Text style={styles.userName}>{profileData.displayName}</Text>
               <Text>Owner</Text>
             </View>
           </View>

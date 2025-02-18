@@ -8,8 +8,8 @@ import { requestAdoption } from '../redux/slices/donateSlice';
 import { Pet } from '../types/componentTypes';
 
 interface ProfileData {
-  name: string;
-  imageUrl: string | null;
+  displayName: string;
+  photoURL: string | null;
 }
 
 export const usePetDetails = (selectedPet?: Pet | null) => {
@@ -18,8 +18,8 @@ export const usePetDetails = (selectedPet?: Pet | null) => {
   const firebaseUser = auth().currentUser;
 
   const profileData: ProfileData = {
-    name: firebaseUser?.displayName || 'Guest User',
-    imageUrl: firebaseUser?.photoURL || null,
+    displayName: firebaseUser?.displayName || 'Guest User',
+    photoURL: firebaseUser?.photoURL || null,
   };
 
   const handleAdoptNow = async () => {
