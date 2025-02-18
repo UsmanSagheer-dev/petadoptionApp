@@ -1,26 +1,32 @@
-import {useEffect, useState} from 'react';
-import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import auth from '@react-native-firebase/auth';
+import {setUser, setInitializing, setShowSplash} from '../redux/slices/authSlice';
+import type {RootState} from '../redux/store';
+
 const useAuth = () => {
-  const [initializing, setInitializing] = useState<boolean>(true);
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-  const [showSplash, setShowSplash] = useState<boolean>(true);
+  const dispatch = useDispatch();
+  const authState = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(
-      (user: FirebaseAuthTypes.User | null) => {
-        setUser(user);
-        if (initializing) setInitializing(false);
-      },
-    );
+    const subscriber = auth().onAuthStateChanged(user => {
+      dispatch(setUser(user));
+      if (authState.initializing) {
+        dispatch(setInitializing(false));
+      }
+    });
+
     const splashTimeout = setTimeout(() => {
-      setShowSplash(false);
+      dispatch(setShowSplash(false));
     }, 3000);
+
     return () => {
-      clearTimeout(splashTimeout);
       subscriber();
+      clearTimeout(splashTimeout);
     };
-  }, [initializing]);
-  return {initializing, user, showSplash};
+  }, [dispatch, authState.initializing]);
+
+  return authState;
 };
 
 export default useAuth;

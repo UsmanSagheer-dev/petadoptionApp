@@ -1,178 +1,118 @@
+// authSlice.ts
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import auth from '@react-native-firebase/auth';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
+interface User {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL: string | null;
+}
 
-import {User, AuthState, SignupPayload, SigninPayload} from '../../types/auth';
+interface AuthState {
+  user: User | null;
+  initializing: boolean;
+  showSplash: boolean;
+  error: string | null;
+}
 
 const initialState: AuthState = {
-  currentUser: null,
-  isAuthenticated: false,
+  user: null,
+  initializing: true,
+  showSplash: true,
   error: null,
-  showSplash: true, 
-user: null
 };
+
 export const googleSignup = createAsyncThunk(
   'auth/googleSignup',
-  async (userInfo: { idToken: string; name: string; email: string }, { rejectWithValue }) => {
+  async (userInfo: {idToken: string}, {rejectWithValue}) => {
     try {
-      const { idToken, name, email } = userInfo;
-
-      // Firebase Authentication
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      const userCredential = await auth().signInWithCredential(googleCredential);
-      const newUser = userCredential.user;
-
-      if (!newUser || !newUser.uid) {
-        throw new Error('Google Sign-Up failed: No user data received.');
-      }
-
-      const userDocRef = firestore().collection('users').doc(newUser.uid);
-      const userSnapshot = await userDocRef.get();
-
-      let userData = {
-        uid: newUser.uid, // ✅ Change `id` to `uid`
-        displayName: name || newUser.displayName || 'Unknown User', // ✅ Ensure `displayName` exists
-        email: email || newUser.email || '',
-        photoURL: newUser.photoURL || null,
-        favorites: [],
-        createdAt: firestore.FieldValue.serverTimestamp(),
-      };
+      const {idToken} = userInfo;
+      const credential = auth.GoogleAuthProvider.credential(idToken);
+      const userCredential = await auth().signInWithCredential(credential);
       
-      if (!userSnapshot.exists) {
-        // ✅ Firestore me user data save hoga
-        await userDocRef.set(userData);
-      } else {
-        // ✅ Agar user pehle se mojood hai, toh uska data fetch hoga
-        userData = userSnapshot.data() as typeof userData;
+      if (!userCredential.user) {
+        throw new Error('Google authentication failed');
       }
-        console.log("🚀 ~ userDocRef:", userDocRef)
-     
 
-      return userData;
+      const userDoc = firestore().collection('users').doc(userCredential.user.uid);
+      const docSnapshot = await userDoc.get();
+
+      if (!docSnapshot.exists) {
+        await userDoc.set({
+          uid: userCredential.user.uid,
+          displayName: userCredential.user.displayName,
+          email: userCredential.user.email,
+          photoURL: userCredential.user.photoURL,
+          createdAt: firestore.FieldValue.serverTimestamp(),
+        });
+      }
+
+      return userCredential.user;
     } catch (error: any) {
-      console.error('Google Sign-Up Error:', error);
-      return rejectWithValue(error.code || error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
 
-
-
-// Signup
 export const signup = createAsyncThunk(
   'auth/signup',
-  async ({email, password, name}: SignupPayload, {rejectWithValue}) => {
+  async (
+    {email, password, name}: {email: string; password: string; name: string},
+    {rejectWithValue},
+  ) => {
     try {
-      const existingUser = await firestore()
-        .collection('users')
-        .where('email', '==', email)
-        .get();
-      if (!existingUser.empty) {
-        return rejectWithValue('This email is already registered.');
-      }
-
       const userCredential = await auth().createUserWithEmailAndPassword(
         email,
         password,
       );
-      const user = userCredential.user;
+      
+      if (!userCredential.user) {
+        throw new Error('User creation failed');
+      }
 
-      if (!user) throw new Error('User creation failed.');
-
-      await user.updateProfile({displayName: name});
-
-      await firestore().collection('users').doc(user.uid).set({
-        id: user.uid,
-        name,
+      await userCredential.user.updateProfile({displayName: name});
+      await firestore().collection('users').doc(userCredential.user.uid).set({
+        uid: userCredential.user.uid,
+        displayName: name,
         email,
-        createdAt: firestore.Timestamp.now(),
+        createdAt: firestore.FieldValue.serverTimestamp(),
       });
 
-      return {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName || name,
-        photoURL: user.photoURL || null,
-      } as User;
+      return userCredential.user;
     } catch (error: any) {
-      return rejectWithValue(error.code || error.message);
+      return rejectWithValue(error.message);
     }
   },
 );
 
-// Signin
 export const signin = createAsyncThunk(
   'auth/signin',
-  async ({email, password}: SigninPayload, {rejectWithValue}) => {
+  async (
+    {email, password}: {email: string; password: string},
+    {rejectWithValue},
+  ) => {
     try {
       const userCredential = await auth().signInWithEmailAndPassword(
         email,
         password,
       );
-      const user = userCredential.user;
-
-      if (!user) throw new Error('Login failed.');
-
-      return {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-      } as User;
+      return userCredential.user;
     } catch (error: any) {
-      return rejectWithValue(error.code || error.message);
+      return rejectWithValue(error.message);
     }
   },
 );
 
-// Signout
 export const signout = createAsyncThunk(
   'auth/signout',
   async (_, {rejectWithValue}) => {
     try {
       await auth().signOut();
     } catch (error: any) {
-      return rejectWithValue(error.code || error.message);
-    }
-  },
-);
-
-// Update Password
-export const updatePassword = createAsyncThunk(
-  'auth/updatePassword',
-  async (
-    {oldPassword, newPassword}: {oldPassword: string; newPassword: string},
-    {rejectWithValue},
-  ) => {
-    try {
-      const user = auth().currentUser;
-      if (!user || !user.email) {
-        throw new Error('User not found. Please login again.');
-      }
-
-      const credential = auth.EmailAuthProvider.credential(
-        user.email,
-        oldPassword,
-      );
-      await user.reauthenticateWithCredential(credential);
-
-      await user.updatePassword(newPassword);
-
-      await firestore().collection('users').doc(user.uid).update({
-        password: newPassword,
-      });
-
-      return 'Password updated successfully';
-    } catch (error: any) {
-      if (error.code === 'auth/wrong-password') {
-        return rejectWithValue('Incorrect old password.');
-      } else if (error.code === 'auth/requires-recent-login') {
-        return rejectWithValue('Session expired, please login again.');
-      } else {
-        return rejectWithValue(error.message);
-      }
+      return rejectWithValue(error.message);
     }
   },
 );
@@ -181,53 +121,44 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload
+        ? {
+            uid: action.payload.uid,
+            email: action.payload.email,
+            displayName: action.payload.displayName,
+            photoURL: action.payload.photoURL,
+          }
+        : null;
+      state.initializing = false;
+    },
+    setInitializing: (state, action) => {
+      state.initializing = action.payload;
+    },
+    setShowSplash: (state, action) => {
+      state.showSplash = action.payload;
+    },
     clearError: state => {
       state.error = null;
     },
   },
   extraReducers: builder => {
     builder
-
-    .addCase(googleSignup.fulfilled, (state, action) => {
-      state.currentUser = action.payload;
-      state.isAuthenticated = true;
-      state.error = null;
-    })
-    .addCase(googleSignup.rejected, (state, action) => {
-      state.error = action.payload as string;
-    })
-      .addCase(signup.fulfilled, (state, action) => {
-        state.currentUser = action.payload;
-        state.isAuthenticated = true;
-        state.error = null;
+      .addCase(googleSignup.rejected, (state, action) => {
+        state.error = action.payload as string;
       })
       .addCase(signup.rejected, (state, action) => {
         state.error = action.payload as string;
       })
-      .addCase(signin.fulfilled, (state, action) => {
-        state.currentUser = action.payload;
-        state.isAuthenticated = true;
-        state.error = null;
-      })
       .addCase(signin.rejected, (state, action) => {
         state.error = action.payload as string;
       })
-      .addCase(signout.fulfilled, state => {
-        state.currentUser = null;
-        state.isAuthenticated = false;
-        state.error = null;
-      })
       .addCase(signout.rejected, (state, action) => {
-        state.error = action.payload as string;
-      })
-      .addCase(updatePassword.fulfilled, state => {
-        state.error = null;
-      })
-      .addCase(updatePassword.rejected, (state, action) => {
         state.error = action.payload as string;
       });
   },
 });
 
-export const {clearError} = authSlice.actions;
+export const {setUser, setInitializing, setShowSplash, clearError} =
+  authSlice.actions;
 export default authSlice.reducer;

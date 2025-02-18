@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth'; // Firebase Auth import
+import auth from '@react-native-firebase/auth'; 
 import { Pet } from '../types/componentTypes';
 import { PET_TYPE_MAP } from '../constant/constant';
 
@@ -27,20 +27,18 @@ const useFetchPets = (selectedTab: string) => {
           .where('petType', '==', queryPetType)
           .get();
     
-        // Logged-in user ka ID le lo
         const currentUserId = auth().currentUser?.uid;
     
-        // Logged-in user ka data hata do (filter on client-side)
         const fetchedPets: Pet[] = snapshot.docs.map(doc => {
-          const data = doc.data() as Pet; // Ensure type safety
+          const data = doc.data() as Pet; 
           return {
-            ...data,  // Spread pehle karein
-            id: doc.id, // Fir 'id' ko last me rakhein, taake overwrite na ho
+            ...data, 
+            id: doc.id,
           };
         })
         
         
-          .filter(pet => pet.userId !== currentUserId); // Exclude logged-in user
+          .filter(pet => pet.userId !== currentUserId); 
     
         setPets(fetchedPets);
       } catch (err) {

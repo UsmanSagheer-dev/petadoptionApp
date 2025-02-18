@@ -10,7 +10,6 @@ import { Alert } from "react-native";
 const useDonateScreen = (navigation: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.donation);
-
   const [petType, setPetType] = useState("");
   const [gender, setGender] = useState("");
   const [vaccinated, setVaccinated] = useState("");
