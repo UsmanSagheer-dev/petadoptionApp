@@ -18,7 +18,7 @@ export type RootStackParamList = {
   Auth: undefined;
   App: undefined;
   Splash: undefined;
-  
+  PasswordUpdate: undefined;
 };
 
 // Auth stack type

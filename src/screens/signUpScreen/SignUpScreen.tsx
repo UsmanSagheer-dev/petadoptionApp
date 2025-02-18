@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -11,10 +11,14 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../redux/store';
-import { signup } from '../../redux/slices/authSlice';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppDispatch} from '../../redux/store';
+import {signup} from '../../redux/slices/authSlice';
 import useSignUp from '../../hooks/useSignup';
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
@@ -23,7 +27,7 @@ import COLOR from '../../constant/constant';
 import OrDivider from '../../components/onDivider/OnDivider';
 import IMAGES from '../../assets/images/index';
 import useGoogleSignIn from '../../hooks/useGoogleSignIn';
-import styles from './style'
+import styles from './style';
 type RootStackParamList = {
   SignUp: undefined;
   Login: undefined;
@@ -40,7 +44,7 @@ interface Props {
   navigation: SignUpScreenNavigationProp;
 }
 
-const SignUpScreen: React.FC<Props> = ({ navigation }) => {
+const SignUpScreen: React.FC<Props> = ({navigation}) => {
   const {
     name,
     setName,
@@ -56,13 +60,14 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
     termsAccepted,
     setTermsAccepted,
   } = useSignUp();
-  const { onGoogleButtonPress } = useGoogleSignIn(); 
+  const {onGoogleButtonPress} = useGoogleSignIn();
   const dispatch = useDispatch<AppDispatch>();
-  const { isAuthenticated, error } = useSelector((state: any) => state.auth);
+  const {isAuthenticated, error} = useSelector((state: any) => state.auth);
 
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: '835900712525-b97q3pta58qfpl0i87b2dvrd69kb0dpu.apps.googleusercontent.com', 
+      webClientId:
+        '835900712525-b97q3pta58qfpl0i87b2dvrd69kb0dpu.apps.googleusercontent.com',
     });
   }, []);
 
@@ -91,13 +96,6 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
 
     setLoading(false);
   };
-
-  
-  
-  
-  
-  
-  
 
   return (
     <KeyboardAvoidingView
@@ -138,7 +136,10 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
             </View>
           </View>
           <View style={styles.termsContainer}>
-            <TermsCheckbox checked={termsAccepted} onChange={setTermsAccepted} />
+            <TermsCheckbox
+              checked={termsAccepted}
+              onChange={setTermsAccepted}
+            />
           </View>
           <View style={styles.buttonGroupContainer}>
             <LoginButton
@@ -170,7 +171,7 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
           </View>
 
           <View style={styles.googlecontainer}>
-            <TouchableOpacity onPress={ onGoogleButtonPress}>
+            <TouchableOpacity onPress={onGoogleButtonPress}>
               <Image source={IMAGES.GOOGLEIMG} style={styles.googleimg} />
             </TouchableOpacity>
             <Text style={styles.googleText}>Sign in with Google</Text>
@@ -180,7 +181,5 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
     </KeyboardAvoidingView>
   );
 };
-
-
 
 export default SignUpScreen;
