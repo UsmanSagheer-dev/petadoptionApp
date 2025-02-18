@@ -40,7 +40,7 @@ const PetCard: React.FC<PetCardProps> = ({
             <View style={styles.genderContainer}>
               <Text style={styles.gender}>{gender}</Text>
               <TouchableOpacity onPress={onIconPress}>
-                <Image source={icon} style={styles.deleteIcon} />
+              {icon}
               </TouchableOpacity>
             </View>
           </View>

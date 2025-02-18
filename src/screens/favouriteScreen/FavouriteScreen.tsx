@@ -12,6 +12,7 @@ import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import useFavorites from '../../hooks/useFavourite';
 import IMAGES from '../../assets/images/index';
 import COLOR from '../../constant/constant';
+import ICONS from '../../constant/icons';
 
 const FavouriteScreen = () => {
   const {
@@ -43,7 +44,7 @@ const FavouriteScreen = () => {
               age={pet.age}
               location={pet.location}
               gender={pet.gender}
-              icon={pet.isFavorite ? IMAGES.ONCLICKFAV : IMAGES.OFCLICKFAV}
+              icon={pet.isFavorite ? ICONS.ONCLICKFAV() : ICONS.OFCLICKFAV()}
               locationIcon={IMAGES.LOCATION_VECTOR}
               onPress={() => handlePetClick(pet)}
               onIconPress={() => toggleFavorite(pet)}
