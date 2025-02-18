@@ -1,5 +1,5 @@
 // authSlice.ts
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -125,10 +125,6 @@ export const updatePassword = createAsyncThunk(
 
       await user.updatePassword(newPassword);
 
-      await firestore().collection('users').doc(user.uid).update({
-        password: newPassword,
-      });
-
       return 'Password updated successfully';
     } catch (error: any) {
       if (error.code === 'auth/wrong-password') {
@@ -157,24 +153,17 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUser: (state, action) => {
-      state.user = action.payload
-        ? {
-            uid: action.payload.uid,
-            email: action.payload.email,
-            displayName: action.payload.displayName,
-            photoURL: action.payload.photoURL,
-          }
-        : null;
+    setUser: (state, action: PayloadAction<User | null>) => {
+      state.user = action.payload;
       state.initializing = false;
     },
-    setInitializing: (state, action) => {
+    setInitializing: (state, action: PayloadAction<boolean>) => {
       state.initializing = action.payload;
     },
-    setShowSplash: (state, action) => {
+    setShowSplash: (state, action: PayloadAction<boolean>) => {
       state.showSplash = action.payload;
     },
-    clearError: state => {
+    clearError: (state) => {
       state.error = null;
     },
   },
