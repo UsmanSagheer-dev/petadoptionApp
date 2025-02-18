@@ -1,5 +1,5 @@
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import { StackNavigationProp } from '@react-navigation/stack';
+import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
+import {StackNavigationProp} from '@react-navigation/stack';
 export interface User {
   uid: string;
   email: string | null;
@@ -12,7 +12,7 @@ export interface AuthState {
   isAuthenticated: boolean;
   error: string | null;
   showSplash: boolean;
-  user: { 
+  user: {
     uid: string;
     email: string;
   } | null;
@@ -43,6 +43,6 @@ export interface PetDonation {
   description: string;
   location: string;
   contactNumber: string;
-  imageUrls: string[];
+  imageUrl: string[];
   money?: number;
 }
