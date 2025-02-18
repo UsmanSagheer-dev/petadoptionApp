@@ -51,7 +51,6 @@ const useProfileScreen = () => {
     }
   };
 
-  // ✅ Profile Update Ka Function (Button Click Pe Update Hoga)
   const handleUpdateProfile = async () => {
     try {
       setUploading(true);

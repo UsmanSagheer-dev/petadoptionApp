@@ -44,5 +44,5 @@ export interface PetDonation {
   location: string;
   contactNumber: string;
   imageUrl: string[];
-  money?: number;
+  amount?: number;
 }

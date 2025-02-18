@@ -60,7 +60,7 @@ const MyDonationScreen = () => {
             pets.map(pet => (
               <View key={pet.id} style={styles.petCardWrapper}>
                 <PetCard
-                  imageUrl={pet.imageUrl}
+                   imageUrl={pet.imageUrl}
                   name={pet.petBreed}
                   age={pet.petAge}
                   location={pet.location}
