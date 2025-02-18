@@ -22,7 +22,7 @@ export interface CustomeHeaderProps {
 
 export interface PetCardProps {
   
-  imageUrl?: string;
+  imageUrl?: any;
   name: string;
   age?
   : string;
@@ -69,7 +69,7 @@ export type Pet ={
   type: string;
   description: string;
   petType: string;
- 
+ donation: string;
   amount?: number;  // Add this to match donation money
 }
 

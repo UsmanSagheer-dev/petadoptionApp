@@ -18,6 +18,7 @@ import useFetchPets from '../../hooks/useFetchPets';
 import {PET_TABS} from '../../constant/constant';
 import {Pet} from '../../types/componentTypes';
 import {toggleFavoriteStatus} from '../../redux/slices/favoritesSlice';
+import ICONS from '../../constant/icons';
 
 type RootStackParamList = {
   Search: undefined;
@@ -109,10 +110,10 @@ const SearchScreen = () => {
               key={pet.id}
               imageUrl={pet.imageUrl}
               name={pet.petBreed}
-              age={pet.amount}
+              age={pet.age}
               location={pet.location}
               gender={pet.gender}
-              icon={pet.isFavorite ? IMAGES.ONCLICKFAV : IMAGES.OFCLICKFAV}
+              icon={pet.isFavorite ? ICONS.ONCLICKFAV() : ICONS.OFCLICKFAV()}
               locationIcon={IMAGES.LOCATION_VECTOR}
               onPress={() => handlePetPress(pet)}
               onIconPress={() => handleFavoriteToggle(pet)}

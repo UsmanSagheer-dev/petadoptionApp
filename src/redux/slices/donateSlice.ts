@@ -24,7 +24,7 @@ interface PetDonation {
   description: string;
   location: string;
   contactNumber: string;
-  imageUrls: string[];
+  imageUrl: string[];
   money?: number;
 }
 

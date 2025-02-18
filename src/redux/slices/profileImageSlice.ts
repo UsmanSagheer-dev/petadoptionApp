@@ -1,8 +1,7 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import firestore, { serverTimestamp } from '@react-native-firebase/firestore';
+import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
+import firestore, {serverTimestamp} from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
-// Types
 interface ProfileData {
   displayName: string;
   email?: string;
@@ -22,18 +21,18 @@ interface ProfileState {
 const initialState: ProfileState = {
   loading: false,
   error: null,
-  profileData: null
+  profileData: null,
 };
 
 export const fetchProfile = createAsyncThunk(
   'profile/fetchProfile',
-  async (_, { rejectWithValue }) => {
+  async (_, {rejectWithValue}) => {
     try {
       const userId = auth().currentUser?.uid;
       if (!userId) throw new Error('User not authenticated');
 
       const doc = await firestore().collection('users').doc(userId).get();
-      
+
       if (doc.exists) {
         return doc.data() as ProfileState['profileData'];
       }
@@ -41,41 +40,42 @@ export const fetchProfile = createAsyncThunk(
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
-  }
+  },
 );
 
 export const updateProfile = createAsyncThunk(
   'profile/updateProfile',
-  async ({ name, imageUrl }: { name: string; imageUrl: string }, 
-  { rejectWithValue }) => {
+  async (
+    {name, imageUrl}: {name: string; imageUrl: string},
+    {rejectWithValue},
+  ) => {
     try {
       const userId = auth().currentUser?.uid;
       if (!userId) throw new Error('User not authenticated');
 
-      // ✅ Firestore में displayName और photoURL फ़ील्ड्स का उपयोग करें
-      await firestore().collection('users').doc(userId).set({
-        displayName: name,  // पहले 'name' था, अब 'displayName'
-        photoURL: imageUrl, // पहले 'imageUrl' था, अब 'photoURL'
-        updatedAt: serverTimestamp(),
-      }, { merge: true });
-
-      // ✅ अपडेट किए गए डेटा को सही फ़ील्ड नामों के साथ वापस करें
-      return { 
-        displayName: name, 
-        photoURL: imageUrl 
+      await firestore().collection('users').doc(userId).set(
+        {
+          displayName: name,
+          photoURL: imageUrl,
+          updatedAt: serverTimestamp(),
+        },
+        {merge: true},
+      );
+      return {
+        displayName: name,
+        photoURL: imageUrl,
       };
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
-  }
+  },
 );
 
-// Slice
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    clearProfile: (state) => {
+    clearProfile: state => {
       state.profileData = null;
       state.error = null;
     },
@@ -84,11 +84,11 @@ const profileSlice = createSlice({
     },
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
-    }
+    },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-      .addCase(fetchProfile.pending, (state) => {
+      .addCase(fetchProfile.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -100,16 +100,16 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(updateProfile.pending, (state) => {
+      .addCase(updateProfile.pending, state => {
         state.loading = true;
         state.error = null;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.loading = false;
         if (state.profileData) {
-          state.profileData = { 
-            ...state.profileData, 
-            ...action.payload 
+          state.profileData = {
+            ...state.profileData,
+            ...action.payload,
           };
         }
       })
@@ -120,5 +120,5 @@ const profileSlice = createSlice({
   },
 });
 
-export const { clearProfile, setLoading, setError } = profileSlice.actions;
+export const {clearProfile, setLoading, setError} = profileSlice.actions;
 export default profileSlice.reducer;

@@ -17,10 +17,10 @@ const ICONS: IconType = {
   settings: (size = 24, color = "black") => (
     <MaterialIcons name="settings" size={size} color={color} />
   ),
-  heartFilled: (size = 24, color = "red") => (
+  ONCLICKFAV: (size = 24, color = "red") => (
     <MaterialIcons name="favorite" size={size} color={color} />
   ),
-  heartOutline: (size = 24, color = "gray") => (
+  OFCLICKFAV: (size = 24, color = "gray") => (
     <MaterialIcons name="favorite-border" size={size} color={color} />
   ),
   search: (size = 24, color = "black") => (

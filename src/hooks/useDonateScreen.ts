@@ -6,7 +6,7 @@ import { launchImageLibrary } from "react-native-image-picker";
 import { Image as RNImage } from "react-native-compressor";
 import { PetDonation } from "../types/auth";
 import { Alert } from "react-native";
-
+import RNFS from 'react-native-fs';
 const useDonateScreen = (navigation: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.donation);
@@ -36,9 +36,12 @@ const [age, setAge]=useState("");
             maxWidth: 800,
             maxHeight: 800,
           });
-          setImageUri(compressedUri);
+          
+          // Convert compressed image to Base64
+          const base64String = await RNFS.readFile(compressedUri, 'base64');
+          setImageUri(base64String);
         } catch (error) {
-          console.log("Image compression error:", error);
+          console.log("Image processing error:", error);
         }
       }
     });
@@ -58,7 +61,7 @@ const [age, setAge]=useState("");
       weight,
       location,
       description,
-      imageUrl: imageUri,
+      imageUrls: [imageUri],
       age,
     };
 

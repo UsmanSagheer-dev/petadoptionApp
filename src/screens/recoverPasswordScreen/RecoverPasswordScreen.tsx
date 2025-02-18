@@ -33,7 +33,7 @@ const RecoverPasswordScreen: React.FC<Props> = ({navigation}) => {
   const handleRecover = async (): Promise<void> => {
     if (email) {
       try {
-        const methods=await auth().sendPasswordResetEmail(email);
+        const methods = await auth().sendPasswordResetEmail(email);
         console.log('methods:', methods);
         console.log('Password reset email sent successfully');
         Alert.alert('Success', 'Password reset email sent!');

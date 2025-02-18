@@ -60,15 +60,15 @@ const MyDonationScreen = () => {
             pets.map(pet => (
               <View key={pet.id} style={styles.petCardWrapper}>
                 <PetCard
-                  imageUrl={pet.imageUrl}
+                   imageUrl={pet.imageUrl}
                   name={pet.petBreed}
-                  age={pet.age}
+                  age={pet.petAge}
                   location={pet.location}
                   gender={pet.gender}
-                  icon={IMAGES.DELETEICON} // ✅ Delete icon
+                  icon={IMAGES.DELETEICON} 
                   locationIcon={IMAGES.LOCATION_VECTOR}
-                  onPress={() => handlePetClick(pet)} // ✅ Card click navigates to detail
-                  onIconPress={() => handleDeletePet(pet.id)} // ✅ Delete only on icon click
+                  onPress={() => handlePetClick(pet)} 
+                  onIconPress={() => handleDeletePet(pet.id)} 
                 />
               </View>
             ))

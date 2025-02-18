@@ -51,7 +51,6 @@ const useProfileScreen = () => {
     }
   };
 
-  // ✅ Profile Update Ka Function (Button Click Pe Update Hoga)
   const handleUpdateProfile = async () => {
     try {
       setUploading(true);
@@ -59,8 +58,7 @@ const useProfileScreen = () => {
         name, 
         imageUrl: imageUri || "" 
       })).unwrap();
-      
-      // ✅ ताज़ा डेटा प्राप्त करने के लिए फिर से fetchProfile डिस्पैच करें
+
       await dispatch(fetchProfile());
       Alert.alert("Success", "Profile updated successfully!");
     } catch (error) {
