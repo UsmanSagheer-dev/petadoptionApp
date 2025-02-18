@@ -19,7 +19,7 @@ const useHeader = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
   };
 
-  const profileImage = profileData?.imageUrl ? { uri: profileData.imageUrl } : IMAGES.PROFILEIMG;
+  const profileImage = profileData?.photoURL ? { uri: profileData.photoURL } : IMAGES.PROFILEIMG;
 
   return { toggleDrawer, profileImage, loading };
 };

@@ -30,24 +30,19 @@ export interface SigninPayload {
 }
 
 export interface PetDonation {
-  id?: string;
+  id: string;
+  userId: string;
   petType: string;
   gender: string;
   vaccinated: string;
   petBreed: string;
-  amount: string;
-  weight: string;
-  location: string;
+  requests: AdoptionRequest[];
+  createdAt: FirebaseFirestoreTypes.Timestamp;
+  petName: string;
+  petAge: string;
   description: string;
-  errorText?: string;
-  imageUrl?: string;
-  age?:any;
-  isFavorite?:boolean
-  toggleFavoriteStatus?:any,
-  id?: string;
-  title: string;
-  subtitle: string;
-  createdAt?: FirebaseFirestoreTypes.Timestamp | null; // 🔥 Handle undefined/null
+  location: string;
+  contactNumber: string;
+  imageUrls: string[];
   money?: number;
- 
 }

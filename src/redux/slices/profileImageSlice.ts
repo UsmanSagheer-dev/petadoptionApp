@@ -4,9 +4,9 @@ import auth from '@react-native-firebase/auth';
 
 // Types
 interface ProfileData {
-  name: string;
+  displayName: string;
   email?: string;
-  imageUrl: string | null;
+  photoURL: string | null;
   petBreed?: string;
   petType?: string;
   location?: string;
@@ -25,7 +25,6 @@ const initialState: ProfileState = {
   profileData: null
 };
 
-// Thunks
 export const fetchProfile = createAsyncThunk(
   'profile/fetchProfile',
   async (_, { rejectWithValue }) => {
@@ -53,13 +52,18 @@ export const updateProfile = createAsyncThunk(
       const userId = auth().currentUser?.uid;
       if (!userId) throw new Error('User not authenticated');
 
+      // ✅ Firestore में displayName और photoURL फ़ील्ड्स का उपयोग करें
       await firestore().collection('users').doc(userId).set({
-        name,
-        imageUrl,
+        displayName: name,  // पहले 'name' था, अब 'displayName'
+        photoURL: imageUrl, // पहले 'imageUrl' था, अब 'photoURL'
         updatedAt: serverTimestamp(),
       }, { merge: true });
 
-      return { name, imageUrl };
+      // ✅ अपडेट किए गए डेटा को सही फ़ील्ड नामों के साथ वापस करें
+      return { 
+        displayName: name, 
+        photoURL: imageUrl 
+      };
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }

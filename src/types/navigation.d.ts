@@ -18,7 +18,7 @@ export type RootStackParamList = {
   Auth: undefined;
   App: undefined;
   Splash: undefined;
-  
+  PasswordUpdate: undefined;
 };
 
 // Auth stack type
@@ -32,24 +32,23 @@ export type AuthStackParamList = {
 
 // Main app stack type
 export type AppStackParamList = {
-  Detail: { id: string; name: string; pet: any };
-  DetailScreen: { id: string; name: string; pet: any };
-  ProfileScreen:undefined,
-  PasswordUpdate:undefined,
-  AdoptNow:undefined,
-  DonateScreen:undefined;
-  MyDonationScreen: undefined;
-  Main: undefined;
-  Drawer: undefined;
-  PasswordUpdate: undefined;
   Detail: { 
-    id: string;  // ✅ Make `id` required
-    name: string;  // ✅ Make `name` required
-    petType?: string; // Optional additional parameter
+    id: string;  
+    name: string;  
+    pet: any; // Pet must always be provided
   };
-  Donate: { donationType?: string };
-  MyDonations: { filter?: 'active' | 'completed' };
+  DetailScreen: { id: string; name: string; pet: any };
+  ProfileScreen: {}; // Empty object instead of `undefined`
+  PasswordUpdate: {};
+  AdoptNow: {};
+  DonateScreen: {};
+  MyDonationScreen: {};
+  Main: {};
+  Drawer: {};
+  Donate: { donationType: string };
+  MyDonations: { filter: 'active' | 'completed' };  
 };
+
 
 // Drawer navigation type
 export type DrawerParamList = {

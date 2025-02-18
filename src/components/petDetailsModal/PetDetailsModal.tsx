@@ -1,24 +1,25 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Animated, Image} from 'react-native';
-import {useCustomBottomSheet} from '../../hooks/useCustomBottomSheet';
-import {CustomBottomSheetProps} from '../../types/componentTypes';
+import { View, Text, TouchableOpacity, Animated, Image } from 'react-native';
+import { useCustomBottomSheet } from '../../hooks/useCustomBottomSheet';
+import { CustomBottomSheetProps } from '../../types/componentTypes';
 import IMAGES from '../../assets/images';
-import {usePetDetails} from '../../hooks/usePetDetails';
+import { usePetDetails } from '../../hooks/usePetDetails';
 import styles from './styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLOR from '../../constant/constant';
+
 const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
   isVisible,
   onClose,
   selectedPet,
 }) => {
-  const {translateY} = useCustomBottomSheet(isVisible);
-  const {profileData, handleAdoptNow} = usePetDetails(selectedPet);
+  const { translateY } = useCustomBottomSheet(isVisible);
+  const { profileData, handleAdoptNow } = usePetDetails(selectedPet);
 
   if (!selectedPet) return null;
 
   return (
-    <Animated.View style={[styles.overlay, {transform: [{translateY}]}]}>
+    <Animated.View style={[styles.overlay, { transform: [{ translateY }] }]}>
       <View style={styles.bottomSheet}>
         <View style={styles.header}>
           <TouchableOpacity onPress={onClose}>
@@ -61,17 +62,15 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
             <TouchableOpacity>
               <Image
                 source={
-                  profileData?.imageUrl
-                    ? {uri: profileData.imageUrl}
+                  profileData?.photoURL
+                    ? { uri: profileData.photoURL }
                     : IMAGES.PROFILEIMG
                 }
                 style={styles.profile}
               />
             </TouchableOpacity>
             <View>
-              <Text style={styles.userName}>
-                {profileData?.name || 'Guest User'}
-              </Text>
+              <Text style={styles.userName}>{profileData.displayName}</Text>
               <Text>Owner</Text>
             </View>
           </View>

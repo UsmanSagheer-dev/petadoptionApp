@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { updateProfile, fetchProfile } from "../redux/slices/profileImageSlice";
-import { fetchUser } from "../redux/slices/userSlice";
+// import { fetchUser } from "../redux/slices/userSlice";
 import { launchImageLibrary } from "react-native-image-picker";
 import { readFile } from "react-native-fs";
 import { Alert } from "react-native";
@@ -25,12 +25,12 @@ const useProfileScreen = () => {
 
   useEffect(() => {
     if (userDetails || profileData) {
-      setName(profileData?.name || userDetails?.displayName || "");
+  
+      setName(profileData?.displayName || userDetails?.displayName || "");
       setEmail(profileData?.email || userDetails?.email || "");
-      setImageUri(profileData?.imageUrl || userDetails?.imageUrl || null);
+      setImageUri(profileData?.photoURL || userDetails?.imageUrl || null); 
     }
   }, [userDetails, profileData]);
-
   // ✅ Image Pick Karne Ka Function (Update Nahi Karega)
   const pickImage = async () => {
     try {
@@ -55,16 +55,20 @@ const useProfileScreen = () => {
   const handleUpdateProfile = async () => {
     try {
       setUploading(true);
-      await dispatch(updateProfile({ name, imageUrl: imageUri || "" })).unwrap();
+      await dispatch(updateProfile({ 
+        name, 
+        imageUrl: imageUri || "" 
+      })).unwrap();
+      
+      // ✅ ताज़ा डेटा प्राप्त करने के लिए फिर से fetchProfile डिस्पैच करें
+      await dispatch(fetchProfile());
       Alert.alert("Success", "Profile updated successfully!");
     } catch (error) {
-      console.log(error);
       Alert.alert("Error", "Failed to update profile");
     } finally {
       setUploading(false);
     }
   };
-
   return {
     name,
     setName,

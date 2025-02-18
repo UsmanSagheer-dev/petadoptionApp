@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
-import { fetchProfile } from "../redux/slices/profileImageSlice";
+import { fetchDonations } from "../redux/slices/donateSlice";
 
 const useProfile = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -9,7 +9,7 @@ const useProfile = () => {
   const loading = useSelector((state: RootState) => state.profile.loading);
 
   useEffect(() => {
-    dispatch(fetchProfile());
+    dispatch(fetchDonations());
   }, [dispatch]);
 
   return { profileData, loading };

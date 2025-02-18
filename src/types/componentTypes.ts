@@ -58,17 +58,19 @@ export type Pet ={
   id: string;
   userId?:string;
   petBreed: string;
-  amount?: string;
+  petWeight?: number;
   location: string;
   gender: string;
   isFavorite?: boolean;
   imageUrl: string;
   age: string;
-  weight: string;
+  weight?: string;
   vaccinated: boolean;
   type: string;
   description: string;
   petType: string;
+ 
+  amount?: number;  // Add this to match donation money
 }
 
 
