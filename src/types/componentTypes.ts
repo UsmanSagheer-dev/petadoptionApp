@@ -52,8 +52,17 @@ export interface TermsCheckboxProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
 }
+export interface CardProps {
+  title: string;
+  subtitle: string;
+  date: string;
+  money: string;
+}
 
-
+export interface CustomTextProps {
+  title: string;
+  style?: TextStyle;
+}
 export type Pet ={
   id: string;
   userId?:string;

@@ -38,7 +38,7 @@ export type AppStackParamList = {
     pet: any; // Pet must always be provided
   };
   DetailScreen: { id: string; name: string; pet: any };
-  ProfileScreen: {}; // Empty object instead of `undefined`
+  ProfileScreen: {}; 
   PasswordUpdate: {};
   AdoptNow: {};
   DonateScreen: {};
@@ -52,6 +52,7 @@ export type AppStackParamList = {
 
 // Drawer navigation type
 export type DrawerParamList = {
+  AdoptNow:undefined,
   PasswordUpdate:undefined;
   MainTabs: undefined;
   Profile: undefined;

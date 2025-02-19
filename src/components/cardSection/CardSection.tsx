@@ -24,7 +24,7 @@ const CardSection: React.FC = () => {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.scrollContainer}>
       {loading ? (
-       <CustomLoader/>
+        <CustomLoader />
       ) : error ? (
         <Text>Error: {error}</Text>
       ) : (
