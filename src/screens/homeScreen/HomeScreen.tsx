@@ -30,20 +30,20 @@ interface HomeScreenProps {
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const details = [
     {
-      imageSource: IMAGES.PROFILEIMG,
-      label: 'Profile',
+      imageSource: IMAGES.DOGIMG,
+      label: 'Dog',
     },
     {
-      imageSource: IMAGES.PROFILEIMG,
-      label: 'Profile',
+      imageSource: IMAGES.BIRD,
+      label: 'Bird',
     },
     {
-      imageSource: IMAGES.PROFILEIMG,
-      label: 'Profile',
+      imageSource: IMAGES.CATIMG,
+      label: 'Cat',
     },
     {
-      imageSource: IMAGES.PROFILEIMG,
-      label: 'Profile',
+      imageSource: IMAGES.BUNNIES,
+      label: 'Bunnies',
     },
     {
       imageSource: IMAGES.PROFILEIMG,

@@ -70,7 +70,7 @@ export type Pet ={
   description: string;
   petType: string;
  donation: string;
-  amount?: number;  // Add this to match donation money
+  amount?: number;  
 }
 
 

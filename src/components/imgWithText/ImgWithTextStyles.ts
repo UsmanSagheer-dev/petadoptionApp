@@ -11,10 +11,11 @@ const styles = StyleSheet.create({
   image: {
     width: 72,
     height: 72,
+    borderRadius: 50,
   },
   title: {
     fontSize: 14,
-    fontWeight: '600', 
+    fontWeight: '600',
     fontFamily: 'Montserrat-Regular',
     color: COLOR.primary,
   },
