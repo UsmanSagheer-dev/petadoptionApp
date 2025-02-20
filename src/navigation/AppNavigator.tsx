@@ -4,7 +4,7 @@ import AppStack from './AppStack';
 import CustomDrawer from '../navigation/DrawerNavigation';
 import DonateScreen from '../screens/donateScreen/DonateScreen';
 import MyDonationScreen from '../screens/myDonationScreen/MyDonationScreen';
-import { DrawerParamList } from '../types/navigation';
+import { DrawerParamList } from '../types/types';
 import PasswordUpdateScreen from '../screens/passwordUpdateScreen/PasswordUpdateScreen';
 import AdoptNowScreen from '../screens/adoptNowScreen/AdoptNowScreen';
 

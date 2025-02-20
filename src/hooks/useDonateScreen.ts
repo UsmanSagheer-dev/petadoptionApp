@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from "../redux/store";
 import { donatePet } from "../redux/slices/donateSlice";
 import { launchImageLibrary } from "react-native-image-picker";
 import { Image as RNImage } from "react-native-compressor";
-import { PetDonation } from "../types/auth";
+import { PetDonation } from "../types/types";
 import { Alert } from "react-native";
 import RNFS from 'react-native-fs';
 

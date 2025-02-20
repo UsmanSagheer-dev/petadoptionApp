@@ -5,6 +5,7 @@ import PickerInput from '../../components/pickerInput/PickerInput';
 import useDonateScreen from '../../hooks/useDonateScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './style';
+import { PET_TYPE_OPTIONS, VACCINATION_OPTIONS, GENDER_OPTIONS } from '../../constant/constant';
 
 const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
   const {
@@ -45,13 +46,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         label="Pet Type"
         selectedValue={petType}
         onValueChange={setPetType}
-        items={[
-          {label: 'Select', value: ''},
-          {label: 'Dog', value: 'dog'},
-          {label: 'Cat', value: 'cat'},
-          {label: 'Bunnies', value: 'bunnies'},
-          {label: 'Birds', value: 'birds'},
-        ]}
+        items={PET_TYPE_OPTIONS}
       />
 
       <Text style={styles.label}>Pet Breed</Text>
@@ -74,22 +69,14 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         label="Vaccinated"
         selectedValue={vaccinated}
         onValueChange={setVaccinated}
-        items={[
-          {label: 'Select', value: ''},
-          {label: 'Yes', value: 'yes'},
-          {label: 'No', value: 'no'},
-        ]}
+        items={VACCINATION_OPTIONS}
       />
 
       <PickerInput
         label="Gender"
         selectedValue={gender}
         onValueChange={setGender}
-        items={[
-          {label: 'Select', value: ''},
-          {label: 'Male', value: 'male'},
-          {label: 'Female', value: 'female'},
-        ]}
+        items={GENDER_OPTIONS}
       />
 
       <Text style={styles.label}>Weight</Text>
@@ -123,6 +110,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         value={description}
         onChange={setDescription}
       />
+      
       <View>
         <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
           {!imageUri && (

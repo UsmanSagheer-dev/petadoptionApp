@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AppStackParamList } from '../types/navigation';
+import { AppStackParamList } from '../types/types';
 import TabNavigator from './TabNavigator';
 import DetailScreen from '../screens/detailScreen/DetailScreen';
 import PasswordUpdateScreen from '../screens/passwordUpdateScreen/PasswordUpdateScreen';

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SignUpState } from '../types/signup';
+import { SignUpState } from '../types/types';
 
 const useSignUp = (): SignUpState => {
   const [name, setName] = useState<string>('');

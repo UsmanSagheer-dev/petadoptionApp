@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
 import { fetchFavorites, toggleFavoriteStatus } from '../redux/slices/favoritesSlice';
-import { Pet } from '../types/componentTypes';
+import { Pet } from '../types/types';
 
 const useFavorites = () => {
   const dispatch = useDispatch<AppDispatch>();

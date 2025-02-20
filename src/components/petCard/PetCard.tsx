@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ImageSourcePropType,
 } from 'react-native';
-import {PetCardProps} from '../../types/componentTypes';
+import {PetCardProps} from '../../types/types';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLOR from '../../constant/constant';
 import {styles} from './styles';
@@ -39,17 +39,6 @@ const PetCard: React.FC<PetCardProps> = ({
       return null;
     }
   };
-
-  // const renderIcon = () => {
-  //   try {
-  //     return (
-
-  //     );
-  //   } catch (error) {
-  //     console.warn('Icon rendering error:', error);
-  //     return null;
-  //   }
-  // };
 
   const imageSource = getImageSource();
 
@@ -100,7 +89,7 @@ const PetCard: React.FC<PetCardProps> = ({
                   onPress={onIconPress}
                   hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
                   <View>
-                   <Text>{icon}</Text>
+                    <Text>{icon}</Text>
                   </View>
                 </TouchableOpacity>
               </View>

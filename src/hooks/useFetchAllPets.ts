@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
 import { fetchDonations, deleteDonation } from '../redux/slices/donateSlice';
 import auth from '@react-native-firebase/auth';
-import { PetDonation } from '../types/auth'; 
+import { PetDonation } from '../types/types'; 
 
 const useFetchUserDonations = () => {
   const dispatch: AppDispatch = useDispatch();

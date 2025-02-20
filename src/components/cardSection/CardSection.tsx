@@ -4,7 +4,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState, AppDispatch} from '../../redux/store';
 import {fetchDonations} from '../../redux/slices/donateSlice';
 import Card from '../../components/card/Card';
-import {PetDonation} from '../../types/auth';
+import type {PetDonation} from '../../types/types';
+
 import styles from './style';
 import CustomLoader from '../../components/radarLoader/RadarLoader';
 
@@ -28,24 +29,42 @@ const CardSection: React.FC = () => {
       ) : error ? (
         <Text>Error: {error}</Text>
       ) : (
-        donations.map((donation: PetDonation, index: number) => (
-          <Card
-            key={donation.id || index}
-            title={donation.petBreed}
-            subtitle={donation.petType}
-            date={
-              donation?.createdAt?.seconds
-                ? new Date(donation.createdAt.seconds * 1000)
-                    .toISOString()
-                    .split('T')[0]
-                : 'Pending...'
-            }
-            money={`$${donation.amount || 0}`}
-          />
-        ))
+        donations.map((donation, index) => {
+          // Type assertion with type guard
+          if (!isPetDonation(donation)) {
+            return null;
+          }
+          
+          return (
+            <Card
+              key={donation.id || index}
+              title={donation.petBreed}
+              subtitle={donation.petType}
+              date={
+                donation?.createdAt?.seconds
+                  ? new Date(donation.createdAt.seconds * 1000)
+                      .toISOString()
+                      .split('T')[0]
+                  : 'Pending...'
+              }
+              money={`$${donation.amount || 0}`}
+            />
+          );
+        })
       )}
     </ScrollView>
   );
 };
+
+function isPetDonation(donation: unknown): donation is PetDonation {
+  const d = donation as any;
+  return (
+    d &&
+    typeof d === 'object' &&
+    'petBreed' in d &&
+    'petType' in d &&
+    'amount' in d
+  );
+}
 
 export default CardSection;
