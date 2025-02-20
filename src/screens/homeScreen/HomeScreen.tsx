@@ -45,26 +45,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       imageSource: IMAGES.BUNNIES,
       label: 'Bunnies',
     },
-    {
-      imageSource: IMAGES.PROFILEIMG,
-      label: 'Profile',
-    },
-    {
-      imageSource: IMAGES.PROFILEIMG,
-      label: 'Profile',
-    },
-    {
-      imageSource: IMAGES.PROFILEIMG,
-      label: 'Profile',
-    },
-    {
-      imageSource: IMAGES.PROFILEIMG,
-      label: 'Profile',
-    },
-    {
-      imageSource: IMAGES.PROFILEIMG,
-      label: 'Profile',
-    },
+    
   ];
   const [selectedTab, setSelectedTab] = useState('');
     const [searchText, setSearchText] = useState<string>('');

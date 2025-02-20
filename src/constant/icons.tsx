@@ -26,6 +26,9 @@ const ICONS: IconType = {
   search: (size = 24, color = "black") => (
     <Ionicons name="search" size={size} color={color} />
   ),
+  delete: (size = 24, color = "black") => (
+    <MaterialIcons name="delete" size={size} color={color} />
+  ),
   back: (size = 24, color = "black") => (
     <Ionicons name="arrow-back" size={size} color={color} />
   ),

@@ -16,6 +16,7 @@ import PetCard from '../../components/petCard/PetCard';
 import IMAGES from '../../assets/images/index';
 import useFetchAllPets from '../../hooks/useFetchAllPets';
 import { AppStackParamList } from '../../types/navigation';
+import ICONS from '../../constant/icons';
 
 type MyDonationScreenNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<AppStackParamList, 'MyDonationScreen'>,
@@ -65,7 +66,7 @@ const MyDonationScreen = () => {
                   age={pet.petAge}
                   location={pet.location}
                   gender={pet.gender}
-                  icon={IMAGES.DELETEICON} 
+                  icon={ICONS.delete()} 
                   locationIcon={IMAGES.LOCATION_VECTOR}
                   onPress={() => handlePetClick(pet)} 
                   onIconPress={() => handleDeletePet(pet.id)} 

@@ -9,7 +9,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useState} from 'react';
 import SearchInput from '../components/searcInput/SearchInput';
 import COLOR from '../constant/constant';
-
 const CustomDrawer = ({navigation}: DrawerContentComponentProps) => {
   const handleLogout = () => {
     auth().signOut();
