@@ -18,23 +18,27 @@ export interface CustomeHeaderProps {
   title: string;
   DonateScreen?: boolean;
 }
+export interface PetCardProps {
+  imageUrl: string | string[];
+  name: string;
+  age:any;
+  location: string;
+  gender: string;
+  icon: React.ReactNode;
+  onPress: () => void;
+  onIconPress: () => void;
+}
 
 
 export interface PetCardProps {
   
-  imageUrl?: any;
-  name: string;
-  age?
-  : string;
-  location: string;
+  
   gender: string;
 
  
  
   locationIcon: any;
-  onPress: () => void;
-  onIconPress:any
-  icon: any;
+
 }
 export interface TabItem {
   id: string;

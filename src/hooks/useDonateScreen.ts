@@ -1,3 +1,4 @@
+// useDonateScreen.ts
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
@@ -7,6 +8,7 @@ import { Image as RNImage } from "react-native-compressor";
 import { PetDonation } from "../types/auth";
 import { Alert } from "react-native";
 import RNFS from 'react-native-fs';
+
 const useDonateScreen = (navigation: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.donation);
@@ -19,39 +21,50 @@ const useDonateScreen = (navigation: any) => {
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [imageUri, setImageUri] = useState<string | null>(null);
-const [age, setAge]=useState("");
-  const pickImage = async () => {
-    launchImageLibrary({ mediaType: "photo", quality: 1 }, async (response) => {
-      if (response.didCancel) return;
-      if (response.assets && response.assets.length > 0) {
-        const originalUri = response.assets[0].uri;
-        if (!originalUri) {
-          console.log("No image selected");
-          return;
-        }
-        try {
-          const compressedUri = await RNImage.compress(originalUri, {
-            compressionMethod: "auto",
-            quality: 0.6,
-            maxWidth: 800,
-            maxHeight: 800,
-          });
-          
-          // Convert compressed image to Base64
-          const base64String = await RNFS.readFile(compressedUri, 'base64');
-          setImageUri(base64String);
-        } catch (error) {
-          console.log("Image processing error:", error);
-        }
-      }
-    });
-  };
+  const [imagePreviewUri, setImagePreviewUri] = useState<string | null>(null);
+  const [age, setAge] = useState("");
+
+ // useDonateScreen.ts
+const pickImage = async () => {
+  launchImageLibrary({ 
+    mediaType: "photo", 
+    quality: 1,
+    includeBase64: true 
+  }, async (response) => {
+    if (response.didCancel) return;
+    
+    if (response.errorCode) {
+      Alert.alert("Error", "Image picker error");
+      return;
+    }
+
+    const asset = response.assets?.[0];
+    if (!asset?.uri) return;
+
+    try {
+      setImagePreviewUri(asset.uri);
+      
+      const compressedUri = await RNImage.compress(asset.uri, {
+        quality: 0.7,
+        maxWidth: 800,
+        maxHeight: 800,
+      });
+
+      const base64String = await RNFS.readFile(compressedUri, 'base64');
+      setImageUri(`data:image/jpeg;base64,${base64String}`);
+    } catch (error) {
+      console.log("Image processing error:", error);
+      Alert.alert("Error", "Failed to process image");
+    }
+  });
+};
 
   const handleDonate = () => {
     if (!imageUri) {
       Alert.alert("Error", "Please select an image");
       return;
     }
+
     const petData: PetDonation = {
       petType,
       gender,
@@ -61,13 +74,14 @@ const [age, setAge]=useState("");
       weight,
       location,
       description,
-      imageUrls: [imageUri],
+      imageUrl: [imageUri], // Changed from imageUrls to match your Firebase schema
       age,
     };
 
     dispatch(donatePet(petData)).then((result) => {
       if (result.meta.requestStatus === "fulfilled") {
         Alert.alert("Success", "Donation submitted successfully!");
+        // Reset form
         setPetType("");
         setGender("");
         setVaccinated("");
@@ -77,7 +91,8 @@ const [age, setAge]=useState("");
         setLocation("");
         setDescription("");
         setImageUri(null);
-        setAge('');
+        setImagePreviewUri(null);
+        setAge("");
         navigation.goBack();
       } else {
         Alert.alert("Error", result.payload as string);
@@ -102,13 +117,13 @@ const [age, setAge]=useState("");
     setLocation,
     description,
     setDescription,
-    imageUri,
+    imageUri: imagePreviewUri, // Return preview URI for display
     pickImage,
     handleDonate,
     loading,
     error,
     age,
-  setAge,
+    setAge,
   };
 };
 
