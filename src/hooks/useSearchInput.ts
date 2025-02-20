@@ -1,16 +1,16 @@
-import { useState, useRef } from 'react'
-import { TextInput } from 'react-native'
+import {useState, useRef} from 'react';
+import {TextInput} from 'react-native';
 
 const useSearchInput = () => {
-  const [searchText, setSearchText] = useState('')
-  const inputRef = useRef<TextInput>(null)
+  const [searchText, setSearchText] = useState('');
+  const inputRef = useRef<TextInput>(null);
 
   const handleSearch = () => {
-    console.log(searchText)
-    inputRef.current?.focus()
-  }
+    console.log(searchText);
+    inputRef.current?.focus();
+  };
 
-  return { searchText, setSearchText, inputRef, handleSearch }
-}
+  return {searchText, setSearchText, inputRef, handleSearch};
+};
 
-export default useSearchInput
+export default useSearchInput;

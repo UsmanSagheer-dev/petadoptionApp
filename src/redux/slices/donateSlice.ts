@@ -156,7 +156,7 @@ const donateSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      // Donate Pet
+      
       .addCase(donatePet.pending, state => {
         state.loading = true;
         state.error = null;

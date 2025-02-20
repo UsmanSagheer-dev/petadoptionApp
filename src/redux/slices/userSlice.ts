@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
-import { User } from "../../types/auth";
+import { User } from "../../types/types";
 
-// ✅ Async Thunk to Fetch Logged-in User Details
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async (_, { rejectWithValue }) => {
@@ -18,9 +17,7 @@ export const fetchUser = createAsyncThunk(
       if (!userDoc.exists) {
         throw new Error("User data not found.");
       }
-
       console.log("Fetched User Data:", userDoc.data());
-
       return {
         uid: currentUser.uid,
         email: currentUser.email,
@@ -34,7 +31,6 @@ export const fetchUser = createAsyncThunk(
   }
 );
 
-// ✅ User Slice
 const userSlice = createSlice({
   name: "user",
   initialState: {

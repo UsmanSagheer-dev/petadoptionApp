@@ -6,33 +6,11 @@ import useProfile from "../../hooks/useProfile";
 import LoginButton from "../button/CustomButton";
 import IMAGES from "../../assets/images/index";
 import styles from "./style";
+import {AdoptionRequest} from '../../types/types'
+import {PetDonation} from '../../types/types'
 
-// Define the interfaces for type safety
-interface ProfileData {
-  uid: string; // Add the uid property here
-  displayName: string | null;
-  photoURL: string | null;
-  email: string | null;
-}
 
-interface AdoptionRequest {
-  userId: string;
-  userName: string;
-  userEmail: string;
-  timestamp: string;
-}
 
-interface PetDonation {
-  id: string;
-  userId: string;
-  userName: string;
-  petType: string;
-  location: string;
-  requests: AdoptionRequest[];
-  createdAt: {
-    toDate: () => Date;
-  };
-}
 
 interface RootState {
   donation: {

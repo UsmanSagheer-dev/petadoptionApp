@@ -28,13 +28,8 @@ import OrDivider from '../../components/onDivider/OnDivider';
 import IMAGES from '../../assets/images/index';
 import useGoogleSignIn from '../../hooks/useGoogleSignIn';
 import styles from './style';
-type RootStackParamList = {
-  SignUp: undefined;
-  Login: undefined;
-  setLoading: any;
-  App: any;
-  Main: undefined;
-};
+import {RootStackParamList} from '../../types/types'
+
 type SignUpScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'SignUp'

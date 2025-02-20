@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth'; 
-import { Pet } from '../types/componentTypes';
+import { Pet } from '../types/types';
 import { PET_TYPE_MAP } from '../constant/constant';
 
 const useFetchPets = (selectedTab: string) => {

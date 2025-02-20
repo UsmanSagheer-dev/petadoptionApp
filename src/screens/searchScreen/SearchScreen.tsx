@@ -1,6 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {
-  StyleSheet,
   View,
   ScrollView,
   ActivityIndicator,
@@ -16,14 +15,13 @@ import PetCard from '../../components/petCard/PetCard';
 import IMAGES from '../../assets/images/index';
 import useFetchPets from '../../hooks/useFetchPets';
 import {PET_TABS} from '../../constant/constant';
-import {Pet} from '../../types/componentTypes';
+import {Pet} from '../../types/types';
 import {toggleFavoriteStatus} from '../../redux/slices/favoritesSlice';
 import ICONS from '../../constant/icons';
+import styles from './style';
 
-type RootStackParamList = {
-  Search: undefined;
-  Detail: {pet: Pet};
-};
+import {RootStackParamList} from '../../types/types'
+
 
 type SearchScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -124,28 +122,5 @@ const SearchScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    zIndex: 99,
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
-  },
-  searchContainer: {
-    top: 20,
-  },
-  tabsContainer: {
-    marginTop: 25,
-  },
-  petCardsContainer: {
-    marginTop: 20,
-  },
-  errorText: {
-    color: 'red',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-});
 
 export default SearchScreen;

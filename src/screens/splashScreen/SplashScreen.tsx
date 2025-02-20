@@ -1,16 +1,13 @@
-import { ImageBackground, Text, StyleSheet, View } from 'react-native';
-import React, { useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import {ImageBackground, Text, StyleSheet, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import IMAGES from '../../assets/images';
 import useAuth from '../../hooks/useAuth';
-
-type NavigationProp = {
-  replace: (screen: string) => void;
-};
-
+import styles from './style';
+import {NavigationProp} from '../../types/types';
 const SplashScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
-  const { showSplash } = useAuth();
+  const {showSplash} = useAuth();
 
   useEffect(() => {
     if (!showSplash) {
@@ -33,43 +30,5 @@ const SplashScreen: React.FC = () => {
     </ImageBackground>
   );
 };
-
-const styles = StyleSheet.create({
-  background: {
-    width: '100%',
-    height: '100%',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#101C1DC9',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textContainer: {
-    alignItems: 'center',
-    padding: 20,
-  },
-  mainText: {
-    color: 'white',
-    fontSize: 40,
-    fontWeight: '800',
-    textAlign: 'center',
-    fontFamily: 'MontserratRegular',
-  },
-  mainText1: {
-    color: 'white',
-    fontSize: 40,
-    fontWeight: '800',
-    textAlign: 'center',
-  },
-  subText: {
-    color: 'white',
-    fontSize: 22,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginTop: 15,
-    fontFamily: 'MontserratRegular',
-  },
-});
 
 export default SplashScreen;

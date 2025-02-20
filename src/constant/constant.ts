@@ -1,3 +1,6 @@
+import IMAGES from '../assets/images/index';
+
+
 const COLOR={
     primary: '#101C1D',
     secondary: '#FFC300',
@@ -36,3 +39,47 @@ export const PET_TABS = [
     Turtles: 'turtle',
   };
   
+
+  export const PET_TYPE_OPTIONS = [
+    {label: 'Select', value: ''},
+    {label: 'Dog', value: 'dog'},
+    {label: 'Cat', value: 'cat'},
+    {label: 'Bunnies', value: 'bunnies'},
+    {label: 'Birds', value: 'birds'},
+  ];
+  
+  export const VACCINATION_OPTIONS = [
+    {label: 'Select', value: ''},
+    {label: 'Yes', value: 'yes'},
+    {label: 'No', value: 'no'},
+  ];
+  
+  export const GENDER_OPTIONS = [
+    {label: 'Select', value: ''},
+    {label: 'Male', value: 'male'},
+    {label: 'Female', value: 'female'},
+  ];
+  
+
+
+
+export const PET_DETAILS = [
+  {
+    imageSource: IMAGES.DOGIMG,
+    label: 'Dog',
+  },
+  {
+    imageSource: IMAGES.BIRD,
+    label: 'Bird',
+  },
+  {
+    imageSource: IMAGES.CATIMG,
+    label: 'Cat',
+  },
+  {
+    imageSource: IMAGES.BUNNIES,
+    label: 'Bunnies',
+  },
+];
+
+

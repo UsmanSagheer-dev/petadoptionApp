@@ -1,6 +1,6 @@
 // src/hooks/useAuth.ts
 import { useState, useEffect } from 'react';
-import { AuthState } from '../types/auth';
+import { AuthState } from '../types/types';
 
 const useAuth = () => {
   const [showSplash, setShowSplash] = useState<AuthState['showSplash']>(true);

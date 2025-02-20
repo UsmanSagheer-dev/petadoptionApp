@@ -4,13 +4,12 @@ import {AppDispatch} from '../redux/store';
 import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../types/navigation';
+import {RootStackParamList , Pet} from '../types/types';
 import {requestAdoption} from '../redux/slices/donateSlice';
-import {Pet} from '../types/componentTypes';
+
 
 import firestore from '@react-native-firebase/firestore';
 
-// Update the usePetDetails hook
 interface ProfileData {
   displayName: string;
   photoURL: string | null;

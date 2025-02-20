@@ -5,7 +5,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import COLOR from "../../constant/constant";
 import styles from "./style";
-
 const DetailScreen = ({ route, navigation }) => {
   const { id, pet, deletePet } = route.params; 
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);

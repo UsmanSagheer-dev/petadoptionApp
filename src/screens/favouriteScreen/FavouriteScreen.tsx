@@ -13,7 +13,7 @@ import useFavorites from '../../hooks/useFavourite';
 import IMAGES from '../../assets/images/index';
 import COLOR from '../../constant/constant';
 import ICONS from '../../constant/icons';
-
+import styles from './style';
 const FavouriteScreen = () => {
   const {
     favorites,
@@ -62,23 +62,6 @@ const FavouriteScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-  
-    flex: 1,
-    backgroundColor: COLOR.white,
-   
-  },
-  petCardsContainer: {
-    marginTop: 20,
-    paddingHorizontal: 17,
-  },
-  noFavoritesText: {
-    fontSize: 18,
-    color: 'gray',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-});
+
 
 export default FavouriteScreen;

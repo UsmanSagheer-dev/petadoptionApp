@@ -4,8 +4,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PlatformPressable } from '@react-navigation/elements';
 import { useTheme } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-// Import your screens (replace with actual paths)
 import HomeScreen from '../screens/homeScreen/HomeScreen';
 import SearchScreen from '../screens/searchScreen/SearchScreen';
 import FavouriteScreen from '../screens/favouriteScreen/FavouriteScreen';
@@ -19,10 +17,8 @@ type TabParamList = {
 };
 
 const Tab = createBottomTabNavigator<TabParamList>();
-
 const CustomTabBar: React.FC<any> = ({ state, descriptors, navigation }) => {
   const { colors } = useTheme();
-  
   return (
     <View style={[styles.tabBar, { backgroundColor: colors.background }]}>
       {state.routes.map((route, index) => {

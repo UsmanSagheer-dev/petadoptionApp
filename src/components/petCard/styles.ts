@@ -92,4 +92,15 @@ export const styles = StyleSheet.create({
     backgroundColor:COLOR.quaternary,
     borderRadius: 20,
   },
+ // Add these to your existing styles if they're not already present
+placeholderText: {
+  color: '#666',
+  textAlign: 'center',
+},
+iconText: {
+  color: '#000',
+},
+iconContainer: {
+  padding: 5,
+},
 });
