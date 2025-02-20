@@ -1,14 +1,7 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 import styles from './style';
-
-
-interface CardProps {
-  title: string;
-  subtitle: string;
-  date: string;
-  money: string;
-}
+import { CardProps } from '../../types/componentTypes';
 
 const Card: React.FC<CardProps> = ({ title, subtitle, date, money }) => {
   return (

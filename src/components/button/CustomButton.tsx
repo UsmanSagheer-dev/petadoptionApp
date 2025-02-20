@@ -7,7 +7,7 @@ import COLOR from '../../constant/constant';
 const LoginButton = ({
   onClick,
   title,
-  backgroundColor =COLOR.black,
+  backgroundColor = COLOR.black,
   textColor = COLOR.white,
   width = '100%',
 }: LoginButtonProps) => {

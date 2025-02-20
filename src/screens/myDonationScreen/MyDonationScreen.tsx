@@ -46,7 +46,7 @@ const MyDonationScreen = () => {
       ],
     );
   };
-
+  console.log('Pet data:', pets[0]?.imageUrl);
   return (
     <View style={styles.container}>
       <CustomeHeader title="My Donations" />

@@ -21,8 +21,8 @@ const Header = () => {
       <TouchableOpacity onPress={toggleDrawer}>
         <Image source={IMAGES.MODELTABL} alt="modeltab" />
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen' as any)}>
 
-      <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
         <Image source={profileImage} style={styles.profile} />
       </TouchableOpacity>
     </View>

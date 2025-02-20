@@ -38,7 +38,7 @@ export const fetchProfile = createAsyncThunk(
   
         const data = doc.data();
         console.log("🚀 ~ data:", data)
-        const dateJoined = data?.dateJoined?.toDate()?.toLocaleDateString(); // Convert Timestamp
+        const dateJoined = data?.dateJoined?.toDate()?.toLocaleDateString(); 
   
         return { 
           id: doc.id, 

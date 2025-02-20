@@ -5,7 +5,7 @@ import {
 import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Close Icon
+import Icon from 'react-native-vector-icons/MaterialIcons'; 
 import {useState} from 'react';
 import SearchInput from '../components/searcInput/SearchInput';
 import COLOR from '../constant/constant';
@@ -50,6 +50,11 @@ const CustomDrawer = ({navigation}: DrawerContentComponentProps) => {
             style={styles.menuItem}
             onPress={() => navigation.navigate('PasswordUpdate')}>
             <Text style={styles.menuText}>PasswordUpdate</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => navigation.navigate('AdoptNow')}>
+            <Text style={styles.menuText}>Adopt Now</Text>
           </TouchableOpacity>
         </View>
 
