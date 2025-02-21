@@ -98,27 +98,30 @@ const SearchScreen = () => {
       </View>
 
       {loading ? (
-        <ActivityIndicator size="large" color="#000" />
-      ) : error ? (
-        <Text style={styles.errorText}>{error}</Text>
-      ) : (
-        <ScrollView ref={scrollViewRef} style={styles.petCardsContainer}>
-          {filteredPets.map(pet => (
+    <ActivityIndicator size="large" color="#000" />
+) : error ? (
+    <Text style={styles.errorText}>{error}</Text>
+) : filteredPets.length === 0 ? (
+    <Text style={styles.notFoundText}>Not Found</Text>
+) : (
+    <ScrollView ref={scrollViewRef} style={styles.petCardsContainer}>
+        {filteredPets.map(pet => (
             <PetCard
-              key={pet.id}
-              imageUrl={pet.imageUrl}
-              name={pet.petBreed}
-              age={pet.age}
-              location={pet.location}
-              gender={pet.gender}
-              icon={pet.isFavorite ? ICONS.ONCLICKFAV() : ICONS.OFCLICKFAV()}
-              locationIcon={IMAGES.LOCATION_VECTOR}
-              onPress={() => handlePetPress(pet)}
-              onIconPress={() => handleFavoriteToggle(pet)}
+                key={pet.id}
+                imageUrl={pet.imageUrl}
+                name={pet.petBreed}
+                age={pet.age}
+                location={pet.location}
+                gender={pet.gender}
+                icon={pet.isFavorite ? ICONS.ONCLICKFAV() : ICONS.OFCLICKFAV()}
+                locationIcon={IMAGES.LOCATION_VECTOR}
+                onPress={() => handlePetPress(pet)}
+                onIconPress={() => handleFavoriteToggle(pet)}
             />
-          ))}
-        </ScrollView>
-      )}
+        ))}
+    </ScrollView>
+)}
+
     </View>
   );
 };
