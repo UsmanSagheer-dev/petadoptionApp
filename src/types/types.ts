@@ -84,7 +84,10 @@ export interface PetDonation {
   amount?: number;
   userName: string;
   location: string;
-
+  displayName: string;
+  ownerDisplayName?: string;
+  ownerEmail?: string;
+  ownerPhotoURL?: string;
   createdAt: {
     toDate: () => Date;
   };

@@ -25,6 +25,9 @@ interface PetDonation {
   description: string;
   location: string;
   contactNumber: string;
+  ownerDisplayName?: string;
+  ownerEmail?: string;
+  ownerPhotoURL?: string;
   imageUrl: string[];
   money?: number;
 }
@@ -52,24 +55,32 @@ export const donatePet = createAsyncThunk<
     const user = auth().currentUser;
     if (!user) throw new Error('User not authenticated');
 
+    // Create a new document reference with an auto-generated ID
     const docRef = firestore().collection('donations').doc();
+
+    // Generate a timestamp using Firestore
     const timestamp = firestore.Timestamp.now();
 
     const donationData: PetDonation = {
       ...petData,
-      id: docRef.id,
+      id: docRef.id, // Now docRef is properly initialized
       userId: user.uid,
       requests: [],
-      createdAt: timestamp,
-      imageUrl: petData.imageUrl,
+      createdAt: timestamp, // The timestamp is now correctly assigned
+      ownerDisplayName: user.displayName || '',
+      ownerEmail: user.email || '',
+      ownerPhotoURL: user.photoURL || '',
     };
 
+    // Save the data to Firestore
     await docRef.set(donationData);
+
     return donationData;
   } catch (error) {
     return rejectWithValue((error as Error).message);
   }
 });
+
 export const fetchDonations = createAsyncThunk<
   PetDonation[],
   void,
@@ -156,7 +167,7 @@ const donateSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      
+
       .addCase(donatePet.pending, state => {
         state.loading = true;
         state.error = null;

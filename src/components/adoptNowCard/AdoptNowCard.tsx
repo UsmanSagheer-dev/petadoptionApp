@@ -6,12 +6,7 @@ import useProfile from "../../hooks/useProfile";
 import LoginButton from "../button/CustomButton";
 import IMAGES from "../../assets/images/index";
 import styles from "./style";
-import {AdoptionRequest} from '../../types/types'
 import {PetDonation} from '../../types/types'
-
-
-
-
 interface RootState {
   donation: {
     donations: PetDonation[];
@@ -28,26 +23,29 @@ const AdoptNowCard = () => {
   );
 
   const handleContactPress = () => {
-    if (profileData?.email) {
-      Linking.openURL(`mailto:${profileData.email}`);
+    if (userDonation?.ownerEmail) {
+      Linking.openURL(`mailto:${userDonation.ownerEmail}`);
     }
   };
-
-  if (loading) {
-    return <View><Text>Loading...</Text></View>;
-  }
 
   return (
     <View style={styles.card}>
       <View style={styles.profileData}>
         <Image
-          source={profileData?.photoURL ? { uri: profileData.photoURL } : IMAGES.PROFILEIMG}
+          source={userDonation?.ownerPhotoURL 
+            ? { uri: userDonation.ownerPhotoURL } 
+            : IMAGES.PROFILEIMG
+          }
           style={styles.image}
         />
         <View>
-          <Text style={styles.name}>{profileData?.displayName || "Guest User"}</Text>
+          <Text style={styles.name}>
+            {userDonation?.ownerDisplayName || "Guest User"}
+          </Text>
           <Text style={styles.breed}>{userDonation?.petType || "Unknown Type"}</Text>
-          <Text style={styles.email}>{profileData?.email || "No email available"}</Text>
+          <Text style={styles.email}>
+            {userDonation?.ownerEmail || "No email available"}
+          </Text>
           <View style={styles.locationContainer}>
             <MaterialIcons name="location-on" size={16} color="#ff4d4d" />
             <Text style={styles.location}>{userDonation?.location || "Unknown Location"}</Text>
