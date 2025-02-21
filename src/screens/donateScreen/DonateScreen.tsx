@@ -52,7 +52,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
       <Text style={styles.label}>Pet Breed</Text>
       <CustomInput
         type="text"
-        placeholder=""
+        placeholder="Name"
         value={petBreed}
         onChange={setPetBreed}
       />

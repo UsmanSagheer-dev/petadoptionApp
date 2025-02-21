@@ -1,20 +1,20 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { googleSignup } from '../redux/slices/authSlice';
 import { RootState } from '../redux/store';
 import { AppDispatch } from '../redux/store'; 
-import type { FirebaseAuthTypes } from '@react-native-firebase/auth'; 
 
 const useGoogleSignIn = () => {
-
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
   const error = useSelector((state: RootState) => state.auth.error);
 
   const onGoogleButtonPress = useCallback(async () => {
     try {
+      setIsGoogleLoading(true);
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
       const userInfo = await GoogleSignin.signIn();
       const { idToken } = await GoogleSignin.getTokens(); 
@@ -25,14 +25,15 @@ const useGoogleSignIn = () => {
   
       await dispatch(googleSignup({ idToken })).unwrap(); 
     } catch (error) {
-      // Type the error properly
       const errorMessage = error instanceof Error ? error.message : 'Google Sign-In failed. Please try again.';
       console.error('Google Sign-In Error:', error);
       Alert.alert('Error', errorMessage);
+    } finally {
+      setIsGoogleLoading(false);
     }
   }, [dispatch]);
 
-  return { onGoogleButtonPress, user, error };
+  return { onGoogleButtonPress, user, error, isGoogleLoading };
 };
 
 export default useGoogleSignIn;

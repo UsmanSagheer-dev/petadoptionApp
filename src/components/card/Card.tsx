@@ -1,16 +1,26 @@
-import { View, Text } from 'react-native';
+import {ImageBackground, Text} from 'react-native';
 import React from 'react';
 import styles from './style';
-import { CardProps } from '../../types/types';
+import {CardProps} from '../../types/types';
+import IMAGES from '../../assets/images/index';
 
-const Card: React.FC<CardProps> = ({ title, subtitle, date, money }) => {
+const Card: React.FC<CardProps> = ({
+  title,
+  subtitle,
+  date,
+  money,
+  imageUrl,
+}) => {
   return (
-    <View style={styles.card}>
+    <ImageBackground
+      source={imageUrl ? {uri: imageUrl} : IMAGES.PETCARDIMG}
+      style={styles.card}
+      resizeMode="cover">
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.title}>{subtitle}</Text>
       <Text style={styles.datetext}>{date}</Text>
       <Text style={styles.moneytext}>{money}</Text>
-    </View>
+    </ImageBackground>
   );
 };
 

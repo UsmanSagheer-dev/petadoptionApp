@@ -1,24 +1,12 @@
-import React, {useEffect} from 'react';
-import {ScrollView, Text} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {RootState, AppDispatch} from '../../redux/store';
-import {fetchDonations} from '../../redux/slices/donateSlice';
+import React from 'react';
+import { ScrollView, Text } from 'react-native';
 import Card from '../../components/card/Card';
-import type {PetDonation} from '../../types/types';
-
-import styles from './style';
 import CustomLoader from '../../components/radarLoader/RadarLoader';
+import { useDonations } from '../../hooks/useDonations';
+import styles from './style';
 
 const CardSection: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  const {donations, loading, error} = useSelector(
-    (state: RootState) => state.donation,
-  );
-
-  useEffect(() => {
-    dispatch(fetchDonations());
-  }, [dispatch]);
+  const { donations, loading, error, isPetDonation, formatDate } = useDonations();
 
   return (
     <ScrollView
@@ -30,7 +18,6 @@ const CardSection: React.FC = () => {
         <Text>Error: {error}</Text>
       ) : (
         donations.map((donation, index) => {
-          // Type assertion with type guard
           if (!isPetDonation(donation)) {
             return null;
           }
@@ -40,14 +27,9 @@ const CardSection: React.FC = () => {
               key={donation.id || index}
               title={donation.petBreed}
               subtitle={donation.petType}
-              date={
-                donation?.createdAt?.seconds
-                  ? new Date(donation.createdAt.seconds * 1000)
-                      .toISOString()
-                      .split('T')[0]
-                  : 'Pending...'
-              }
+              date={formatDate(donation?.createdAt?.seconds)}
               money={`$${donation.amount || 0}`}
+              imageUrl={donation.imageUrl?.[0]}
             />
           );
         })
@@ -55,16 +37,5 @@ const CardSection: React.FC = () => {
     </ScrollView>
   );
 };
-
-function isPetDonation(donation: unknown): donation is PetDonation {
-  const d = donation as any;
-  return (
-    d &&
-    typeof d === 'object' &&
-    'petBreed' in d &&
-    'petType' in d &&
-    'amount' in d
-  );
-}
 
 export default CardSection;
