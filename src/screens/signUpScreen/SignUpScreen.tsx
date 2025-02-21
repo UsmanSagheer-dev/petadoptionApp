@@ -55,7 +55,7 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
     termsAccepted,
     setTermsAccepted,
   } = useSignUp();
-  const {onGoogleButtonPress} = useGoogleSignIn();
+  const { onGoogleButtonPress, isGoogleLoading } = useGoogleSignIn();
   const dispatch = useDispatch<AppDispatch>();
   const {isAuthenticated, error} = useSelector((state: any) => state.auth);
 
@@ -166,11 +166,20 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
           </View>
 
           <View style={styles.googlecontainer}>
-            <TouchableOpacity onPress={onGoogleButtonPress}>
-              <Image source={IMAGES.GOOGLEIMG} style={styles.googleimg} />
-            </TouchableOpacity>
-            <Text style={styles.googleText}>Sign in with Google</Text>
-          </View>
+      <TouchableOpacity 
+        onPress={onGoogleButtonPress}
+        disabled={isGoogleLoading}
+      >
+        {isGoogleLoading ? (
+          <ActivityIndicator size="small" color={COLOR.primary} />
+        ) : (
+          <Image source={IMAGES.GOOGLEIMG} style={styles.googleimg} />
+        )}
+      </TouchableOpacity>
+      <Text style={styles.googleText}>
+        {isGoogleLoading ? 'Signing in...' : 'Sign in with Google'}
+      </Text>
+    </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

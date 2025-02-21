@@ -55,7 +55,7 @@ const MyDonationScreen = () => {
                 <PetCard
                   imageUrl={pet.imageUrl}
                   name={pet.petBreed}
-                  age={pet.petAge}
+                  age={pet.age}
                   location={pet.location}
                   gender={pet.gender}
                   icon={ICONS.delete()}

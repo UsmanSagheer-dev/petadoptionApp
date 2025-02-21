@@ -77,7 +77,7 @@ export interface PetDonation {
   petBreed: string;
   requests: AdoptionRequest[];
   petName: string;
-  petAge: string;
+  age?:number;
   description: string;
   contactNumber: string;
   imageUrl: string[];
