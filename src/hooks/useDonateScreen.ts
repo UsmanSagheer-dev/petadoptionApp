@@ -1,4 +1,3 @@
-// useDonateScreen.ts
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
@@ -23,8 +22,6 @@ const useDonateScreen = (navigation: any) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [imagePreviewUri, setImagePreviewUri] = useState<string | null>(null);
   const [age, setAge] = useState("");
-
- // useDonateScreen.ts
 const pickImage = async () => {
   launchImageLibrary({ 
     mediaType: "photo", 
@@ -74,14 +71,13 @@ const pickImage = async () => {
       weight,
       location,
       description,
-      imageUrl: [imageUri], // Changed from imageUrls to match your Firebase schema
+      imageUrl: [imageUri], 
       age,
     };
 
     dispatch(donatePet(petData)).then((result) => {
       if (result.meta.requestStatus === "fulfilled") {
         Alert.alert("Success", "Donation submitted successfully!");
-        // Reset form
         setPetType("");
         setGender("");
         setVaccinated("");
@@ -117,7 +113,7 @@ const pickImage = async () => {
     setLocation,
     description,
     setDescription,
-    imageUri: imagePreviewUri, // Return preview URI for display
+    imageUri: imagePreviewUri, 
     pickImage,
     handleDonate,
     loading,

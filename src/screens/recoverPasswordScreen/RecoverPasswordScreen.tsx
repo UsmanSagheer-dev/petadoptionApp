@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   KeyboardAvoidingView,
   Platform,
   Alert,
@@ -14,13 +13,8 @@ import COLOR from '../../constant/constant';
 import CustomInput from '../../components/input/customInput';
 import LoginButton from '../../components/button/CustomButton';
 import auth from '@react-native-firebase/auth';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../types/types';
+import {RecoverPasswordScreenNavigationProp} from '../../types/types';
 import styles from './style';
-type RecoverPasswordScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'RecoverPassword'
->;
 interface Props {
   navigation: RecoverPasswordScreenNavigationProp;
 }

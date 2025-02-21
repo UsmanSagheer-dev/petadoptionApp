@@ -1,7 +1,5 @@
-// src/hooks/useAuth.ts
-import { useState, useEffect } from 'react';
-import { AuthState } from '../types/types';
-
+import {useState, useEffect} from 'react';
+import {AuthState} from '../types/types';
 const useAuth = () => {
   const [showSplash, setShowSplash] = useState<AuthState['showSplash']>(true);
 
@@ -13,7 +11,7 @@ const useAuth = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  return { showSplash };
+  return {showSplash};
 };
 
 export default useAuth;

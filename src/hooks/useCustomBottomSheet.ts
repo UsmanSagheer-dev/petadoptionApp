@@ -1,8 +1,6 @@
-import { useRef, useEffect } from 'react';
-import { Animated, Dimensions } from 'react-native';
-
-const { height } = Dimensions.get('screen');
-
+import {useRef, useEffect} from 'react';
+import {Animated, Dimensions} from 'react-native';
+const {height} = Dimensions.get('screen');
 export const useCustomBottomSheet = (isVisible: boolean) => {
   const translateY = useRef(new Animated.Value(height)).current;
 
@@ -14,5 +12,5 @@ export const useCustomBottomSheet = (isVisible: boolean) => {
     }).start();
   }, [isVisible]);
 
-  return { translateY };
+  return {translateY};
 };

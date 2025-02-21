@@ -10,7 +10,6 @@ const initialState: FavoriteState = {
   favorites: [],
 };
 
-// ✅ Firebase se favorite pets fetch karne ka function
 export const fetchFavorites = createAsyncThunk(
   'favorites/fetchFavorites',
   async (_, { rejectWithValue }) => {
@@ -36,7 +35,6 @@ export const fetchFavorites = createAsyncThunk(
   }
 );
 
-// ✅ Favorite toggle karne ka function (jaisa tumne likha tha)
 export const toggleFavoriteStatus = createAsyncThunk(
   'favorites/toggleFavoriteStatus',
   async (pet: any, { rejectWithValue, dispatch }) => {

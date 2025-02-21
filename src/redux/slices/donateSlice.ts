@@ -38,14 +38,12 @@ interface DonationState {
   donations: PetDonation[];
 }
 
-// Initial State
 const initialState: DonationState = {
   loading: false,
   error: null,
   donations: [],
 };
 
-// Async Thunks
 export const donatePet = createAsyncThunk<
   PetDonation,
   Omit<PetDonation, 'id' | 'userId' | 'requests' | 'createdAt'>,
@@ -55,24 +53,21 @@ export const donatePet = createAsyncThunk<
     const user = auth().currentUser;
     if (!user) throw new Error('User not authenticated');
 
-    // Create a new document reference with an auto-generated ID
     const docRef = firestore().collection('donations').doc();
 
-    // Generate a timestamp using Firestore
     const timestamp = firestore.Timestamp.now();
 
     const donationData: PetDonation = {
       ...petData,
-      id: docRef.id, // Now docRef is properly initialized
+      id: docRef.id,
       userId: user.uid,
       requests: [],
-      createdAt: timestamp, // The timestamp is now correctly assigned
+      createdAt: timestamp,
       ownerDisplayName: user.displayName || '',
       ownerEmail: user.email || '',
       ownerPhotoURL: user.photoURL || '',
     };
 
-    // Save the data to Firestore
     await docRef.set(donationData);
 
     return donationData;
@@ -151,7 +146,6 @@ export const deleteDonation = createAsyncThunk<
   }
 });
 
-// Slice
 const donateSlice = createSlice({
   name: 'donation',
   initialState,
@@ -184,7 +178,6 @@ const donateSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // Fetch Donations
       .addCase(fetchDonations.pending, state => {
         state.loading = true;
         state.error = null;
@@ -201,7 +194,6 @@ const donateSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // Request Adoption
       .addCase(requestAdoption.pending, state => {
         state.loading = true;
         state.error = null;
@@ -222,7 +214,6 @@ const donateSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // Delete Donation
       .addCase(deleteDonation.pending, state => {
         state.loading = true;
         state.error = null;
