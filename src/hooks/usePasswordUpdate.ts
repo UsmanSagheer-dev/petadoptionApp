@@ -79,7 +79,7 @@ export const usePasswordUpdate = (navigation: PasswordUpdateNavigationProp) => {
               text: 'OK',
               onPress: async () => {
                 await dispatch(signout());
-                navigation.navigate('Login' as keyof RootStackParamList);
+                navigation.navigate('Login');
               },
             },
           ],

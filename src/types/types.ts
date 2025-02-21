@@ -9,7 +9,6 @@ import {
 } from '@react-navigation/bottom-tabs';
 import {
   DrawerNavigationProp as DrawerNavProp,
-  DrawerScreenProps,
 } from '@react-navigation/drawer';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {ReactNode} from 'react';
@@ -77,14 +76,17 @@ export interface PetDonation {
   petBreed: string;
   requests: AdoptionRequest[];
   petName: string;
-  age:number;
+  age?:any;
   description: string;
   contactNumber: string;
   imageUrl: string[];
   amount?: number;
   userName: string;
   location: string;
-
+  displayName: string;
+  ownerDisplayName?: string;
+  ownerEmail?: string;
+  ownerPhotoURL?: string;
   createdAt: {
     toDate: () => Date;
   };
@@ -132,7 +134,7 @@ export interface CustomeHeaderProps {
 export interface PetCardProps {
   imageUrl: string | string[];
   name: string;
-  age: any; // Changed from any to string
+  age?: any;
   location: string;
   gender: string;
   icon: React.ReactNode;
@@ -241,6 +243,10 @@ export type TabParamList = {
   Search: undefined;
   Favorites: undefined;
   Profile: undefined;
+  HomeTab: undefined;
+  SearchTab: undefined;
+  FavouriteTab: undefined;
+  ProfileTab: undefined;
 };
 
 export type PasswordUpdateNavigationProp = NativeStackNavigationProp<
@@ -256,9 +262,12 @@ export type SignUpScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'SignUp'
 >;
-export  interface Props {
+export interface Props {
   navigation: SignUpScreenNavigationProp;
+  
+  
 }
+
 export type RootStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
 export type AuthStackNavigationProp =
@@ -347,3 +356,36 @@ export interface TabsProps {
   tabs: Tab[];
   onTabPress: (tabId: string) => void;
 }
+
+export interface ProfileData {
+  displayName: string;
+  email?: string;
+  photoURL: string | null;
+  petBreed?: string;
+  petType?: string;
+  location?: string;
+}
+
+export interface ProfileState {
+  loading: boolean;
+  error: string | null;
+  profileData: ProfileData | null;
+}
+
+export  type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+export  interface HomeScreenProps {
+  navigation: HomeScreenNavigationProp;
+}
+export type RecoverPasswordScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'RecoverPassword'
+>;
+
+export type SearchScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Search'
+>;
+
+
+
+

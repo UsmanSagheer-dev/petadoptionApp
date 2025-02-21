@@ -13,15 +13,8 @@ import styles from './style';
 import SearchInput from '../../components/searcInput/SearchInput';
 import ImgWithText from '../../components/imgWithText/ImgWithText';
 import CardSection from '../../components/cardSection/CardSection';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { PET_DETAILS} from '../../constant/constant';
-import {RootStackParamList} from '../../types/types'
-
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
-
-interface HomeScreenProps {
-  navigation: HomeScreenNavigationProp;
-}
+import {HomeScreenProps} from '../../types/types'
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [searchText, setSearchText] = useState<string>('');

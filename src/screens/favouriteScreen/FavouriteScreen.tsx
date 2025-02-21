@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator,
-} from 'react-native';
+import {View, Text, ScrollView, ActivityIndicator} from 'react-native';
 import React from 'react';
 import CustomeHeader from '../../components/customeHeader/CustomeHeader';
 import PetCard from '../../components/petCard/PetCard';
@@ -28,8 +22,6 @@ const FavouriteScreen = () => {
   return (
     <View style={styles.container}>
       <CustomeHeader title="Favourite Screen" />
-
-   
       {loading ? (
         <ActivityIndicator size="large" color={COLOR.primary} />
       ) : favorites.length === 0 ? (
@@ -52,7 +44,6 @@ const FavouriteScreen = () => {
           ))}
         </ScrollView>
       )}
-
       <PetDetailsModal
         isVisible={isModalVisible}
         onClose={closeModal}
@@ -61,7 +52,5 @@ const FavouriteScreen = () => {
     </View>
   );
 };
-
-
 
 export default FavouriteScreen;

@@ -2,17 +2,21 @@ import {StyleSheet} from 'react-native';
 import COLOR from '../../constant/constant';
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-    resizeMode: 'cover',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 20,
-  },
   card: {
     padding: 20,
     marginBottom: 10,
     borderRadius: 20,
-    textAlign: 'justify',
+    overflow: 'hidden', 
+    position: 'relative',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.62)',  
+    borderRadius: 20,
+  },
+  content: {
+    position: 'absolute',
+    zIndex: 1,
   },
   title: {
     fontSize: 29,

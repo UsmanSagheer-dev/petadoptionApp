@@ -1,28 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { PlatformPressable } from '@react-navigation/elements';
-import { useTheme } from '@react-navigation/native';
+import {View, Text, StyleSheet, Platform} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {PlatformPressable} from '@react-navigation/elements';
+import {useTheme} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from '../screens/homeScreen/HomeScreen';
 import SearchScreen from '../screens/searchScreen/SearchScreen';
 import FavouriteScreen from '../screens/favouriteScreen/FavouriteScreen';
 import ProfileScreen from '../screens/profilescreen/ProfileScreen';
-
-type TabParamList = {
-  HomeTab: undefined;
-  SearchTab: undefined;
-  FavouriteTab: undefined;
-  ProfileTab: undefined;
-};
+import {TabParamList} from '../types/types';
 
 const Tab = createBottomTabNavigator<TabParamList>();
-const CustomTabBar: React.FC<any> = ({ state, descriptors, navigation }) => {
-  const { colors } = useTheme();
+const CustomTabBar: React.FC<any> = ({state, descriptors, navigation}) => {
+  const {colors} = useTheme();
   return (
-    <View style={[styles.tabBar, { backgroundColor: colors.background }]}>
+    <View style={[styles.tabBar, {backgroundColor: colors.background}]}>
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
+        const {options} = descriptors[route.key];
         const label = options.tabBarLabel ?? options.title ?? route.name;
         const isFocused = state.index === index;
         const icon = options.tabBarIcon;
@@ -42,15 +36,18 @@ const CustomTabBar: React.FC<any> = ({ state, descriptors, navigation }) => {
           <PlatformPressable
             key={route.key}
             onPress={onPress}
-            style={styles.tabItem}
-          >
+            style={styles.tabItem}>
             {icon &&
               icon({
                 focused: isFocused,
                 color: isFocused ? colors.primary : colors.text,
                 size: 24,
               })}
-            <Text style={[styles.label, { color: isFocused ? colors.primary : colors.text }]}>
+            <Text
+              style={[
+                styles.label,
+                {color: isFocused ? colors.primary : colors.text},
+              ]}>
               {typeof label === 'string' ? label : route.name}
             </Text>
           </PlatformPressable>
@@ -64,14 +61,13 @@ const TabNavigator = () => {
   return (
     <Tab.Navigator
       tabBar={props => <CustomTabBar {...props} />}
-      screenOptions={{ headerShown: false }}
-    >
+      screenOptions={{headerShown: false}}>
       <Tab.Screen
         name="HomeTab"
         component={HomeScreen}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <FontAwesome name="home" size={size} color={color} />
           ),
         }}
@@ -81,7 +77,7 @@ const TabNavigator = () => {
         component={SearchScreen}
         options={{
           tabBarLabel: 'Search',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <FontAwesome name="search" size={size} color={color} />
           ),
         }}
@@ -91,7 +87,7 @@ const TabNavigator = () => {
         component={FavouriteScreen}
         options={{
           tabBarLabel: 'Favorites',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <FontAwesome name="heart" size={size} color={color} />
           ),
         }}
@@ -101,7 +97,7 @@ const TabNavigator = () => {
         component={ProfileScreen}
         options={{
           tabBarLabel: 'Profile',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <FontAwesome name="user" size={size} color={color} />
           ),
         }}

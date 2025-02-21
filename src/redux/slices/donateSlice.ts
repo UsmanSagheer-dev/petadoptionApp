@@ -25,6 +25,9 @@ interface PetDonation {
   description: string;
   location: string;
   contactNumber: string;
+  ownerDisplayName?: string;
+  ownerEmail?: string;
+  ownerPhotoURL?: string;
   imageUrl: string[];
   money?: number;
 }
@@ -35,14 +38,12 @@ interface DonationState {
   donations: PetDonation[];
 }
 
-// Initial State
 const initialState: DonationState = {
   loading: false,
   error: null,
   donations: [],
 };
 
-// Async Thunks
 export const donatePet = createAsyncThunk<
   PetDonation,
   Omit<PetDonation, 'id' | 'userId' | 'requests' | 'createdAt'>,
@@ -53,6 +54,7 @@ export const donatePet = createAsyncThunk<
     if (!user) throw new Error('User not authenticated');
 
     const docRef = firestore().collection('donations').doc();
+
     const timestamp = firestore.Timestamp.now();
 
     const donationData: PetDonation = {
@@ -61,15 +63,19 @@ export const donatePet = createAsyncThunk<
       userId: user.uid,
       requests: [],
       createdAt: timestamp,
-      imageUrl: petData.imageUrl,
+      ownerDisplayName: user.displayName || '',
+      ownerEmail: user.email || '',
+      ownerPhotoURL: user.photoURL || '',
     };
 
     await docRef.set(donationData);
+
     return donationData;
   } catch (error) {
     return rejectWithValue((error as Error).message);
   }
 });
+
 export const fetchDonations = createAsyncThunk<
   PetDonation[],
   void,
@@ -140,7 +146,6 @@ export const deleteDonation = createAsyncThunk<
   }
 });
 
-// Slice
 const donateSlice = createSlice({
   name: 'donation',
   initialState,
@@ -156,7 +161,7 @@ const donateSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      
+
       .addCase(donatePet.pending, state => {
         state.loading = true;
         state.error = null;
@@ -173,7 +178,6 @@ const donateSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // Fetch Donations
       .addCase(fetchDonations.pending, state => {
         state.loading = true;
         state.error = null;
@@ -190,7 +194,6 @@ const donateSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // Request Adoption
       .addCase(requestAdoption.pending, state => {
         state.loading = true;
         state.error = null;
@@ -211,7 +214,6 @@ const donateSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // Delete Donation
       .addCase(deleteDonation.pending, state => {
         state.loading = true;
         state.error = null;

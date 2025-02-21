@@ -22,6 +22,14 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       marginTop: 20,
     },
+    notFoundText:{
+    
+        fontSize: 18,
+        color: '#888',
+        textAlign: 'center',
+        marginTop: 20,
+   
+    }
   });
 
   export default styles;

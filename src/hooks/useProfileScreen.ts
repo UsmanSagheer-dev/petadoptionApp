@@ -2,11 +2,9 @@ import {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../redux/store';
 import {updateProfile, fetchProfile} from '../redux/slices/profileImageSlice';
-// import { fetchUser } from "../redux/slices/userSlice";
 import {launchImageLibrary} from 'react-native-image-picker';
 import {readFile} from 'react-native-fs';
 import {Alert} from 'react-native';
-
 const useProfileScreen = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {userDetails} = useSelector((state: RootState) => state.user);
@@ -74,7 +72,7 @@ const useProfileScreen = () => {
     setEmail,
     imageUri,
     pickImage,
-    handleUpdateProfile, // ✅ Yeh function ab ProfileScreen mein use hoga
+    handleUpdateProfile,
     loading: profileLoading || uploading,
   };
 };

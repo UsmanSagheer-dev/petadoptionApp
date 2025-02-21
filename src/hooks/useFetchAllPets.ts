@@ -1,15 +1,13 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '../redux/store';
-import { fetchDonations, deleteDonation } from '../redux/slices/donateSlice';
+import {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {AppDispatch, RootState} from '../redux/store';
+import {fetchDonations, deleteDonation} from '../redux/slices/donateSlice';
 import auth from '@react-native-firebase/auth';
-import { PetDonation } from '../types/types'; 
-
+import {PetDonation} from '../types/types';
 const useFetchUserDonations = () => {
   const dispatch: AppDispatch = useDispatch();
   const user = auth().currentUser;
-
-  const { donations, loading, error } = useSelector((state: RootState) => ({
+  const {donations, loading, error} = useSelector((state: RootState) => ({
     donations: state.donation.donations,
     loading: state.donation.loading,
     error: state.donation.error,
@@ -22,7 +20,7 @@ const useFetchUserDonations = () => {
   }, [dispatch, user]);
 
   const userDonations = donations.filter(
-    (donation: PetDonation) => donation.userId === user?.uid
+    (donation: PetDonation) => donation.userId === user?.uid,
   );
 
   const handleDeletePet = async (petId: string) => {
@@ -30,7 +28,7 @@ const useFetchUserDonations = () => {
       await dispatch(deleteDonation(petId)).unwrap();
     } catch (error) {
       console.error('Deletion error:', error);
-      throw error; 
+      throw error;
     }
   };
 

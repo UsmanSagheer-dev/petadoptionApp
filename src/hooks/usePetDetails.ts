@@ -6,14 +6,8 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList , Pet} from '../types/types';
 import {requestAdoption} from '../redux/slices/donateSlice';
-
-
 import firestore from '@react-native-firebase/firestore';
-
-interface ProfileData {
-  displayName: string;
-  photoURL: string | null;
-}
+import {ProfileData} from '../types/types'
 
 export const usePetDetails = (selectedPet?: Pet | null) => {
   const dispatch = useDispatch<AppDispatch>();

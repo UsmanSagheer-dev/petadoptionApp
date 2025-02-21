@@ -5,7 +5,7 @@ import {
 import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import Icon from 'react-native-vector-icons/MaterialIcons'; 
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useState} from 'react';
 import SearchInput from '../components/searcInput/SearchInput';
 import COLOR from '../constant/constant';
@@ -19,7 +19,6 @@ const CustomDrawer = ({navigation}: DrawerContentComponentProps) => {
   return (
     <DrawerContentScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        {/* Close Button */}
         <TouchableOpacity
           style={styles.closeButton}
           onPress={() => navigation.closeDrawer()}>
@@ -28,7 +27,6 @@ const CustomDrawer = ({navigation}: DrawerContentComponentProps) => {
         <View>
           <SearchInput searchText={searchText} setSearchText={setSearchText} />
         </View>
-        {/* Menu Items */}
         <View style={styles.menuContainer}>
           <TouchableOpacity
             style={styles.menuItem}
@@ -57,7 +55,6 @@ const CustomDrawer = ({navigation}: DrawerContentComponentProps) => {
           </TouchableOpacity>
         </View>
 
-        {/* Logout at Bottom */}
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutText}>Log Out</Text>
         </TouchableOpacity>
@@ -68,13 +65,11 @@ const CustomDrawer = ({navigation}: DrawerContentComponentProps) => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    flexGrow: 1, // Ensures full height
+    flexGrow: 1,
     justifyContent: 'space-between',
   },
   container: {
     flex: 1,
-
-
     paddingVertical: 10,
   },
   closeButton: {
@@ -82,18 +77,17 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   menuContainer: {
-    flex: 1, // Ensures menu takes available space
+    flex: 1,
   },
   menuItem: {
     paddingVertical: 15,
-  
   },
   menuText: {
-    color:COLOR.primary,
+    color: COLOR.primary,
     fontSize: 16,
   },
   logoutButton: {
-    marginBottom: 30, // Space from bottom
+    marginBottom: 30,
   },
   logoutText: {
     color: 'red',

@@ -2,7 +2,6 @@ import {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState, AppDispatch} from '../redux/store';
 import {fetchDonations} from '../redux/slices/donateSlice';
-
 const useProfile = () => {
   const dispatch = useDispatch<AppDispatch>();
   const profileData = useSelector(

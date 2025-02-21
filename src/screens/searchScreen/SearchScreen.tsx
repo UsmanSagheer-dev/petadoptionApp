@@ -1,10 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {
-  View,
-  ScrollView,
-  ActivityIndicator,
-  Text,
-} from 'react-native';
+import {View, ScrollView, ActivityIndicator, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useDispatch} from 'react-redux';
@@ -19,15 +14,7 @@ import {Pet} from '../../types/types';
 import {toggleFavoriteStatus} from '../../redux/slices/favoritesSlice';
 import ICONS from '../../constant/icons';
 import styles from './style';
-
-import {RootStackParamList} from '../../types/types'
-
-
-type SearchScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Search'
->;
-
+import {SearchScreenNavigationProp} from '../../types/types';
 const SearchScreen = () => {
   const [selectedTab, setSelectedTab] = useState<string>('Dogs');
   const [searchText, setSearchText] = useState<string>('');
@@ -101,6 +88,8 @@ const SearchScreen = () => {
         <ActivityIndicator size="large" color="#000" />
       ) : error ? (
         <Text style={styles.errorText}>{error}</Text>
+      ) : filteredPets.length === 0 ? (
+        <Text style={styles.notFoundText}>Not Found</Text>
       ) : (
         <ScrollView ref={scrollViewRef} style={styles.petCardsContainer}>
           {filteredPets.map(pet => (

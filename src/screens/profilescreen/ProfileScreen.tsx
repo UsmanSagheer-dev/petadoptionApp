@@ -1,9 +1,4 @@
-import {
-  View,
-  ActivityIndicator,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import {View, ActivityIndicator, TouchableOpacity, Image} from 'react-native';
 import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
 import LoginButton from '../../components/button/CustomButton';

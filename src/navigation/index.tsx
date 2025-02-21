@@ -23,7 +23,7 @@ const RootNavigator = () => {
       {showSplash ? (
         <SplashScreen />
       ) : user ? (
-        <AppNavigator /> 
+        <AppNavigator />
       ) : (
         <AuthNavigator />
       )}
