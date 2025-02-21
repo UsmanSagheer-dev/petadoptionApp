@@ -163,6 +163,7 @@ export interface CardProps {
   subtitle: string;
   date: string;
   money: string;
+  imageUrl?: string;
 }
 
 export interface CustomTextProps {
