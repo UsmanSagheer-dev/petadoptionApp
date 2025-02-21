@@ -77,7 +77,7 @@ export interface PetDonation {
   petBreed: string;
   requests: AdoptionRequest[];
   petName: string;
-  age?:number;
+  age:number;
   description: string;
   contactNumber: string;
   imageUrl: string[];
@@ -252,7 +252,13 @@ export type NavigationProps = NativeStackNavigationProp<
   'PasswordUpdate',
   'Donatescreen'
 >;
-
+export type SignUpScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'SignUp'
+>;
+export  interface Props {
+  navigation: SignUpScreenNavigationProp;
+}
 export type RootStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
 export type AuthStackNavigationProp =

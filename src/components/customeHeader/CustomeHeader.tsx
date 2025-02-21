@@ -6,11 +6,7 @@ import styles from './style';
 const CustomeHeader: React.FC<CustomeHeaderProps> = ({title}) => {
   const navigation = useNavigation<NavigationProps>();
   const handleDonatePress = () => {
-    try {
       navigation.navigate('DonateScreen');
-    } catch (error) {
-      console.error('Navigation error:', error);
-    }
   };
 
   return (

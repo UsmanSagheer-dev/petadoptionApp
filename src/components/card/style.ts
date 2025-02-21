@@ -1,15 +1,14 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 import COLOR from '../../constant/constant';
 
 const styles = StyleSheet.create({
-  backgroundImage:{
-    flex: 1,
+  backgroundImage: {
     resizeMode: 'cover',
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 20,
   },
   card: {
-    backgroundColor: COLOR.quaternary,
     padding: 20,
     marginBottom: 10,
     borderRadius: 20,

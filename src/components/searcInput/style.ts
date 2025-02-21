@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "pink",
     borderRadius: 25,
   },
   input: {
@@ -14,17 +13,18 @@ const styles = StyleSheet.create({
     paddingLeft: 21,
     borderRadius: 20,
     backgroundColor: COLOR.tertiary,
+    color:COLOR.black
   },
   iconContainer: {
     width: 82,
     height: 62,
-    backgroundColor: "black",
+    backgroundColor:COLOR.black,
     position: "absolute",
     right: 2,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25,
-    shadowColor: "#000",
+    shadowColor:COLOR.black ,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
   },

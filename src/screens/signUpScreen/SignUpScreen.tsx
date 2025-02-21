@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   KeyboardAvoidingView,
   ScrollView,
   Platform,
@@ -11,11 +10,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch} from '../../redux/store';
 import {signup} from '../../redux/slices/authSlice';
@@ -28,16 +23,8 @@ import OrDivider from '../../components/onDivider/OnDivider';
 import IMAGES from '../../assets/images/index';
 import useGoogleSignIn from '../../hooks/useGoogleSignIn';
 import styles from './style';
-import {RootStackParamList} from '../../types/types'
-
-type SignUpScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'SignUp'
->;
-
-interface Props {
-  navigation: SignUpScreenNavigationProp;
-}
+import CustomLoader from '../../components/radarLoader/RadarLoader';
+import {Props} from '../../types/types';
 
 const SignUpScreen: React.FC<Props> = ({navigation}) => {
   const {
@@ -55,7 +42,7 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
     termsAccepted,
     setTermsAccepted,
   } = useSignUp();
-  const { onGoogleButtonPress, isGoogleLoading } = useGoogleSignIn();
+  const {onGoogleButtonPress, isGoogleLoading} = useGoogleSignIn();
   const dispatch = useDispatch<AppDispatch>();
   const {isAuthenticated, error} = useSelector((state: any) => state.auth);
 
@@ -88,7 +75,6 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
     } else {
       Alert.alert('Please fill in all fields correctly.');
     }
-
     setLoading(false);
   };
 
@@ -166,20 +152,19 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
           </View>
 
           <View style={styles.googlecontainer}>
-      <TouchableOpacity 
-        onPress={onGoogleButtonPress}
-        disabled={isGoogleLoading}
-      >
-        {isGoogleLoading ? (
-          <ActivityIndicator size="small" color={COLOR.primary} />
-        ) : (
-          <Image source={IMAGES.GOOGLEIMG} style={styles.googleimg} />
-        )}
-      </TouchableOpacity>
-      <Text style={styles.googleText}>
-        {isGoogleLoading ? 'Signing in...' : 'Sign in with Google'}
-      </Text>
-    </View>
+            <TouchableOpacity
+              onPress={onGoogleButtonPress}
+              disabled={isGoogleLoading}>
+              {isGoogleLoading ? (
+                <ActivityIndicator size="small" color={COLOR.primary} />
+              ) : (
+                <Image source={IMAGES.GOOGLEIMG} style={styles.googleimg} />
+              )}
+            </TouchableOpacity>
+            <Text style={styles.googleText}>
+              {isGoogleLoading ? <CustomLoader /> : 'Sign in with Google'}
+            </Text>
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
