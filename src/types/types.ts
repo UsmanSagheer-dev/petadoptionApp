@@ -13,7 +13,12 @@ import {
 } from '@react-navigation/drawer';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {ReactNode} from 'react';
-import {ViewStyle, TextStyle, DimensionValue, ImageSourcePropType} from 'react-native';
+import {
+  ViewStyle,
+  TextStyle,
+  DimensionValue,
+  ImageSourcePropType,
+} from 'react-native';
 
 // User and Auth Types
 export interface User {
@@ -57,9 +62,9 @@ export interface AdoptionRequest {
     email: string;
     phone?: string;
     userId: string;
-  userName: string;
-  userEmail: string;
-  timestamp: string;
+    userName: string;
+    userEmail: string;
+    timestamp: string;
   };
 }
 
@@ -127,13 +132,13 @@ export interface CustomeHeaderProps {
 export interface PetCardProps {
   imageUrl: string | string[];
   name: string;
-  age:number; // Changed from any to string
+  age: any; // Changed from any to string
   location: string;
   gender: string;
   icon: React.ReactNode;
   onPress: () => void;
   onIconPress: () => void;
-  locationIcon: React.ReactNode; 
+  locationIcon: React.ReactNode;
 }
 
 export interface TabItem {
@@ -244,7 +249,7 @@ export type PasswordUpdateNavigationProp = NativeStackNavigationProp<
 export type NavigationProps = NativeStackNavigationProp<
   AppStackParamList,
   'PasswordUpdate',
-  'DonateScreen'
+  'Donatescreen'
 >;
 
 export type RootStackNavigationProp =
@@ -290,12 +295,12 @@ export interface PasswordUpdateState {
 }
 
 export interface CustomInputProps {
-    type: string;
-    placeholder: string;
-    value: string;
-    onChange: (text: string) => void;
-    secureTextEntry?: boolean;
-  }
+  type: string;
+  placeholder: string;
+  value: string;
+  onChange: (text: string) => void;
+  secureTextEntry?: boolean;
+}
 
 export interface SignUpState {
   name: string;
@@ -318,22 +323,20 @@ export interface SignUpState {
 export type {BottomTabBarProps};
 
 export type NavigationProp = {
-    replace: (screen: string) => void;
-  };
+  replace: (screen: string) => void;
+};
 
+export interface ImgWithTextProps {
+  imageSource: ImageSourcePropType;
+  label: string;
+}
 
-  
- export interface ImgWithTextProps {
-    imageSource: ImageSourcePropType;
-    label: string;
-  }
+export interface Tab {
+  id: string;
+  label: string;
+}
 
- export interface Tab {
-    id: string;
-    label: string;
-  }
-
- export interface TabsProps {
-    tabs: Tab[];
-    onTabPress: (tabId: string) => void;
-  }
+export interface TabsProps {
+  tabs: Tab[];
+  onTabPress: (tabId: string) => void;
+}
