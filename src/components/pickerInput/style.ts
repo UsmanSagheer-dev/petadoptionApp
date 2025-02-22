@@ -3,7 +3,8 @@ import COLOR from '../../constant/constant';
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 15,
+    marginBottom: 10,
+    
   },
   label: {
     fontSize: 18,
@@ -17,8 +18,9 @@ const styles = StyleSheet.create({
   },
   picker: {
     fontSize: 16,
+    
     fontFamily: 'MontserratRegular',
-    color: COLOR.primary,
+    color:'gray',
   },
 });
 

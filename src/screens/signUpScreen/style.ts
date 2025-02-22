@@ -14,12 +14,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 36,
     fontWeight: '800',
-    marginBottom: 24,
+    
     color: COLOR.primary,
     fontFamily: 'MontserratRegular',
   },
   form: {
-    marginTop: 49,
+    marginTop: 30,
   },
   termsContainer: {
     marginTop: 14,
@@ -71,6 +71,16 @@ const styles = StyleSheet.create({
     fontFamily: 'MontserratRegular',
     marginBottom: 8,
   },
+signupButtonContainer: {
+  position: 'relative',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+buttonLoader: {
+  position: 'absolute',
+  right: 20,
+},
 });
 
 export default styles;

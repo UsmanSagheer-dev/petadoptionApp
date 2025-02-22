@@ -44,7 +44,11 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
   } = useSignUp();
   const {onGoogleButtonPress, isGoogleLoading} = useGoogleSignIn();
   const dispatch = useDispatch<AppDispatch>();
-  const {isAuthenticated, error} = useSelector((state: any) => state.auth);
+  const {
+    isAuthenticated,
+    error,
+    loading: reduxLoading,
+  } = useSelector((state: any) => state.auth);
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -67,15 +71,23 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
 
     setLoading(true);
 
-    const userData = await handleRegister();
+    try {
+      const userData = await handleRegister();
 
-    if (userData) {
-      console.log('User Registered:', userData);
-      dispatch(signup(userData));
-    } else {
-      Alert.alert('Please fill in all fields correctly.');
+      if (userData) {
+        await dispatch(signup(userData)).unwrap();
+        
+      } else {
+   
+        setLoading(false);
+      }
+    } catch (error: any) {
+      Alert.alert(
+        'Error',
+        error.message || 'Email is Already given , please sign in',
+      );
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -123,21 +135,23 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
             />
           </View>
           <View style={styles.buttonGroupContainer}>
-            <LoginButton
-              onClick={handleSignUp}
-              title={loading ? 'Loading...' : 'Sign Up'}
-              backgroundColor={COLOR.primary}
-              textColor={COLOR.white}
-              width={185}
-              disabled={!termsAccepted || loading}
-            />
-            {loading && (
-              <ActivityIndicator
-                size="large"
-                color={COLOR.primary}
-                style={styles.loader}
+            <View style={styles.signupButtonContainer}>
+              <LoginButton
+                onClick={handleSignUp}
+                title={loading ? 'Signing up...' : 'Sign Up'}
+                backgroundColor={COLOR.primary}
+                textColor={COLOR.white}
+                width={185}
+                disabled={!termsAccepted || loading}
               />
-            )}
+              {loading && (
+                <ActivityIndicator
+                  size="small"
+                  color={COLOR.white}
+                  style={styles.buttonLoader}
+                />
+              )}
+            </View>
             {showError && <Text style={styles.errorText}>{error}</Text>}
             <LoginButton
               onClick={() => navigation.navigate('Login')}
@@ -151,10 +165,10 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
             <OrDivider />
           </View>
 
-          <View style={styles.googlecontainer}>
-            <TouchableOpacity
-              onPress={onGoogleButtonPress}
-              disabled={isGoogleLoading}>
+          <TouchableOpacity
+            style={styles.googlecontainer}
+            onPress={onGoogleButtonPress}>
+            <TouchableOpacity disabled={isGoogleLoading}>
               {isGoogleLoading ? (
                 <ActivityIndicator size="small" color={COLOR.primary} />
               ) : (
@@ -164,7 +178,7 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
             <Text style={styles.googleText}>
               {isGoogleLoading ? <CustomLoader /> : 'Sign in with Google'}
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

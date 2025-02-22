@@ -178,6 +178,7 @@ const authSlice = createSlice({
       .addCase(signout.rejected, (state, action) => {
         state.error = action.payload as string;
       });
+      
   },
 });
 
