@@ -6,12 +6,12 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 10,
     borderRadius: 20,
-    overflow: 'hidden', 
+    overflow: 'hidden',
     position: 'relative',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.62)',  
+    backgroundColor: 'rgba(0, 0, 0, 0.62)',
     borderRadius: 20,
   },
   content: {
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: '800',
     fontFamily: 'MontserratRegular',
-    color: COLOR.primary,
+    color: COLOR.white,
     marginTop: 5,
   },
 });

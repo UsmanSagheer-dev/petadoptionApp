@@ -53,6 +53,20 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         items={PET_TYPE_OPTIONS}
       />
 
+<PickerInput
+        label="Vaccinated"
+        selectedValue={vaccinated}
+        onValueChange={setVaccinated}
+        items={VACCINATION_OPTIONS}
+      />
+
+      <PickerInput
+        label="Gender"
+        selectedValue={gender}
+        onValueChange={setGender}
+        items={GENDER_OPTIONS}
+      />
+
       <Text style={styles.label}>Pet Breed</Text>
       <CustomInput
         type="text"
@@ -69,19 +83,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         onChange={setAmount}
       />
 
-      <PickerInput
-        label="Vaccinated"
-        selectedValue={vaccinated}
-        onValueChange={setVaccinated}
-        items={VACCINATION_OPTIONS}
-      />
-
-      <PickerInput
-        label="Gender"
-        selectedValue={gender}
-        onValueChange={setGender}
-        items={GENDER_OPTIONS}
-      />
+      
 
       <Text style={styles.label}>Weight</Text>
       <CustomInput
