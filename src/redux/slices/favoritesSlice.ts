@@ -1,15 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-
-interface FavoriteState {
-  favorites: any[];
-}
-
+import {FavoriteState} from '../../types/types'
 const initialState: FavoriteState = {
   favorites: [],
 };
-
 export const fetchFavorites = createAsyncThunk(
   'favorites/fetchFavorites',
   async (_, { rejectWithValue }) => {

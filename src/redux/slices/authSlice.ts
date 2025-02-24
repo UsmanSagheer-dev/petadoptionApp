@@ -1,21 +1,9 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
-import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-interface User {
-  uid: string;
-  email: string | null;
-  displayName: string | null;
-  photoURL: string | null;
-}
+import {User, authState} from '../../types/types';
 
-interface AuthState {
-  user: User | null;
-  initializing: boolean;
-  showSplash: boolean;
-  error: string | null;
-}
-
-const initialState: AuthState = {
+const initialState: authState = {
   user: null,
   initializing: true,
   showSplash: true,
@@ -29,12 +17,14 @@ export const googleSignup = createAsyncThunk(
       const {idToken} = userInfo;
       const credential = auth.GoogleAuthProvider.credential(idToken);
       const userCredential = await auth().signInWithCredential(credential);
-      
+
       if (!userCredential.user) {
         throw new Error('Google authentication failed');
       }
 
-      const userDoc = firestore().collection('users').doc(userCredential.user.uid);
+      const userDoc = firestore()
+        .collection('users')
+        .doc(userCredential.user.uid);
       const docSnapshot = await userDoc.get();
 
       if (!docSnapshot.exists) {
@@ -51,7 +41,7 @@ export const googleSignup = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const signup = createAsyncThunk(
@@ -65,7 +55,7 @@ export const signup = createAsyncThunk(
         email,
         password,
       );
-      
+
       if (!userCredential.user) {
         throw new Error('User creation failed');
       }
@@ -113,15 +103,12 @@ export const updatePassword = createAsyncThunk(
       if (!user || !user.email) {
         throw new Error('User not found. Please login again.');
       }
-
       const credential = auth.EmailAuthProvider.credential(
         user.email,
         oldPassword,
       );
       await user.reauthenticateWithCredential(credential);
-
       await user.updatePassword(newPassword);
-
       return 'Password updated successfully';
     } catch (error: any) {
       if (error.code === 'auth/wrong-password') {
@@ -160,7 +147,7 @@ const authSlice = createSlice({
     setShowSplash: (state, action: PayloadAction<boolean>) => {
       state.showSplash = action.payload;
     },
-    clearError: (state) => {
+    clearError: state => {
       state.error = null;
     },
   },
@@ -178,7 +165,6 @@ const authSlice = createSlice({
       .addCase(signout.rejected, (state, action) => {
         state.error = action.payload as string;
       });
-      
   },
 });
 

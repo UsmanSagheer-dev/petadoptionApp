@@ -3,41 +3,12 @@ import auth from '@react-native-firebase/auth';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-
-interface AdoptionRequest {
-  userId: string;
-  userName: string;
-  userEmail: string;
-  timestamp: string;
-}
-
-interface PetDonation {
-  id: string;
-  userId: string;
-  petType: string;
-  gender: string;
-  vaccinated: string;
-  petBreed: string;
-  requests: AdoptionRequest[];
-  createdAt: FirebaseFirestoreTypes.Timestamp;
-  petName: string;
-  petAge: string;
-  description: string;
-  location: string;
-  contactNumber: string;
-  ownerDisplayName?: string;
-  ownerEmail?: string;
-  ownerPhotoURL?: string;
-  imageUrl: string[];
-  money?: number;
-}
-
+import {adoptionRequest, PetDonation} from '../../types/types';
 interface DonationState {
   loading: boolean;
   error: string | null;
   donations: PetDonation[];
 }
-
 const initialState: DonationState = {
   loading: false,
   error: null,
@@ -69,7 +40,6 @@ export const donatePet = createAsyncThunk<
     };
 
     await docRef.set(donationData);
-
     return donationData;
   } catch (error) {
     return rejectWithValue((error as Error).message);
@@ -102,7 +72,7 @@ export const fetchDonations = createAsyncThunk<
 });
 
 export const requestAdoption = createAsyncThunk<
-  {donationId: string; requestData: AdoptionRequest},
+  {donationId: string; requestData: adoptionRequest},
   {donationId: string; userData: {uid: string; name: string; email: string}},
   {rejectValue: string}
 >(
@@ -112,7 +82,7 @@ export const requestAdoption = createAsyncThunk<
       const user = auth().currentUser;
       if (!user) throw new Error('User not authenticated');
       const donationRef = firestore().collection('donations').doc(donationId);
-      const requestData: AdoptionRequest = {
+      const requestData: adoptionRequest = {
         userId: userData.uid,
         userName: userData.name,
         userEmail: userData.email,

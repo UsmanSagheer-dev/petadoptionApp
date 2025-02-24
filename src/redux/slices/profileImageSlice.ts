@@ -1,7 +1,7 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import firestore, {serverTimestamp} from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import {ProfileState} from '../../types/types'
+import {ProfileState} from '../../types/types';
 
 const initialState: ProfileState = {
   loading: false,
