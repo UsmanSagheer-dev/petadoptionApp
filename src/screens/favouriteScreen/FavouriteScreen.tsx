@@ -21,14 +21,14 @@ const FavouriteScreen = () => {
 
   return (
     <View style={styles.container}>
-      <CustomeHeader title="Favourite Screen" />
+ <CustomeHeader title="Favourite " navigateTo="SearchScreen" />
       {loading ? (
         <ActivityIndicator size="large" color={COLOR.primary} />
       ) : favorites.length === 0 ? (
         <Text style={styles.noFavoritesText}>No favorites found</Text>
       ) : (
         <ScrollView style={styles.petCardsContainer}>
-          {favorites.map(pet => (
+          {favorites?.map(pet => (
             <PetCard
               key={pet.id}
               imageUrl={pet.imageUrl}

@@ -125,6 +125,8 @@ export interface LoginButtonStyles {
 export interface CustomeHeaderProps {
   title: string;
   DonateScreen?: boolean;
+  navigateTo?: any;
+  onPress?: () => void;
 }
 
 export interface PetCardProps {
@@ -172,7 +174,7 @@ export interface CustomTextProps {
 export interface CustomBottomSheetProps {
   isVisible: boolean;
   onClose: () => void;
-  selectedPet?: Pet | null;
+  selectedPet: Pet | null | undefined;
 }
 
 export type RootStackParamList = {
@@ -221,6 +223,7 @@ export type AppStackParamList = {
   Drawer: undefined;
   Donate: {donationType: string};
   MyDonations: {filter: 'active' | 'completed'};
+  SearchScreen: undefined;
 };
 
 export type DrawerParamList = {
@@ -253,6 +256,7 @@ export type NavigationProps = NativeStackNavigationProp<
   AppStackParamList,
   'PasswordUpdate',
   'Donatescreen'
+  
 >;
 export type SignUpScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -426,4 +430,9 @@ export interface authState {
 
 export interface FavoriteState {
   favorites: any[];
+}
+
+export interface SearchInputProps {
+  searchText: string;
+  setSearchText: (text: string) => void;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, Easing } from 'react-native';
-
+import { View,  Animated, Easing } from 'react-native';
+import  styles from './RadarLoaderStyle'
 const CustomLoader = () => {
 
   const dot1 = useRef(new Animated.Value(0)).current;
@@ -71,27 +71,5 @@ const CustomLoader = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dot: {
-    width: 15,
-    height: 15,
-    borderRadius: 7.5,
-    marginHorizontal: 5,
-  },
-  dot1: {
-    backgroundColor: '#FF6B6B',
-  },
-  dot2: {
-    backgroundColor: '#4ECDC4',
-  },
-  dot3: {
-    backgroundColor: '#45B7D1',
-  },
-});
 
 export default CustomLoader;

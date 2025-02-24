@@ -1,14 +1,9 @@
 import { View, TextInput, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import IMAGES from "../../assets/images";
-import styles from "./style";
+import styles from "./SearchInputStyle";
 import COLOR from "../../constant/constant";
-
-interface SearchInputProps {
-  searchText: string;
-  setSearchText: (text: string) => void;
-}
-
+import {SearchInputProps} from '../../types/types'
 const SearchInput: React.FC<SearchInputProps> = ({ searchText, setSearchText }) => {
   return (
     <View style={styles.container}>

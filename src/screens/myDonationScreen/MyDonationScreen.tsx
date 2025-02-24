@@ -42,7 +42,7 @@ const MyDonationScreen = () => {
   console.log('Pet data:', pets[0]?.imageUrl);
   return (
     <View style={styles.container}>
-      <CustomeHeader title="My Donations" />
+   <CustomeHeader title="Donation Screen" navigateTo="Donate" />
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : error ? (

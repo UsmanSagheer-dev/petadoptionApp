@@ -53,7 +53,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         items={PET_TYPE_OPTIONS}
       />
 
-<PickerInput
+      <PickerInput
         label="Vaccinated"
         selectedValue={vaccinated}
         onValueChange={setVaccinated}
@@ -82,8 +82,6 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         value={amount}
         onChange={setAmount}
       />
-
-      
 
       <Text style={styles.label}>Weight</Text>
       <CustomInput

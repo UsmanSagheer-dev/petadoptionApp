@@ -4,9 +4,10 @@ import {useCustomBottomSheet} from '../../hooks/useCustomBottomSheet';
 import {CustomBottomSheetProps} from '../../types/types';
 import IMAGES from '../../assets/images';
 import {usePetDetails} from '../../hooks/usePetDetails';
-import styles from './styles';
+import styles from './PetDetailsModalStyles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLOR from '../../constant/constant';
+
 const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
   isVisible,
   onClose,
@@ -16,6 +17,13 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
   const {profileData, handleAdoptNow} = usePetDetails(selectedPet);
 
   if (!selectedPet) return null;
+
+  const petInfoItems = [
+    { label: 'Age', value: selectedPet.age },
+    { label: 'Gender', value: selectedPet.gender },
+    { label: 'Weight', value: selectedPet.weight },
+    { label: 'Vaccinated', value: selectedPet.vaccinated ? 'Yes' : 'No' },
+  ];
 
   return (
     <Animated.View style={[styles.overlay, {transform: [{translateY}]}]}>
@@ -36,24 +44,12 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
         </View>
 
         <View style={styles.infoContainer}>
-          <View style={styles.infoBox}>
-            <Text style={styles.labelTitle}>Age</Text>
-            <Text style={styles.labelSub}>{selectedPet.age}</Text>
-          </View>
-          <View style={styles.infoBox}>
-            <Text style={styles.labelTitle}>Gender</Text>
-            <Text style={styles.labelSub}>{selectedPet.gender}</Text>
-          </View>
-          <View style={styles.infoBox}>
-            <Text style={styles.labelTitle}>Weight</Text>
-            <Text style={styles.labelSub}>{selectedPet.weight}</Text>
-          </View>
-          <View style={styles.infoBox}>
-            <Text style={styles.labelTitle}>Vaccinated</Text>
-            <Text style={styles.labelSub}>
-              {selectedPet.vaccinated ? 'Yes' : 'No'}
-            </Text>
-          </View>
+          {petInfoItems?.map((item, index) => (
+            <View key={index} style={styles.infoBox}>
+              <Text style={styles.labelTitle}>{item.label}</Text>
+              <Text style={styles.labelSub}>{item.value}</Text>
+            </View>
+          ))}
         </View>
 
         <View style={styles.profileContainer}>

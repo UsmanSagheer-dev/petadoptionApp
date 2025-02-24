@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 import COLOR from '../../constant/constant';
 
 export const styles = StyleSheet.create({
@@ -10,11 +10,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLOR.white,
     marginBottom: 12,
-    borderRadius: 10, 
+    borderRadius: 10,
   },
   imageContainer: {
     width: 200,
-    backgroundColor:COLOR.quaternary,
+    backgroundColor: COLOR.quaternary,
     borderRadius: 20,
     overflow: 'hidden',
     zIndex: 999,
@@ -22,22 +22,22 @@ export const styles = StyleSheet.create({
   image: {
     height: '100%',
     resizeMode: 'cover',
-    shadowOffset: { width: 0, height: 4 }, 
+    shadowOffset: {width: 0, height: 4},
     shadowOpacity: 5,
-    shadowRadius: 6, 
-    elevation: 8, 
+    shadowRadius: 6,
+    elevation: 8,
   },
   infoCard: {
     flex: 1,
-    backgroundColor:COLOR.white,
-    borderRadius: 20, 
-    borderTopRightRadius: 20,  
-    borderBottomRightRadius: 20,  
+    backgroundColor: COLOR.white,
+    borderRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
     padding: 12,
     marginLeft: -10,
     height: 126,
     width: 200,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
@@ -79,28 +79,26 @@ export const styles = StyleSheet.create({
   },
   gender: {
     fontSize: 14,
-    color:COLOR.primary,
+    color: COLOR.primary,
   },
   deleteIcon: {
     width: 24,
     height: 24,
-   
   },
   placeholder: {
     width: 194,
     height: 171,
-    backgroundColor:COLOR.quaternary,
+    backgroundColor: COLOR.quaternary,
     borderRadius: 20,
   },
- // Add these to your existing styles if they're not already present
-placeholderText: {
-  color: '#666',
-  textAlign: 'center',
-},
-iconText: {
-  color: '#000',
-},
-iconContainer: {
-  padding: 5,
-},
+  placeholderText: {
+    color: '#666',
+    textAlign: 'center',
+  },
+  iconText: {
+    color: '#000',
+  },
+  iconContainer: {
+    padding: 5,
+  },
 });

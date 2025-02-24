@@ -1,7 +1,7 @@
 import React from 'react';
-import { TextInput } from 'react-native';
-import { styles } from './styles';
-import {CustomInputProps} from '../../types/types'
+import {TextInput} from 'react-native';
+import {styles} from './customInputStyles';
+import {CustomInputProps} from '../../types/types';
 
 const CustomInput: React.FC<CustomInputProps> = ({
   placeholder,

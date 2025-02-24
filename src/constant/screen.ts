@@ -49,6 +49,7 @@ export const AppScreens: ScreenConfig[] = [
   { name: 'DonateScreen', component: DonateScreen },
   { name: 'AdoptNow', component: AdoptNowScreen },
   { name: 'ProfileScreen', component: ProfileScreen },
+  { name: 'SearchScreen', component: SearchScreen },
 ];
 
 export const tabs: TabConfig[] = [
