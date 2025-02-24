@@ -111,7 +111,6 @@ export type Pet = {
   amount?: number;
 };
 
-// UI Component Props
 export interface LoginButtonProps {
   onClick: () => void;
   title: ReactNode;
@@ -387,5 +386,14 @@ export type SearchScreenNavigationProp = StackNavigationProp<
 >;
 
 
+export type ScreenConfig = {
+  name: keyof AppStackParamList;
+  component: React.ComponentType<any>;
+};
 
-
+export interface TabConfig {
+  name: keyof TabParamList;
+  component: React.ComponentType<any>;
+  label: string;
+  icon: string;
+}
