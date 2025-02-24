@@ -13,7 +13,7 @@ import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
 import LoginButton from '../../components/button/CustomButton';
 import COLOR from '../../constant/constant';
 import useLogin from '../../hooks/useLogin';
-import styles from './style';
+import styles from './LoginScreenStyle';
 interface Props {
   navigation: LoginScreenNavigationProp;
 }

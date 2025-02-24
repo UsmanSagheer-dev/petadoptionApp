@@ -13,23 +13,19 @@ import COLOR from '../../constant/constant';
 import CustomInput from '../../components/input/customInput';
 import LoginButton from '../../components/button/CustomButton';
 import auth from '@react-native-firebase/auth';
-import {RecoverPasswordScreenNavigationProp} from '../../types/types';
-import styles from './style';
-interface Props {
-  navigation: RecoverPasswordScreenNavigationProp;
-}
-const RecoverPasswordScreen: React.FC<Props> = ({navigation}) => {
+import {props} from '../../types/types';
+import styles from './RecoverPasswordScreenStyle';
+const RecoverPasswordScreen: React.FC<props> = ({navigation}) => {
   const [email, setEmail] = useState<string>('');
   const handleRecover = async (): Promise<void> => {
     if (email) {
       try {
         const methods = await auth().sendPasswordResetEmail(email);
         console.log('methods:', methods);
-        console.log('Password reset email sent successfully');
+
         Alert.alert('Success', 'Password reset email sent!');
         setEmail('');
       } catch (error: any) {
-        console.error('Error sending password reset email:', error);
         Alert.alert('Error', error.message || 'Unable to send reset email');
       }
     } else {

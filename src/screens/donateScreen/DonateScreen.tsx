@@ -4,7 +4,7 @@ import CustomInput from '../../components/input/customInput';
 import PickerInput from '../../components/pickerInput/PickerInput';
 import useDonateScreen from '../../hooks/useDonateScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import styles from './style';
+import styles from './DonateScreenStyle';
 import {
   PET_TYPE_OPTIONS,
   VACCINATION_OPTIONS,

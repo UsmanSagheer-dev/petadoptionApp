@@ -8,7 +8,7 @@ import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLOR from '../../constant/constant';
-import styles from './style';
+import styles from './DetailScreenStyle';
 import useFavorites from '../../hooks/useFavourite';
 
 const DetailScreen = ({route, navigation}) => {

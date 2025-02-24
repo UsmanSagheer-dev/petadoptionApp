@@ -263,6 +263,9 @@ export interface Props {
   
   
 }
+export interface props {
+  navigation: RecoverPasswordScreenNavigationProp;
+}
 
 export type RootStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
@@ -351,6 +354,7 @@ export interface Tab {
 export interface TabsProps {
   tabs: Tab[];
   onTabPress: (tabId: string) => void;
+  selectedTab: string;
 }
 
 export interface ProfileData {

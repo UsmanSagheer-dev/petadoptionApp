@@ -10,7 +10,7 @@ import IMAGES from '../../assets/images/index';
 import useFetchAllPets from '../../hooks/useFetchAllPets';
 import {AppStackParamList} from '../../types/types';
 import ICONS from '../../constant/icons';
-import styles from './style';
+import styles from './MyDonationScreenStyle';
 type MyDonationScreenNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<AppStackParamList, 'MyDonationScreen'>,
   NativeStackNavigationProp<AppStackParamList>
@@ -55,7 +55,7 @@ const MyDonationScreen = () => {
                 <PetCard
                   imageUrl={pet.imageUrl}
                   name={pet.petBreed}
-                  age={pet.age}
+                  age={pet.petAge}
                   location={pet.location}
                   gender={pet.gender}
                   icon={ICONS.delete()}
