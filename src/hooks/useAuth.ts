@@ -1,15 +1,12 @@
-import {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import { useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
-import {
-  setUser,
-  setInitializing,
-  setShowSplash,
-} from '../redux/slices/authSlice';
-import type {RootState} from '../redux/store';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { setUser, setInitializing, setShowSplash } from '../redux/slices/authSlice';
+
 const useAuth = () => {
-  const dispatch = useDispatch();
-  const authState = useSelector((state: RootState) => state.auth);
+  const dispatch = useAppDispatch();
+  const authState = useAppSelector(state => state.auth);
+
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(user => {
       dispatch(setUser(user));
@@ -17,6 +14,7 @@ const useAuth = () => {
         dispatch(setInitializing(false));
       }
     });
+
     const splashTimeout = setTimeout(() => {
       dispatch(setShowSplash(false));
     }, 3000);

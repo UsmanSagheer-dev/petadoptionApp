@@ -86,7 +86,7 @@ export interface PetDonation {
   ownerEmail?: string;
   ownerPhotoURL?: string;
   imageUrl: string[];
-  money?: number;
+  amount?:any;
 }
 
 export type Pet = {
@@ -162,7 +162,7 @@ export interface CardProps {
   title: string;
   subtitle: string;
   date: string;
-  money: string;
+  money?: any;
   imageUrl?: string;
 }
 
@@ -283,6 +283,7 @@ export type LoginScreenNavigationProp = StackNavigationProp<
   AuthStackParamList,
   'Login'
 >;
+
 
 export type PasswordUpdateScreenProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -435,4 +436,11 @@ export interface FavoriteState {
 export interface SearchInputProps {
   searchText: string;
   setSearchText: (text: string) => void;
+}
+
+export interface PasswordUpdateState {
+  oldPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+  isLoading: boolean;
 }

@@ -26,7 +26,7 @@ const CardSection: React.FC = () => {
               title={donation.petBreed}
               subtitle={donation.petType}
               date={formatDate(donation?.createdAt?.seconds)}
-              money={`$${donation.money || 0}`}
+              money={`$${donation.amount|| 0}`}
               imageUrl={donation.imageUrl?.[0]}
             />
           );

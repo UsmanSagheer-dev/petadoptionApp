@@ -1,16 +1,13 @@
-import {useState, useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../redux/store';
-import {updateProfile, fetchProfile} from '../redux/slices/profileImageSlice';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {readFile} from 'react-native-fs';
-import {Alert} from 'react-native';
+import { useState, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { updateProfile, fetchProfile } from '../redux/slices/profileImageSlice';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { Alert } from 'react-native';
+
 const useProfileScreen = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const {userDetails} = useSelector((state: RootState) => state.user);
-  const {profileData, loading: profileLoading} = useSelector(
-    (state: RootState) => state.profile,
-  );
+  const dispatch = useAppDispatch();
+  const { userDetails } = useAppSelector((state) => state.user);
+  const { profileData, loading: profileLoading } = useAppSelector((state) => state.profile);
 
   const [uploading, setUploading] = useState(false);
   const [name, setName] = useState('');
@@ -22,27 +19,34 @@ const useProfileScreen = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (userDetails || profileData) {
-      setName(profileData?.displayName || userDetails?.displayName || '');
-      setEmail(profileData?.email || userDetails?.email || '');
-      setImageUri(profileData?.photoURL || userDetails?.imageUrl || null);
+    if (profileData || userDetails) {
+      setName(profileData?.displayName ?? userDetails?.displayName ?? '');
+      setEmail(profileData?.email ?? userDetails?.email ?? '');
+      setImageUri(profileData?.photoURL ?? userDetails?.photoURL ?? null);
     }
-  }, [userDetails, profileData]);
+  }, [profileData, userDetails]);
+
   const pickImage = async () => {
     try {
       const result = await launchImageLibrary({
         mediaType: 'photo',
         quality: 0.7,
+        includeBase64: true,
       });
 
-      if (result.assets?.[0]?.uri) {
-        const base64 = await readFile(result.assets[0].uri, 'base64');
-        const imageString = `data:image/jpeg;base64,${base64}`;
-        setImageUri(imageString);
-        console.log('🚀 ~ pickImage ~ imageString:', imageString);
+      if (result.didCancel) {
+        return;
       }
+
+      if (!result.assets || result.assets.length === 0 || !result.assets[0].base64) {
+        Alert.alert('Error', 'Failed to process image');
+        return;
+      }
+
+      const { base64 } = result.assets[0];
+      const imageString = `data:image/jpeg;base64,${base64}`;
+      setImageUri(imageString);
     } catch (error) {
-      console.log(error);
       Alert.alert('Error', 'Failed to pick image');
     }
   };
@@ -54,17 +58,20 @@ const useProfileScreen = () => {
         updateProfile({
           name,
           imageUrl: imageUri || '',
-        }),
+        })
       ).unwrap();
 
-      await dispatch(fetchProfile());
+      dispatch(fetchProfile());
       Alert.alert('Success', 'Profile updated successfully!');
+  
     } catch (error) {
-      Alert.alert('Error', 'Failed to update profile');
+      const err = error as Error; 
+      Alert.alert('Error', err.message || 'Failed to update profile');
     } finally {
       setUploading(false);
     }
   };
+
   return {
     name,
     setName,

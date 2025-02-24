@@ -1,16 +1,16 @@
-import {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {RootState, AppDispatch} from '../redux/store';
-import {fetchDonations} from '../redux/slices/donateSlice';
-import {PetDonation} from '../types/types';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { fetchDonations } from '../redux/slices/donateSlice';
+import { PetDonation } from '../types/types';
+
 export const useDonations = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const {donations, loading, error} = useSelector(
-    (state: RootState) => state.donation,
-  );
+  const dispatch = useAppDispatch();
+  const { donations, loading, error } = useAppSelector(state => state.donation);
+
   useEffect(() => {
     dispatch(fetchDonations());
   }, [dispatch]);
+
   const isPetDonation = (donation: unknown): donation is PetDonation => {
     const d = donation as any;
     return (
@@ -27,6 +27,7 @@ export const useDonations = () => {
     if (!seconds) return 'Pending...';
     return new Date(seconds * 1000).toISOString().split('T')[0];
   };
+
   return {
     donations,
     loading,

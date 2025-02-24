@@ -35,19 +35,19 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
         </View>
 
         <View style={styles.details}>
-          <Text style={styles.title}>{selectedPet.petBreed}</Text>
-          <Text style={styles.price}>${selectedPet.amount}</Text>
+          <Text style={styles.title}>{selectedPet?.petBreed}</Text>
+          <Text style={styles.price}>${selectedPet?.amount}</Text>
         </View>
 
         <View style={styles.typeContainer}>
-          <Text style={styles.type}>{selectedPet.petType}</Text>
+          <Text style={styles.type}>{selectedPet?.petType}</Text>
         </View>
 
         <View style={styles.infoContainer}>
           {petInfoItems?.map((item, index) => (
             <View key={index} style={styles.infoBox}>
               <Text style={styles.labelTitle}>{item.label}</Text>
-              <Text style={styles.labelSub}>{item.value}</Text>
+              <Text style={styles.labelSub}>{item?.value}</Text>
             </View>
           ))}
         </View>
@@ -58,14 +58,14 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
               <Image
                 source={
                   profileData?.photoURL
-                    ? {uri: profileData.photoURL}
+                    ? {uri: profileData?.photoURL}
                     : IMAGES.PROFILEIMG
                 }
                 style={styles.profile}
               />
             </TouchableOpacity>
             <View>
-              <Text style={styles.userName}>{profileData.displayName}</Text>
+              <Text style={styles.userName}>{profileData?.displayName}</Text>
               <Text style={styles.subtitle}>Owner</Text>
             </View>
           </View>

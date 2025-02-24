@@ -3,20 +3,7 @@ import {useDispatch} from 'react-redux';
 import {updatePassword, signout} from '../redux/slices/authSlice';
 import {AppDispatch} from '../redux/store';
 import {Alert} from 'react-native';
-import {RootStackParamList} from '../types/types';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-
-type PasswordUpdateNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'PasswordUpdate'
->;
-
-export interface PasswordUpdateState {
-  oldPassword: string;
-  newPassword: string;
-  confirmNewPassword: string;
-  isLoading: boolean;
-}
+import {PasswordUpdateNavigationProp,PasswordUpdateState} from '../types/types';
 
 export const usePasswordUpdate = (navigation: PasswordUpdateNavigationProp) => {
   const dispatch = useDispatch<AppDispatch>();
