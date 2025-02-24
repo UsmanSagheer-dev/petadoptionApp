@@ -4,7 +4,7 @@ import CustomInput from '../../components/input/customInput';
 import PickerInput from '../../components/pickerInput/PickerInput';
 import useDonateScreen from '../../hooks/useDonateScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import styles from './style';
+import styles from './DonateScreenStyle';
 import {
   PET_TYPE_OPTIONS,
   VACCINATION_OPTIONS,
@@ -53,7 +53,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         items={PET_TYPE_OPTIONS}
       />
 
-<PickerInput
+      <PickerInput
         label="Vaccinated"
         selectedValue={vaccinated}
         onValueChange={setVaccinated}
@@ -82,8 +82,6 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         value={amount}
         onChange={setAmount}
       />
-
-      
 
       <Text style={styles.label}>Weight</Text>
       <CustomInput

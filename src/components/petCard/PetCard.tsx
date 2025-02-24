@@ -9,7 +9,7 @@ import {
 import {PetCardProps} from '../../types/types';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLOR from '../../constant/constant';
-import {styles} from './styles';
+import {styles} from './PetCardStyles';
 const PetCard: React.FC<PetCardProps> = ({
   imageUrl,
   name,

@@ -1,13 +1,11 @@
 import React from 'react';
-import { ScrollView, Text } from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import Card from '../../components/card/Card';
 import CustomLoader from '../../components/radarLoader/RadarLoader';
-import { useDonations } from '../../hooks/useDonations';
-import styles from './style';
-
+import {useDonations} from '../../hooks/useDonations';
+import styles from './CardSectionStyle';
 const CardSection: React.FC = () => {
-  const { donations, loading, error, isPetDonation, formatDate } = useDonations();
-
+  const {donations, loading, error, isPetDonation, formatDate} = useDonations();
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -17,18 +15,18 @@ const CardSection: React.FC = () => {
       ) : error ? (
         <Text>Error: {error}</Text>
       ) : (
-        donations.map((donation, index) => {
+        donations?.map((donation, index) => {
           if (!isPetDonation(donation)) {
             return null;
           }
-          
+
           return (
             <Card
               key={donation.id || index}
               title={donation.petBreed}
               subtitle={donation.petType}
               date={formatDate(donation?.createdAt?.seconds)}
-              money={`$${donation.amount || 0}`}
+              money={`$${donation.amount|| 0}`}
               imageUrl={donation.imageUrl?.[0]}
             />
           );

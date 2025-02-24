@@ -10,7 +10,7 @@ import IMAGES from '../../assets/images/index';
 import useFetchAllPets from '../../hooks/useFetchAllPets';
 import {AppStackParamList} from '../../types/types';
 import ICONS from '../../constant/icons';
-import styles from './style';
+import styles from './MyDonationScreenStyle';
 type MyDonationScreenNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<AppStackParamList, 'MyDonationScreen'>,
   NativeStackNavigationProp<AppStackParamList>
@@ -42,7 +42,7 @@ const MyDonationScreen = () => {
   console.log('Pet data:', pets[0]?.imageUrl);
   return (
     <View style={styles.container}>
-      <CustomeHeader title="My Donations" />
+   <CustomeHeader title="Donation Screen" navigateTo="Donate" />
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : error ? (
@@ -55,7 +55,7 @@ const MyDonationScreen = () => {
                 <PetCard
                   imageUrl={pet.imageUrl}
                   name={pet.petBreed}
-                  age={pet.age}
+                  age={pet.petAge}
                   location={pet.location}
                   gender={pet.gender}
                   icon={ICONS.delete()}

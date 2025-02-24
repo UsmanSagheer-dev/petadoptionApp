@@ -5,23 +5,15 @@ import { useSelector } from "react-redux";
 import useProfile from "../../hooks/useProfile";
 import LoginButton from "../button/CustomButton";
 import IMAGES from "../../assets/images/index";
-import styles from "./style";
-import {PetDonation} from '../../types/types'
-interface RootState {
-  donation: {
-    donations: PetDonation[];
-  };
-}
+import styles from "./adoptNowCardStyle";
+import {RootState} from '../../types/types'
 
 const AdoptNowCard = () => {
-  const { profileData, loading } = useProfile();
-  
+  const { profileData } = useProfile();
   const donations = useSelector((state: RootState) => state.donation.donations);
-  
   const userDonation = donations.find((donation) => 
     donation.requests?.some(request => request.userId === profileData?.uid)
   );
-
   const handleContactPress = () => {
     if (userDonation?.ownerEmail) {
       Linking.openURL(`mailto:${userDonation.ownerEmail}`);

@@ -1,13 +1,14 @@
-import {useEffect} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {AppDispatch, RootState} from '../redux/store';
-import {fetchDonations, deleteDonation} from '../redux/slices/donateSlice';
+import { useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
-import {PetDonation} from '../types/types';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { fetchDonations, deleteDonation } from '../redux/slices/donateSlice';
+import { PetDonation } from '../types/types';
+
 const useFetchUserDonations = () => {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const user = auth().currentUser;
-  const {donations, loading, error} = useSelector((state: RootState) => ({
+
+  const { donations, loading, error } = useAppSelector(state => ({
     donations: state.donation.donations,
     loading: state.donation.loading,
     error: state.donation.error,

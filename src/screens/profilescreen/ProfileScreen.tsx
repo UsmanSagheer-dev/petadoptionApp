@@ -5,7 +5,7 @@ import LoginButton from '../../components/button/CustomButton';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import useProfileScreen from '../../hooks/useProfileScreen';
 import COLOR from '../../constant/constant';
-import styles from './style';
+import styles from './ProfileScreenStyle';
 const ProfileScreen = () => {
   const {
     name,

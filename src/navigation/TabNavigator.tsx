@@ -4,12 +4,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {PlatformPressable} from '@react-navigation/elements';
 import {useTheme} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import HomeScreen from '../screens/homeScreen/HomeScreen';
-import SearchScreen from '../screens/searchScreen/SearchScreen';
-import FavouriteScreen from '../screens/favouriteScreen/FavouriteScreen';
-import ProfileScreen from '../screens/profilescreen/ProfileScreen';
 import {TabParamList} from '../types/types';
-
+import {tabs} from '../constant/screen';
 const Tab = createBottomTabNavigator<TabParamList>();
 const CustomTabBar: React.FC<any> = ({state, descriptors, navigation}) => {
   const {colors} = useTheme();
@@ -62,46 +58,19 @@ const TabNavigator = () => {
     <Tab.Navigator
       tabBar={props => <CustomTabBar {...props} />}
       screenOptions={{headerShown: false}}>
-      <Tab.Screen
-        name="HomeTab"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: 'Home',
-          tabBarIcon: ({color, size}) => (
-            <FontAwesome name="home" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="SearchTab"
-        component={SearchScreen}
-        options={{
-          tabBarLabel: 'Search',
-          tabBarIcon: ({color, size}) => (
-            <FontAwesome name="search" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="FavouriteTab"
-        component={FavouriteScreen}
-        options={{
-          tabBarLabel: 'Favorites',
-          tabBarIcon: ({color, size}) => (
-            <FontAwesome name="heart" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="ProfileTab"
-        component={ProfileScreen}
-        options={{
-          tabBarLabel: 'Profile',
-          tabBarIcon: ({color, size}) => (
-            <FontAwesome name="user" size={size} color={color} />
-          ),
-        }}
-      />
+      {tabs.map(tab => (
+        <Tab.Screen
+          key={tab.name}
+          name={tab.name}
+          component={tab.component}
+          options={{
+            tabBarLabel: tab.label,
+            tabBarIcon: ({color, size}) => (
+              <FontAwesome name={tab.icon} size={size} color={color} />
+            ),
+          }}
+        />
+      ))}
     </Tab.Navigator>
   );
 };

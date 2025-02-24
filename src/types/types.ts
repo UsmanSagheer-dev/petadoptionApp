@@ -19,12 +19,11 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 
-// User and Auth Types
 export interface User {
   uid: string;
   email: string | null;
   displayName: string | null;
-  imageUrl?: string | null;
+  photoURL: string | null;
 }
 
 export interface AuthState {
@@ -36,6 +35,8 @@ export interface AuthState {
     uid: string;
     email: string;
   } | null;
+  initializing: boolean;
+
 }
 
 export interface SignupPayload {
@@ -74,22 +75,18 @@ export interface PetDonation {
   gender: string;
   vaccinated: string;
   petBreed: string;
-  requests: AdoptionRequest[];
+  requests: adoptionRequest[];
+  createdAt: FirebaseFirestoreTypes.Timestamp;
   petName: string;
-  age?:any;
+  petAge: string;
   description: string;
-  contactNumber: string;
-  imageUrl: string[];
-  amount?: number;
-  userName: string;
   location: string;
-  displayName: string;
+  contactNumber: string;
   ownerDisplayName?: string;
   ownerEmail?: string;
   ownerPhotoURL?: string;
-  createdAt: {
-    toDate: () => Date;
-  };
+  imageUrl: string[];
+  amount?:any;
 }
 
 export type Pet = {
@@ -111,7 +108,6 @@ export type Pet = {
   amount?: number;
 };
 
-// UI Component Props
 export interface LoginButtonProps {
   onClick: () => void;
   title: ReactNode;
@@ -129,6 +125,8 @@ export interface LoginButtonStyles {
 export interface CustomeHeaderProps {
   title: string;
   DonateScreen?: boolean;
+  navigateTo?: any;
+  onPress?: () => void;
 }
 
 export interface PetCardProps {
@@ -164,7 +162,7 @@ export interface CardProps {
   title: string;
   subtitle: string;
   date: string;
-  money: string;
+  money?: any;
   imageUrl?: string;
 }
 
@@ -176,7 +174,7 @@ export interface CustomTextProps {
 export interface CustomBottomSheetProps {
   isVisible: boolean;
   onClose: () => void;
-  selectedPet?: Pet | null;
+  selectedPet: Pet | null | undefined;
 }
 
 export type RootStackParamList = {
@@ -225,6 +223,7 @@ export type AppStackParamList = {
   Drawer: undefined;
   Donate: {donationType: string};
   MyDonations: {filter: 'active' | 'completed'};
+  SearchScreen: undefined;
 };
 
 export type DrawerParamList = {
@@ -257,6 +256,7 @@ export type NavigationProps = NativeStackNavigationProp<
   AppStackParamList,
   'PasswordUpdate',
   'Donatescreen'
+  
 >;
 export type SignUpScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -266,6 +266,9 @@ export interface Props {
   navigation: SignUpScreenNavigationProp;
   
   
+}
+export interface props {
+  navigation: RecoverPasswordScreenNavigationProp;
 }
 
 export type RootStackNavigationProp =
@@ -280,6 +283,7 @@ export type LoginScreenNavigationProp = StackNavigationProp<
   AuthStackParamList,
   'Login'
 >;
+
 
 export type PasswordUpdateScreenProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -355,21 +359,27 @@ export interface Tab {
 export interface TabsProps {
   tabs: Tab[];
   onTabPress: (tabId: string) => void;
+  selectedTab: string;
 }
 
 export interface ProfileData {
   displayName: string;
-  email?: string;
   photoURL: string | null;
   petBreed?: string;
   petType?: string;
   location?: string;
+  id?: string;
+  name: string;
+  email?: string;
+  imageUrl: string | null;
+  dateJoined?: string;
 }
 
 export interface ProfileState {
   loading: boolean;
   error: string | null;
   profileData: ProfileData | null;
+  
 }
 
 export  type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -387,5 +397,50 @@ export type SearchScreenNavigationProp = StackNavigationProp<
 >;
 
 
+export type ScreenConfig = {
+  name: keyof AppStackParamList;
+  component: React.ComponentType<any>;
+};
 
+export interface TabConfig {
+  name: keyof TabParamList;
+  component: React.ComponentType<any>;
+  label: string;
+  icon: string;
+}
 
+export interface RootState {
+  donation: {
+    donations: PetDonation[];
+  };
+}
+
+export interface authState {
+  user: User | null;
+  initializing: boolean;
+  showSplash: boolean;
+  error: string | null;
+}
+
+ export interface adoptionRequest {
+  userId: string;
+  userName: string;
+  userEmail: string;
+  timestamp: string;
+}
+
+export interface FavoriteState {
+  favorites: any[];
+}
+
+export interface SearchInputProps {
+  searchText: string;
+  setSearchText: (text: string) => void;
+}
+
+export interface PasswordUpdateState {
+  oldPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+  isLoading: boolean;
+}

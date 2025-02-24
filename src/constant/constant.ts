@@ -21,8 +21,6 @@ const COLOR={
    
 }
 export default COLOR;
-
-
 export const PET_TABS = [
     { id: 'Dogs', label: 'Dogs' },
     { id: 'Cats', label: 'Cats' },
@@ -81,5 +79,8 @@ export const PET_DETAILS = [
     label: 'Bunnies',
   },
 ];
+
+
+
 
 

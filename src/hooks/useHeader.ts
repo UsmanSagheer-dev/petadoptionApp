@@ -1,15 +1,14 @@
 import { useEffect } from 'react';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-import type { RootState, AppDispatch } from '../redux/store'; 
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { fetchProfile } from '../redux/slices/profileImageSlice';
 import IMAGES from '../assets/images';
 
 const useHeader = () => {
-  const dispatch = useDispatch<AppDispatch>(); 
+  const dispatch = useAppDispatch(); 
   const navigation = useNavigation();
-  const profileData = useSelector((state: RootState) => state.profile.profileData);
-  const loading = useSelector((state: RootState) => state.profile.loading);
+  const profileData = useAppSelector(state => state.profile.profileData);
+  const loading = useAppSelector(state => state.profile.loading);
 
   useEffect(() => {
     dispatch(fetchProfile());

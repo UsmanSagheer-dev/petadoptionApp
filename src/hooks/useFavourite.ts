@@ -1,19 +1,17 @@
 import {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../redux/store';
+import {useAppDispatch, useAppSelector} from './hooks';
 import {
   fetchFavorites,
   toggleFavoriteStatus,
 } from '../redux/slices/favoritesSlice';
 import {Pet} from '../types/types';
 const useFavorites = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const favorites = useSelector(
-    (state: RootState) => state.favorites.favorites,
-  );
+  const dispatch = useAppDispatch();
+  const favorites = useAppSelector(state => state.favorites.favorites);
   const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     dispatch(fetchFavorites()).finally(() => setLoading(false));
   }, [dispatch]);

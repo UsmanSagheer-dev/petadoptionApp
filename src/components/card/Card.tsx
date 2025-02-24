@@ -1,6 +1,6 @@
 import {ImageBackground, Text, View} from 'react-native';
 import React from 'react';
-import styles from './style';
+import styles from './CardStyle';
 import {CardProps} from '../../types/types';
 import IMAGES from '../../assets/images/index';
 const Card: React.FC<CardProps> = ({

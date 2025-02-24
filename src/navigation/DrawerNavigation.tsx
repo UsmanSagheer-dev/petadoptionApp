@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useState} from 'react';
 import SearchInput from '../components/searcInput/SearchInput';
 import COLOR from '../constant/constant';
+import {menuItems} from '../constant/screen';
 const CustomDrawer = ({navigation}: DrawerContentComponentProps) => {
   const handleLogout = () => {
     auth().signOut();
@@ -28,31 +29,14 @@ const CustomDrawer = ({navigation}: DrawerContentComponentProps) => {
           <SearchInput searchText={searchText} setSearchText={setSearchText} />
         </View>
         <View style={styles.menuContainer}>
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => navigation.navigate('MainStack')}>
-            <Text style={styles.menuText}>Home</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => navigation.navigate('Donate')}>
-            <Text style={styles.menuText}>Donate</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => navigation.navigate('MyDonation')}>
-            <Text style={styles.menuText}>My Donations</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => navigation.navigate('PasswordUpdate')}>
-            <Text style={styles.menuText}>PasswordUpdate</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => navigation.navigate('AdoptNow')}>
-            <Text style={styles.menuText}>Adopt Now</Text>
-          </TouchableOpacity>
+          {menuItems.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.menuItem}
+              onPress={() => navigation.navigate(item.route)}>
+              <Text style={styles.menuText}>{item.label}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
 
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
