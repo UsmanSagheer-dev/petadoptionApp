@@ -19,6 +19,8 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 
+
+import {CompositeNavigationProp} from '@react-navigation/native';
 export interface User {
   uid: string;
   email: string | null;
@@ -68,25 +70,36 @@ export interface AdoptionRequest {
   };
 }
 
-export interface PetDonation {
+export interface adoptionRequest {
+  // Define this based on your app's needs
   id: string;
   userId: string;
+  status: string;
+  // Add other fields as needed
+}
+
+export interface PetDonationCreate {
   petType: string;
   gender: string;
   vaccinated: string;
   petBreed: string;
-  requests: adoptionRequest[];
-  createdAt: FirebaseFirestoreTypes.Timestamp;
   petName: string;
   petAge: string;
   description: string;
   location: string;
   contactNumber: string;
+  imageUrl: string[];
+  amount?: any; 
+}
+
+export interface PetDonation extends PetDonationCreate {
+  id: string;
+  userId: string;
+  requests: adoptionRequest[];
+  createdAt: FirebaseFirestoreTypes.Timestamp;
   ownerDisplayName?: string;
   ownerEmail?: string;
   ownerPhotoURL?: string;
-  imageUrl: string[];
-  amount?:any;
 }
 
 export type Pet = {
@@ -98,8 +111,8 @@ export type Pet = {
   gender: string;
   isFavorite?: boolean;
   imageUrl: string;
-  age: string;
-  weight?: string;
+  petAge: string;
+  minWeight?: string;
   vaccinated: boolean;
   type: string;
   description: string;
@@ -172,6 +185,7 @@ export interface CustomTextProps {
 }
 
 export interface CustomBottomSheetProps {
+
   isVisible: boolean;
   onClose: () => void;
   selectedPet: Pet | null | undefined;
@@ -283,7 +297,6 @@ export type LoginScreenNavigationProp = StackNavigationProp<
   AuthStackParamList,
   'Login'
 >;
-
 
 export type PasswordUpdateScreenProps = NativeStackScreenProps<
   AuthStackParamList,

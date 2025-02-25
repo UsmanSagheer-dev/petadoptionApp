@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import CustomInput from '../../components/input/customInput';
 import PickerInput from '../../components/pickerInput/PickerInput';
 import useDonateScreen from '../../hooks/useDonateScreen';
@@ -13,24 +13,8 @@ import {
 
 const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
   const {
-    petType,
-    setPetType,
-    gender,
-    setGender,
-    vaccinated,
-    setVaccinated,
-    petBreed,
-    setPetBreed,
-    amount,
-    setAmount,
-    weight,
-    setWeight,
-    location,
-    setLocation,
-    description,
-    setDescription,
-    age,
-    setAge,
+    formData,
+    updateFormData,
     imageUri,
     pickImage,
     handleDonate,
@@ -48,22 +32,22 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
 
       <PickerInput
         label="Pet Type"
-        selectedValue={petType}
-        onValueChange={setPetType}
+        selectedValue={formData.petType}
+        onValueChange={(value) => updateFormData('petType', value)}
         items={PET_TYPE_OPTIONS}
       />
 
       <PickerInput
         label="Vaccinated"
-        selectedValue={vaccinated}
-        onValueChange={setVaccinated}
+        selectedValue={formData.vaccinated}
+        onValueChange={(value) => updateFormData('vaccinated', value)}
         items={VACCINATION_OPTIONS}
       />
 
       <PickerInput
         label="Gender"
-        selectedValue={gender}
-        onValueChange={setGender}
+        selectedValue={formData.gender}
+        onValueChange={(value) => updateFormData('gender', value)}
         items={GENDER_OPTIONS}
       />
 
@@ -71,48 +55,48 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
       <CustomInput
         type="text"
         placeholder="Name"
-        value={petBreed}
-        onChange={setPetBreed}
+        value={formData.petBreed}
+        onChange={(value) => updateFormData('petBreed', value)}
       />
 
       <Text style={styles.label}>Amount</Text>
       <CustomInput
         type="numeric"
         placeholder="$"
-        value={amount}
-        onChange={setAmount}
+        value={formData.amount}
+        onChange={(value) => updateFormData('amount', value)}
       />
 
       <Text style={styles.label}>Weight</Text>
       <CustomInput
         type="numeric"
         placeholder="KG"
-        value={weight}
-        onChange={setWeight}
+        value={formData.minWeight}
+        onChange={(value) => updateFormData('minWeight', value)}
       />
 
       <Text style={styles.label}>Age</Text>
       <CustomInput
         type="numeric"
         placeholder="Years"
-        value={age}
-        onChange={setAge}
+        value={formData.petAge}
+        onChange={(value) => updateFormData('petAge', value)}
       />
 
       <Text style={styles.label}>Location</Text>
       <CustomInput
         type="text"
         placeholder="Location"
-        value={location}
-        onChange={setLocation}
+        value={formData.location}
+        onChange={(value) => updateFormData('location', value)}
       />
 
       <Text style={styles.label}>Description</Text>
       <CustomInput
         type="text"
         placeholder="Description"
-        value={description}
-        onChange={setDescription}
+        value={formData.description}
+        onChange={(value) => updateFormData('description', value)}
       />
 
       <View>
