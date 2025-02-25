@@ -1,7 +1,11 @@
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
-import { useAppDispatch, useAppSelector } from './hooks';
-import { setUser, setInitializing, setShowSplash } from '../redux/slices/authSlice';
+import {useAppDispatch, useAppSelector} from './hooks';
+import {
+  setUser,
+  setInitializing,
+  setShowSplash,
+} from '../redux/slices/authSlice';
 
 const useAuth = () => {
   const dispatch = useAppDispatch();

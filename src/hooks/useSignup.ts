@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import {SignUpState} from '../types/types';
+import {validateEmail} from '../utils/emailUtils';
 
 const useSignUp = (): SignUpState => {
   const [name, setName] = useState<string>('');
@@ -10,11 +11,6 @@ const useSignUp = (): SignUpState => {
   const [showError, setShowError] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
-
-  const validateEmail = (emailToValidate: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(emailToValidate);
-  };
 
   const checkEmailExists = async (email: string): Promise<boolean> => {
     try {
@@ -32,34 +28,54 @@ const useSignUp = (): SignUpState => {
     setShowError(false);
     setEmailError(null);
 
-    if (!name || !email || !password) {
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    if (!trimmedName || !trimmedEmail || !trimmedPassword) {
       setShowError(true);
+      setEmailError('All fields are required');
       return undefined;
     }
 
-    if (!validateEmail(email)) {
+    if (!validateEmail(trimmedEmail)) {
       setEmailError('Invalid email format');
       return undefined;
     }
 
-    if (password.length < 6) {
+    if (trimmedPassword.length < 6) {
       setShowError(true);
       setEmailError('Password must be at least 6 characters');
       return undefined;
     }
 
+    if (!termsAccepted) {
+      setEmailError('Please accept the terms and conditions');
+      return undefined;
+    }
+
     try {
-      const emailExists = await checkEmailExists(email);
+      setLoading(true);
+      const emailExists = await checkEmailExists(trimmedEmail);
       if (emailExists) {
-        setEmailError('This email is already registered. Please login instead.');
+        setEmailError(
+          'This email is already registered. Please login instead.',
+        );
         return undefined;
       }
 
-      return {name, email, password};
+      return {
+        name: trimmedName,
+        email: trimmedEmail,
+        password: trimmedPassword,
+      };
     } catch (error: any) {
       console.error('Signup validation error:', error);
       setShowError(true);
+      setEmailError('An error occurred during registration');
       return undefined;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,6 +94,6 @@ const useSignUp = (): SignUpState => {
     setTermsAccepted,
     setLoading,
   };
-}
+};
 
 export default useSignUp;

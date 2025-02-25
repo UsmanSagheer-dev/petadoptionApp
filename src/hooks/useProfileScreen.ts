@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { updateProfile, fetchProfile } from '../redux/slices/profileImageSlice';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { Alert } from 'react-native';
+import {useState, useEffect} from 'react';
+import {useAppDispatch, useAppSelector} from '../hooks/hooks';
+import {updateProfile, fetchProfile} from '../redux/slices/profileImageSlice';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {Alert} from 'react-native';
 
 const useProfileScreen = () => {
   const dispatch = useAppDispatch();
-  const { userDetails } = useAppSelector((state) => state.user);
-  const { profileData, loading: profileLoading } = useAppSelector((state) => state.profile);
+  const {userDetails} = useAppSelector(state => state.user);
+  const {profileData, loading: profileLoading} = useAppSelector(
+    state => state.profile,
+  );
 
   const [uploading, setUploading] = useState(false);
   const [name, setName] = useState('');
@@ -38,12 +40,16 @@ const useProfileScreen = () => {
         return;
       }
 
-      if (!result.assets || result.assets.length === 0 || !result.assets[0].base64) {
+      if (
+        !result.assets ||
+        result.assets.length === 0 ||
+        !result.assets[0].base64
+      ) {
         Alert.alert('Error', 'Failed to process image');
         return;
       }
 
-      const { base64 } = result.assets[0];
+      const {base64} = result.assets[0];
       const imageString = `data:image/jpeg;base64,${base64}`;
       setImageUri(imageString);
     } catch (error) {
@@ -58,14 +64,13 @@ const useProfileScreen = () => {
         updateProfile({
           name,
           imageUrl: imageUri || '',
-        })
+        }),
       ).unwrap();
 
       dispatch(fetchProfile());
       Alert.alert('Success', 'Profile updated successfully!');
-  
     } catch (error) {
-      const err = error as Error; 
+      const err = error as Error;
       Alert.alert('Error', err.message || 'Failed to update profile');
     } finally {
       setUploading(false);
