@@ -14,6 +14,7 @@ import LoginButton from '../../components/button/CustomButton';
 import COLOR from '../../constant/constant';
 import useLogin from '../../hooks/useLogin';
 import styles from './LoginScreenStyle';
+import CustomButton from '../../components/button/CustomButton';
 interface Props {
   navigation: LoginScreenNavigationProp;
 }
@@ -80,7 +81,7 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
           </View>
 
           <View style={styles.buttonGroupContainer}>
-            <LoginButton
+            <CustomButton
               onClick={handleLogin}
               title={loading ? 'Loading...' : 'Login'}
               backgroundColor={COLOR.primary}
@@ -88,7 +89,7 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
               width={185}
               disabled={!termsAccepted || loading}
             />
-            <LoginButton
+           <CustomButton
               onClick={() => navigation.navigate('SignUp')}
               title="Sign Up"
               backgroundColor={COLOR.white}

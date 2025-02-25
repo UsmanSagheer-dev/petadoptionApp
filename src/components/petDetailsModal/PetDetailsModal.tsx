@@ -19,9 +19,9 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
   if (!selectedPet) return null;
 
   const petInfoItems = [
-    { label: 'Age', value: selectedPet.age },
+    { label: 'Age', value: selectedPet.petAge },
     { label: 'Gender', value: selectedPet.gender },
-    { label: 'Weight', value: selectedPet.weight },
+    { label: 'Weight', value: selectedPet.minWeight },
     { label: 'Vaccinated', value: selectedPet.vaccinated ? 'Yes' : 'No' },
   ];
 

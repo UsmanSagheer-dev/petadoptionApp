@@ -26,6 +26,7 @@ import styles from './SignUpScreenStyle';
 import CustomLoader from '../../components/radarLoader/RadarLoader';
 import {Props} from '../../types/types';
 import { GOOGLE_WEB_CLIENT_ID } from '../../config/config';
+import CustomButton from '../../components/button/CustomButton';
 
 const SignUpScreen: React.FC<Props> = ({navigation}) => {
   const {
@@ -136,7 +137,7 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
           </View>
           <View style={styles.buttonGroupContainer}>
             <View style={styles.signupButtonContainer}>
-              <LoginButton
+            <CustomButton
                 onClick={handleSignUp}
                 title={loading ? 'Signing up...' : 'Sign Up'}
                 backgroundColor={COLOR.primary}
@@ -153,7 +154,7 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
               )}
             </View>
             {showError && <Text style={styles.errorText}>{error}</Text>}
-            <LoginButton
+            <CustomButton
               onClick={() => navigation.navigate('Login')}
               title="Login"
               backgroundColor={COLOR.white}

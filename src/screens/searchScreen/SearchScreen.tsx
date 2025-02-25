@@ -121,7 +121,7 @@ const SearchScreen = () => {
               key={pet.id}
               imageUrl={pet.imageUrl}
               name={pet.petBreed}
-              age={pet.age}
+              age={pet.petAge}
               location={pet.location}
               gender={pet.gender}
               icon={pet.isFavorite ? ICONS.ONCLICKFAV() : ICONS.OFCLICKFAV()}

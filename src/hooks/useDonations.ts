@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from './hooks';
-import { fetchDonations } from '../redux/slices/donateSlice';
-import { PetDonation } from '../types/types';
+import {useEffect} from 'react';
+import {useAppDispatch, useAppSelector} from './hooks';
+import {fetchDonations} from '../redux/slices/donateSlice';
+import {PetDonation} from '../types/types';
 
 export const useDonations = () => {
   const dispatch = useAppDispatch();
-  const { donations, loading, error } = useAppSelector(state => state.donation);
+  const {donations, loading, error} = useAppSelector(state => state.donation);
 
   useEffect(() => {
     dispatch(fetchDonations());

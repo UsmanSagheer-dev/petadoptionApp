@@ -3,7 +3,10 @@ import {useDispatch} from 'react-redux';
 import {updatePassword, signout} from '../redux/slices/authSlice';
 import {AppDispatch} from '../redux/store';
 import {Alert} from 'react-native';
-import {PasswordUpdateNavigationProp,PasswordUpdateState} from '../types/types';
+import {
+  PasswordUpdateNavigationProp,
+  PasswordUpdateState,
+} from '../types/types';
 
 export const usePasswordUpdate = (navigation: PasswordUpdateNavigationProp) => {
   const dispatch = useDispatch<AppDispatch>();

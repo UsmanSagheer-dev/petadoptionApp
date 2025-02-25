@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useAppDispatch } from '../hooks/hooks';
+import {useState, useEffect} from 'react';
+import {useAppDispatch} from '../hooks/hooks';
 import auth from '@react-native-firebase/auth';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList, Pet } from '../types/types';
-import { requestAdoption } from '../redux/slices/donateSlice';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList, Pet} from '../types/types';
+import {requestAdoption} from '../redux/slices/donateSlice';
 import firestore from '@react-native-firebase/firestore';
-import { ProfileData } from '../types/types';
+import {ProfileData} from '../types/types';
 
 export const usePetDetails = (selectedPet?: Pet | null) => {
   const dispatch = useAppDispatch();
@@ -15,8 +15,8 @@ export const usePetDetails = (selectedPet?: Pet | null) => {
   const [ownerData, setOwnerData] = useState<ProfileData>({
     displayName: 'Loading...',
     photoURL: null,
-    name: 'Loading...',  
-    imageUrl: null,      
+    name: 'Loading...',
+    imageUrl: null,
   });
 
   useEffect(() => {
@@ -32,16 +32,16 @@ export const usePetDetails = (selectedPet?: Pet | null) => {
           setOwnerData({
             displayName: userData?.displayName || 'Pet Owner',
             photoURL: userData?.photoURL || null,
-            name: userData?.displayName || 'Pet Owner', 
-            imageUrl: userData?.photoURL || null,   
+            name: userData?.displayName || 'Pet Owner',
+            imageUrl: userData?.photoURL || null,
           });
         } catch (error) {
           console.error('Error fetching owner data:', error);
           setOwnerData({
             displayName: 'Pet Owner',
             photoURL: null,
-            name: 'Pet Owner',   
-            imageUrl: null, 
+            name: 'Pet Owner',
+            imageUrl: null,
           });
         }
       }
@@ -69,7 +69,7 @@ export const usePetDetails = (selectedPet?: Pet | null) => {
             name: firebaseUser.displayName || 'Guest User',
             email: firebaseUser.email,
           },
-        })
+        }),
       ).unwrap();
 
       console.log('Adoption request submitted successfully');
@@ -79,5 +79,5 @@ export const usePetDetails = (selectedPet?: Pet | null) => {
     }
   };
 
-  return { profileData: ownerData, handleAdoptNow };
+  return {profileData: ownerData, handleAdoptNow};
 };

@@ -22,12 +22,12 @@ const CardSection: React.FC = () => {
 
           return (
             <Card
-              key={donation.id || index}
-              title={donation.petBreed}
-              subtitle={donation.petType}
+              key={donation?.id || index}
+              title={donation?.petBreed}
+              subtitle={donation?.petType}
               date={formatDate(donation?.createdAt?.seconds)}
-              money={`$${donation.amount|| 0}`}
-              imageUrl={donation.imageUrl?.[0]}
+              money={`$${donation?.amount|| 0}`}
+              imageUrl={donation?.imageUrl?.[0]}
             />
           );
         })

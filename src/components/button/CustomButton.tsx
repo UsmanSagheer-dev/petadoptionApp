@@ -1,10 +1,10 @@
 import React from 'react';
 import {TouchableOpacity, Text} from 'react-native';
 import {LoginButtonProps} from '../../types/types';
-import styles from './CustomButtonStyle';
+import styles from './customButtonStyle';
 import COLOR from '../../constant/constant';
 
-const LoginButton = ({
+const CustomButton = ({
   onClick,
   title,
   backgroundColor = COLOR.black,
@@ -25,4 +25,4 @@ const LoginButton = ({
   );
 };
 
-export default LoginButton;
+export default CustomButton;
