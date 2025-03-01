@@ -1,11 +1,12 @@
 import {StyleSheet} from 'react-native';
 import COLOR from '../../constant/constant';
+import FONTS from '../../assets/fonts/index';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor:COLOR.white,
   },
   backButton: {
     marginBottom: 30,
@@ -13,20 +14,20 @@ const styles = StyleSheet.create({
   backText: {
     fontSize: 46,
     fontWeight: '900',
-    color: '#000',
+    color: COLOR.black,
   },
   label: {
     fontSize: 18,
     fontWeight: '600',
     marginVertical: 5,
-    fontFamily: 'MontserratRegular',
+    fontFamily:FONTS.MontserratRegular,
     color: COLOR.primary,
     marginTop: 10,
   },
   imageUpload: {
     borderWidth: 1,
     borderStyle: 'dashed',
-    borderColor: '#000',
+    borderColor:COLOR.black,
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -37,14 +38,14 @@ const styles = StyleSheet.create({
   },
   uploadText: {
     fontSize: 16,
-    color: '#000',
+    color:COLOR.black,
   },
   imagePreview: {
     width: '100%',
     height: '100%',
   },
   button: {
-    backgroundColor: '#000',
+    backgroundColor:COLOR.black,
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -53,11 +54,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: '#fff',
+    color: COLOR.white,
     fontWeight: 'bold',
   },
   errorText: {
-    color: 'red',
+    color:COLOR.error,
     marginTop: 10,
     textAlign: 'center',
   },

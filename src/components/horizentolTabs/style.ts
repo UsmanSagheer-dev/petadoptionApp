@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import COLOR from '../../constant/constant';
+import FONTS from '../../assets/fonts/index';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     color: COLOR.primary,
     fontSize: 14,
     fontWeight: 600,
-    fontFamily: 'Montserrat-Regular',
+    fontFamily:FONTS.MontserratRegular,
   },
   selectedTabText: {
     color: COLOR.white,

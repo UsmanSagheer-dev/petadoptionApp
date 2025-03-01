@@ -12,14 +12,8 @@ import {PET_TABS} from '../../constant/constant';
 import {Pet} from '../../types/types';
 import {toggleFavoriteStatus} from '../../redux/slices/favoritesSlice';
 import ICONS from '../../constant/icons';
-import styles from './SearchScreenStyle';
-import {SearchScreenNavigationProp} from '../../types/types';
-
-interface FormDataState {
-  selectedTab: string;
-  searchText: string;
-  allPets: Pet[];
-}
+import styles from './style';
+import {SearchScreenNavigationProp,FormDataState} from '../../types/types';
 
 const SearchScreen = () => {
   const [formData, setFormData] = useState<FormDataState>({

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, Image} from 'react-native';
-import styles from './ImgWithTextStyles';
+import styles from './style';
 import {ImgWithTextProps} from '../../types/types';
 const ImgWithText: React.FC<ImgWithTextProps> = ({imageSource, label}) => {
   return (

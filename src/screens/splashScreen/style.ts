@@ -1,3 +1,4 @@
+import FONTS from "../../assets/fonts/index";
 import COLOR from "../../constant/constant";
 import { StyleSheet } from "react-native";
 
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
       fontSize: 40,
       fontWeight: '800',
       textAlign: 'center',
-      fontFamily: 'MontserratRegular',
+      fontFamily:FONTS.MontserratRegular,
     },
     mainText1: {
         color:COLOR.white,
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
       fontWeight: '600',
       textAlign: 'center',
       marginTop: 15,
-      fontFamily: 'MontserratRegular',
+      fontFamily:FONTS.MontserratRegular,
     },
   });
 

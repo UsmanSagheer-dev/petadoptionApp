@@ -1,6 +1,7 @@
 import {StyleSheet} from 'react-native';
 
 import COLOR from '../../constant/constant';
+import FONTS from '../../assets/fonts/index';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     marginBottom: 24,
     color: COLOR.primary,
-    fontFamily: 'MontserratRegular',
+    fontFamily:FONTS.MontserratRegular,
   },
   form: {
     marginTop: 49,
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontWeight: '600',
     color: COLOR.primary,
-    fontFamily: 'MontserratRegular',
+    fontFamily:FONTS.MontserratRegular,
   },
   forgotPassword: {
     alignSelf: 'flex-end',
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
   forgotPasswordText: {
     fontSize: 14,
     color: COLOR.primary,
-    fontFamily: 'MontserratRegular',
+    fontFamily:FONTS.MontserratRegular,
     fontWeight: '600',
   },
   errorText: {

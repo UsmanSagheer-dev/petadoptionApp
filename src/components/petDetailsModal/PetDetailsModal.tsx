@@ -4,7 +4,7 @@ import {useCustomBottomSheet} from '../../hooks/useCustomBottomSheet';
 import {CustomBottomSheetProps} from '../../types/types';
 import IMAGES from '../../assets/images';
 import {usePetDetails} from '../../hooks/usePetDetails';
-import styles from './PetDetailsModalStyles';
+import styles from './style';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLOR from '../../constant/constant';
 

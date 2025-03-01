@@ -9,7 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import { useState } from 'react';
-import styles from './HomeScreenStyle';
+import styles from './style';
 import SearchInput from '../../components/searcInput/SearchInput';
 import ImgWithText from '../../components/imgWithText/ImgWithText';
 import CardSection from '../../components/cardSection/CardSection';

@@ -457,3 +457,10 @@ export interface PasswordUpdateState {
   confirmNewPassword: string;
   isLoading: boolean;
 }
+
+export interface FormDataState {
+  selectedTab: string;
+  searchText: string;
+  allPets: Pet[];
+}
+

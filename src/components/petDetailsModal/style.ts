@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import COLOR from '../../constant/constant';
+import FONTS from '../../assets/fonts/index';
 
 const styles = StyleSheet.create({
   overlay: {
@@ -12,11 +13,11 @@ const styles = StyleSheet.create({
   },
   bottomSheet: {
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor:COLOR.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    shadowColor: '#000',
+    shadowColor:COLOR.black,
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
     color: COLOR.primary,
-    fontFamily: 'MontserratRegular',
+    fontFamily:FONTS.MontserratRegular,
   },
   price: {
     fontSize: 22,

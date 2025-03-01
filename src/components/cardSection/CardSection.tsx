@@ -3,7 +3,7 @@ import {ScrollView, Text} from 'react-native';
 import Card from '../../components/card/Card';
 import CustomLoader from '../../components/radarLoader/RadarLoader';
 import {useDonations} from '../../hooks/useDonations';
-import styles from './CardSectionStyle';
+import styles from './style';
 const CardSection: React.FC = () => {
   const {donations, loading, error, isPetDonation, formatDate} = useDonations();
   return (

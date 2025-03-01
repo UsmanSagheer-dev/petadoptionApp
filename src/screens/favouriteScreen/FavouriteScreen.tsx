@@ -7,7 +7,7 @@ import useFavorites from '../../hooks/useFavourite';
 import IMAGES from '../../assets/images/index';
 import COLOR from '../../constant/constant';
 import ICONS from '../../constant/icons';
-import styles from './FavouriteScreenStyle';
+import styles from './style';
 const FavouriteScreen = () => {
   const {
     favorites,
