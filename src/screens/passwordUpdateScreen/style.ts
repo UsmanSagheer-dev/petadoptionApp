@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
       fontWeight: '700',
       color: COLOR.primary,
       textAlign: 'center',
-      fontFamily:FONTS.MontserratRegular,
+      fontFamily:'MontserratRegular',
     },
     label: {
       fontSize: 18,

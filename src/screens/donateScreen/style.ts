@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     marginVertical: 5,
-    fontFamily:FONTS.MontserratRegular,
+    fontFamily:'MontserratRegular',
     color: COLOR.primary,
     marginTop: 10,
   },

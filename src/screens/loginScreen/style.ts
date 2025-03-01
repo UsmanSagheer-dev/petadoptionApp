@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     marginBottom: 24,
     color: COLOR.primary,
-    fontFamily:FONTS.MontserratRegular,
+    fontFamily:'MontserratRegular',
   },
   form: {
     marginTop: 49,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontWeight: '600',
     color: COLOR.primary,
-    fontFamily:FONTS.MontserratRegular,
+    fontFamily:'MontserratRegular',
   },
   forgotPassword: {
     alignSelf: 'flex-end',
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   forgotPasswordText: {
     fontSize: 14,
     color: COLOR.primary,
-    fontFamily:FONTS.MontserratRegular,
+    fontFamily:'MontserratRegular',
     fontWeight: '600',
   },
   errorText: {

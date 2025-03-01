@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     color: COLOR.primary,
     fontSize: 14,
     fontWeight: 600,
-    fontFamily:FONTS.MontserratRegular,
+    fontFamily:'MontserratRegular',
   },
   selectedTabText: {
     color: COLOR.white,

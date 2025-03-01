@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     fontWeight: '600',
-    fontFamily:FONTS.MontserratRegular,
+    fontFamily:'MontserratRegular',
     color: COLOR.primary,
   },
   pickerContainer: {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   picker: {
     fontSize: 16,
-    fontFamily:FONTS.MontserratRegular,
+    fontFamily:'MontserratRegular',
     color:'gray',
   },
 });

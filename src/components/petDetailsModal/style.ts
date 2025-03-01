@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
     color: COLOR.primary,
-    fontFamily:FONTS.MontserratRegular,
+    fontFamily:'MontserratRegular',
   },
   price: {
     fontSize: 22,

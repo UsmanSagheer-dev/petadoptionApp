@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 20,
     fontWeight: '700',
-    fontFamily:FONTS.MontserratRegular,
+    fontFamily:'MontserratRegular',
   },
 });
 

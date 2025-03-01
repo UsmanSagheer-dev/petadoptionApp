@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontWeight: '600',
-    fontFamily:FONTS.MontserratRegular,
+    fontFamily:'MontserratRegular',
     color: COLOR.primary,
   },
 });

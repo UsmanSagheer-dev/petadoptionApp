@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
       fontSize: 40,
       fontWeight: '800',
       textAlign: 'center',
-      fontFamily:FONTS.MontserratRegular,
+      fontFamily:'MontserratRegular',
     },
     mainText1: {
         color:COLOR.white,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
       fontWeight: '600',
       textAlign: 'center',
       marginTop: 15,
-      fontFamily:FONTS.MontserratRegular,
+      fontFamily:'MontserratRegular',
     },
   });
 

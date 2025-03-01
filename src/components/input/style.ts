@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     borderBottomColor:COLOR.primary,
     paddingVertical: 8,
     fontSize: 16,
-    fontFamily:FONTS.MontserratRegular,
+    fontFamily:'MontserratRegular',
     color:COLOR.black
   },
 });
