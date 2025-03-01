@@ -4,9 +4,9 @@ import {PasswordUpdateNavigationProp} from '../../types/types';
 import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
 import COLOR from '../../constant/constant';
-import LoginButton from '../../components/button/CustomButton';
+import CustomButton from '../../components/customButton/CustomButton';
 import {usePasswordUpdate} from '../../hooks/usePasswordUpdate';
-import styles from './PasswordUpdateScreenStyle';
+import styles from './style';
 type PasswordUpdateScreenProps = {
   navigation: PasswordUpdateNavigationProp;
 };
@@ -60,7 +60,7 @@ const PasswordUpdateScreen: React.FC<PasswordUpdateScreenProps> = ({
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <LoginButton
+        <CustomButton
           onClick={handleUpdateProfile}
           title={state.isLoading ? 'Updating...' : 'Update Password'}
           backgroundColor={COLOR.primary}

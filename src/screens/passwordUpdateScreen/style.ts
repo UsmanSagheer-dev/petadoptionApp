@@ -1,3 +1,4 @@
+import FONTS from "../../assets/fonts/index";
 import COLOR from "../../constant/constant";
 import { StyleSheet } from "react-native";
 
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
       fontWeight: '700',
       color: COLOR.primary,
       textAlign: 'center',
-      fontFamily: 'MontserratRegular',
+      fontFamily:'MontserratRegular',
     },
     label: {
       fontSize: 18,

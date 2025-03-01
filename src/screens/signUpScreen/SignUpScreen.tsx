@@ -17,16 +17,15 @@ import {signup} from '../../redux/slices/authSlice';
 import useSignUp from '../../hooks/useSignup';
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
-import LoginButton from '../../components/button/CustomButton';
 import COLOR from '../../constant/constant';
 import OrDivider from '../../components/onDivider/OnDivider';
 import IMAGES from '../../assets/images/index';
 import useGoogleSignIn from '../../hooks/useGoogleSignIn';
-import styles from './SignUpScreenStyle';
+import styles from './style';
 import CustomLoader from '../../components/radarLoader/RadarLoader';
 import {Props} from '../../types/types';
 import { GOOGLE_WEB_CLIENT_ID } from '../../config/config';
-import CustomButton from '../../components/button/CustomButton';
+import CustomButton from '../../components/customButton/CustomButton';
 
 const SignUpScreen: React.FC<Props> = ({navigation}) => {
   const {

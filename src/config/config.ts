@@ -1,1 +1,1 @@
-export const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_WEB_CLIENT_ID ||  '835900712525-b97q3pta58qfpl0i87b2dvrd69kb0dpu.apps.googleusercontent.com';
+export const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_WEB_CLIENT_ID ||  '835900712525-b97q3pta58qfpl0i87b2dvrd69kb0dpu.apps.googleusercontent.com'

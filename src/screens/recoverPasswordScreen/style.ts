@@ -1,10 +1,11 @@
+import FONTS from "../../assets/fonts/index";
 import COLOR from "../../constant/constant";
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
       flex: 1,
       width: '100%',
-      backgroundColor: '#fff',
+      backgroundColor:COLOR.white,
       justifyContent: 'center',
       paddingHorizontal: 27,
     },
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
     },
     backText: {
       fontSize: 24,
-      color: '#000',
+      color:COLOR.black,
     },
     content: {
       width: '100%',
@@ -26,19 +27,19 @@ const styles = StyleSheet.create({
       fontSize: 36,
       fontWeight: '800',
       color: COLOR.primary,
-      fontFamily: 'MontserratRegular',
+      fontFamily:'MontserratRegular',
     },
     label: {
       fontSize: 18,
       fontWeight: 600,
-      fontFamily: 'MontserratRegular',
+      fontFamily:'MontserratRegular',
       alignSelf: 'flex-start',
       marginBottom: 8,
     },
     description: {
       fontSize: 14,
       fontWeight: 600,
-      fontFamily: 'MontserratRegular',
+      fontFamily:'MontserratRegular',  
       color: COLOR.primary,
       marginTop: 12,
       justifyContent: 'center',

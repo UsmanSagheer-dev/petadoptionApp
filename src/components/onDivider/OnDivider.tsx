@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import {styles} from './OnDividerStyles';
+import {styles} from './style';
 
 const OrDivider = () => {
   return (

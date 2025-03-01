@@ -1,7 +1,7 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import AdoptNowCard from '../../components/adoptNowCard/AdoptNowCard';
-import styles from './AdoptNowScreenStyle';
+import styles from './style';
 const AdoptNowScreen = () => {
   return (
     <View style={styles.container}>

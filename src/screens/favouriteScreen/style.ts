@@ -20,7 +20,4 @@ const styles = StyleSheet.create({
   });
 
   export default styles;
-  
-  
-
-// import { StyleSheet } from "react-native";
+ 

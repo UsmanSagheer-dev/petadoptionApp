@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import COLOR from '../../constant/constant';
+import FONTS from '../../assets/fonts/index';
 
 const styles = StyleSheet.create({
   container: {
@@ -9,17 +10,16 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     fontWeight: '600',
-    fontFamily: 'MontserratRegular',
+    fontFamily:'MontserratRegular',
     color: COLOR.primary,
   },
   pickerContainer: {
     borderBottomWidth: 2,
-    borderBottomColor: '#101C1D',
+    borderBottomColor:COLOR.primary,
   },
   picker: {
     fontSize: 16,
-    
-    fontFamily: 'MontserratRegular',
+    fontFamily:'MontserratRegular',
     color:'gray',
   },
 });

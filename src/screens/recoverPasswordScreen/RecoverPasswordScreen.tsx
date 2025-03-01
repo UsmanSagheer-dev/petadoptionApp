@@ -11,10 +11,10 @@ import {
 import IMAGES from '../../assets/images';
 import COLOR from '../../constant/constant';
 import CustomInput from '../../components/input/customInput';
-import LoginButton from '../../components/button/CustomButton';
+import CustomButton from '../../components/customButton/CustomButton';
 import auth from '@react-native-firebase/auth';
 import {props} from '../../types/types';
-import styles from './RecoverPasswordScreenStyle';
+import styles from './style';
 const RecoverPasswordScreen: React.FC<props> = ({navigation}) => {
   const [email, setEmail] = useState<string>('');
   const handleRecover = async (): Promise<void> => {
@@ -56,7 +56,7 @@ const RecoverPasswordScreen: React.FC<props> = ({navigation}) => {
           Put your email above to get recovery URL
         </Text>
         <View style={styles.login}>
-          <LoginButton
+          <CustomButton
             onClick={handleRecover}
             title="Recover"
             backgroundColor={COLOR.primary}

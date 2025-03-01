@@ -2,7 +2,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {CustomeHeaderProps, NavigationProps} from '../../types/types';
-import styles from './CustomeHeaderStyle';
+import styles from './style';
 
 const CustomeHeader: React.FC<CustomeHeaderProps> = ({
   title,

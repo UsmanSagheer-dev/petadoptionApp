@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View,  Animated, Easing } from 'react-native';
-import  styles from './RadarLoaderStyle'
+import  styles from './style'
 const CustomLoader = () => {
 
   const dot1 = useRef(new Animated.Value(0)).current;

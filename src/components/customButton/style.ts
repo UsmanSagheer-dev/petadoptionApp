@@ -1,3 +1,4 @@
+import FONTS from '../../assets/fonts/index';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -11,7 +12,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 20,
     fontWeight: '700',
-    fontFamily: 'MontserratRegular',
+    fontFamily:'MontserratRegular',
   },
 });
 

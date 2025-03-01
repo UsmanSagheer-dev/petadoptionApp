@@ -3,9 +3,9 @@ import { View, Text, Image, Linking } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useSelector } from "react-redux";
 import useProfile from "../../hooks/useProfile";
-import LoginButton from "../button/CustomButton";
+import CustomButton from "../customButton/CustomButton";
 import IMAGES from "../../assets/images/index";
-import styles from "./adoptNowCardStyle";
+import styles from "./style";
 import {RootState} from '../../types/types'
 
 const AdoptNowCard = () => {
@@ -47,7 +47,7 @@ const AdoptNowCard = () => {
           </Text>
         </View>
       </View>
-      <LoginButton 
+      <CustomButton 
         title="Contact" 
         onClick={handleContactPress}
         backgroundColor="black"

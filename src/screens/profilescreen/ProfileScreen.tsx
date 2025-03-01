@@ -1,11 +1,11 @@
 import {View, ActivityIndicator, TouchableOpacity, Image} from 'react-native';
 import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
-import LoginButton from '../../components/button/CustomButton';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import useProfileScreen from '../../hooks/useProfileScreen';
 import COLOR from '../../constant/constant';
-import styles from './ProfileScreenStyle';
+import styles from './style';
+import CustomButton from '../../components/customButton/CustomButton';
 const ProfileScreen = () => {
   const {
     name,
@@ -65,7 +65,7 @@ const ProfileScreen = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <LoginButton
+        <CustomButton
           onClick={handleUpdateProfile}
           title="Update Profile"
           backgroundColor={COLOR.primary}

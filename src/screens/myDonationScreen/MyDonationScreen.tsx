@@ -10,7 +10,7 @@ import IMAGES from '../../assets/images/index';
 import useFetchAllPets from '../../hooks/useFetchAllPets';
 import {AppStackParamList} from '../../types/types';
 import ICONS from '../../constant/icons';
-import styles from './MyDonationScreenStyle';
+import styles from './style';
 type MyDonationScreenNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<AppStackParamList, 'MyDonationScreen'>,
   NativeStackNavigationProp<AppStackParamList>
