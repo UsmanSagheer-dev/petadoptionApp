@@ -61,7 +61,7 @@ const PetCard: React.FC<PetCardProps> = ({
             </View>
           )}
         </View>
-        <View style={styles.infoCard}>
+        
           <View style={styles.details}>
             <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
               {name}
@@ -70,17 +70,18 @@ const PetCard: React.FC<PetCardProps> = ({
               {age} {age === 1 ? 'year' : 'years'}
             </Text>
             <View style={styles.locationRow}>
-              <MaterialIcons
-                name="location-on"
-                size={18}
-                color={COLOR.PRIMARY_RED}
-              />
+             
               <Text
                 style={styles.location}
                 numberOfLines={1}
                 ellipsizeMode="tail">
                 {location}
               </Text>
+              <MaterialIcons
+                name="location-on"
+                size={18}
+                color={COLOR.PRIMARY_RED}
+              />
             </View>
             <View style={styles.genderContainer}>
               <Text style={styles.gender}>{gender}</Text>
@@ -96,7 +97,7 @@ const PetCard: React.FC<PetCardProps> = ({
             </View>
           </View>
         </View>
-      </View>
+  
     </TouchableOpacity>
   );
 };

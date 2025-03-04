@@ -1,7 +1,5 @@
 import {StyleSheet} from 'react-native';
-
 import COLOR from '../../constant/constant';
-import FONTS from '../../assets/fonts/index';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -33,8 +31,8 @@ const styles = StyleSheet.create({
   inputContainer: {},
   label: {
     fontSize: 18,
-    marginBottom: 8,
-    fontWeight: '600',
+    marginBottom: 6,
+    fontWeight:600,
     color: COLOR.primary,
     fontFamily:'MontserratRegular',
   },

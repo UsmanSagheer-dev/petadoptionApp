@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   infoBox: {
     backgroundColor: COLOR.infoBar,
     padding: 9,
-    borderRadius: 10,
+    borderRadius: 18,
     alignItems: 'center',
     flex: 1,
     margin: 2,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   labelTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#333',
+    color: COLOR.infoText,
   },
   labelSub: {
     fontSize: 12,

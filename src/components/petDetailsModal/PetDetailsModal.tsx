@@ -7,6 +7,7 @@ import {usePetDetails} from '../../hooks/usePetDetails';
 import styles from './style';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLOR from '../../constant/constant';
+import CustomButton from '../../components/customButton/CustomButton';
 
 const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
   isVisible,
@@ -19,10 +20,10 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
   if (!selectedPet) return null;
 
   const petInfoItems = [
-    { label: 'Age', value: selectedPet.petAge },
-    { label: 'Gender', value: selectedPet.gender },
-    { label: 'Weight', value: selectedPet.minWeight },
-    { label: 'Vaccinated', value: selectedPet.vaccinated ? 'Yes' : 'No' },
+    {label: 'Age', value: selectedPet.petAge},
+    {label: 'Gender', value: selectedPet.gender},
+    {label: 'Weight', value: selectedPet.minWeight},
+    {label: 'Vaccine', value: selectedPet.vaccinated ? 'Yes' : 'No'},
   ];
 
   return (
@@ -82,10 +83,7 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
         <View style={styles.descriptionContainer}>
           <Text style={styles.description}>{selectedPet.description}</Text>
         </View>
-
-        <TouchableOpacity style={styles.button} onPress={handleAdoptNow}>
-          <Text style={styles.buttonText}>Adopt Now</Text>
-        </TouchableOpacity>
+        <CustomButton title="Adopt Now" onClick={handleAdoptNow} height={74} />
       </View>
     </Animated.View>
   );

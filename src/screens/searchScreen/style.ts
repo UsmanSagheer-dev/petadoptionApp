@@ -6,15 +6,18 @@ const styles = StyleSheet.create({
       flex: 1,
       zIndex: 99,
       backgroundColor:COLOR.white,
-      paddingHorizontal: 20,
+      paddingHorizontal: 13,
+      
     },
     searchContainer: {
+     
       top: 20,
     },
     tabsContainer: {
       marginTop: 25,
     },
     petCardsContainer: {
+    
       marginTop: 20,
     },
     errorText: {

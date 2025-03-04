@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     marginBottom: 8,
-    fontWeight: '600',
+    fontWeight: 600,
     color: COLOR.primary,
     fontFamily: 'MontserratRegular',
   },

@@ -38,7 +38,6 @@ export interface AuthState {
     email: string;
   } | null;
   initializing: boolean;
-
 }
 
 export interface SignupPayload {
@@ -70,12 +69,13 @@ export interface AdoptionRequest {
   };
 }
 
-export interface adoptionRequest {
-  // Define this based on your app's needs
+export interface AdoptionRequestBasic {
   id: string;
   userId: string;
-  status: string;
-  // Add other fields as needed
+  status: 'pending' | 'approved' | 'rejected';
+  timestamp?: string;
+  userName?: string;
+  userEmail?: string;
 }
 
 export interface PetDonationCreate {
@@ -89,13 +89,13 @@ export interface PetDonationCreate {
   location: string;
   contactNumber: string;
   imageUrl: string[];
-  amount?: any; 
+  amount?: number | string; 
 }
 
 export interface PetDonation extends PetDonationCreate {
   id: string;
   userId: string;
-  requests: adoptionRequest[];
+  requests: AdoptionRequestBasic[];
   createdAt: FirebaseFirestoreTypes.Timestamp;
   ownerDisplayName?: string;
   ownerEmail?: string;
@@ -127,6 +127,7 @@ export interface LoginButtonProps {
   backgroundColor?: string;
   textColor?: string;
   width?: DimensionValue;
+  height?: DimensionValue;
   disabled?: boolean;
 }
 
@@ -138,14 +139,14 @@ export interface LoginButtonStyles {
 export interface CustomeHeaderProps {
   title: string;
   DonateScreen?: boolean;
-  navigateTo?: any;
+  navigateTo?: string;
   onPress?: () => void;
 }
 
 export interface PetCardProps {
   imageUrl: string | string[];
   name: string;
-  age?: any;
+  age?: string | number;
   location: string;
   gender: string;
   icon: React.ReactNode;
@@ -175,7 +176,7 @@ export interface CardProps {
   title: string;
   subtitle: string;
   date: string;
-  money?: any;
+  money?: number | string;
   imageUrl?: string;
 }
 
@@ -185,7 +186,6 @@ export interface CustomTextProps {
 }
 
 export interface CustomBottomSheetProps {
-
   isVisible: boolean;
   onClose: () => void;
   selectedPet: Pet | null | undefined;
@@ -205,7 +205,7 @@ export type RootStackParamList = {
   Search: undefined;
   Detail: {pet: Pet};
   SignUp: undefined;
-  setLoading: any;
+  setLoading: (loading: boolean) => void;
   Main: undefined;
 };
 
@@ -268,9 +268,7 @@ export type PasswordUpdateNavigationProp = NativeStackNavigationProp<
 >;
 export type NavigationProps = NativeStackNavigationProp<
   AppStackParamList,
-  'PasswordUpdate',
-  'Donatescreen'
-  
+  'PasswordUpdate' | 'DonateScreen'
 >;
 export type SignUpScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -278,10 +276,8 @@ export type SignUpScreenNavigationProp = NativeStackNavigationProp<
 >;
 export interface Props {
   navigation: SignUpScreenNavigationProp;
-  
-  
 }
-export interface props {
+export interface RecoverProps {
   navigation: RecoverPasswordScreenNavigationProp;
 }
 
@@ -392,11 +388,10 @@ export interface ProfileState {
   loading: boolean;
   error: string | null;
   profileData: ProfileData | null;
-  
 }
 
-export  type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
-export  interface HomeScreenProps {
+export type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+export interface HomeScreenProps {
   navigation: HomeScreenNavigationProp;
 }
 export type RecoverPasswordScreenNavigationProp = NativeStackNavigationProp<
@@ -408,7 +403,6 @@ export type SearchScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   'Search'
 >;
-
 
 export type ScreenConfig = {
   name: keyof AppStackParamList;
@@ -428,14 +422,14 @@ export interface RootState {
   };
 }
 
-export interface authState {
+export interface AuthStateBasic {
   user: User | null;
   initializing: boolean;
   showSplash: boolean;
   error: string | null;
 }
 
- export interface adoptionRequest {
+export interface AdoptionRequestSimple {
   userId: string;
   userName: string;
   userEmail: string;
@@ -443,7 +437,7 @@ export interface authState {
 }
 
 export interface FavoriteState {
-  favorites: any[];
+  favorites: Pet[];
 }
 
 export interface SearchInputProps {
@@ -451,16 +445,8 @@ export interface SearchInputProps {
   setSearchText: (text: string) => void;
 }
 
-export interface PasswordUpdateState {
-  oldPassword: string;
-  newPassword: string;
-  confirmNewPassword: string;
-  isLoading: boolean;
-}
-
 export interface FormDataState {
   selectedTab: string;
   searchText: string;
   allPets: Pet[];
 }
-

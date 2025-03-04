@@ -1,4 +1,3 @@
-import FONTS from "../../assets/fonts/index";
 import COLOR from "../../constant/constant";
 import { StyleSheet } from "react-native";
 
