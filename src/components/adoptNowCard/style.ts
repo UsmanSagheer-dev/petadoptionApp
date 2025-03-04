@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   },
   email: {
     fontSize: 10,
+    fontWeight:500,
     color: COLOR.primary,
     marginTop: 4,
     fontFamily: "MontserratRegular",
@@ -51,14 +52,14 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   location: {
-    fontSize: 12,
-    color: "#777",
+    fontSize: 10,
+    fontWeight:500,
     marginTop: 4,
     fontFamily: "MontserratRegular",
   },
   date: {
-    fontSize: 12,
-    color: "#777",
+    fontSize: 10,
+    fontWeight:500,
     marginTop: 4,
   },
 });

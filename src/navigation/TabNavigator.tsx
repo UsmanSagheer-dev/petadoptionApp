@@ -1,19 +1,21 @@
 import React from 'react';
-import {View, Text, StyleSheet, Platform} from 'react-native';
+import {View, StyleSheet, Platform} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {PlatformPressable} from '@react-navigation/elements';
 import {useTheme} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {TabParamList} from '../types/types';
 import {tabs} from '../constant/screen';
+import COLOR from '../constant/constant';
+
 const Tab = createBottomTabNavigator<TabParamList>();
+
 const CustomTabBar: React.FC<any> = ({state, descriptors, navigation}) => {
   const {colors} = useTheme();
   return (
     <View style={[styles.tabBar, {backgroundColor: colors.background}]}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
-        const label = options.tabBarLabel ?? options.title ?? route.name;
         const isFocused = state.index === index;
         const icon = options.tabBarIcon;
 
@@ -32,20 +34,16 @@ const CustomTabBar: React.FC<any> = ({state, descriptors, navigation}) => {
           <PlatformPressable
             key={route.key}
             onPress={onPress}
-            style={styles.tabItem}>
+            style={[
+              styles.tabItem,
+              isFocused && styles.tabItemActive 
+            ]}>
             {icon &&
               icon({
                 focused: isFocused,
-                color: isFocused ? colors.primary : colors.text,
+                color: isFocused ? COLOR.white : colors.text,
                 size: 24,
               })}
-            <Text
-              style={[
-                styles.label,
-                {color: isFocused ? colors.primary : colors.text},
-              ]}>
-              {typeof label === 'string' ? label : route.name}
-            </Text>
           </PlatformPressable>
         );
       })}
@@ -88,11 +86,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 8,
-    gap: 4,
   },
-  label: {
-    fontSize: 12,
-    fontWeight: '500',
+  tabItemActive: {
+    width:30,
+    backgroundColor: COLOR.black,
+    borderRadius: 17, 
   },
 });
 

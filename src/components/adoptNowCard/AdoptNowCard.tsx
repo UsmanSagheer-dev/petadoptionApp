@@ -53,6 +53,7 @@ const AdoptNowCard = () => {
         backgroundColor="black"
         textColor="white"
         width="100%"
+        height={36}
       />
     </View>
   );

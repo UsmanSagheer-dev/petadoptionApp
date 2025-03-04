@@ -10,10 +10,12 @@ const CustomButton = ({
   backgroundColor = COLOR.black,
   textColor = COLOR.white,
   width = '100%',
+  height =74,
+ 
 }: LoginButtonProps) => {
   return (
     <TouchableOpacity
-      style={[styles.button, {backgroundColor, width}]}
+      style={[styles.button, {backgroundColor, width, height}]}
       onPress={onClick}
       activeOpacity={0.9}>
       {typeof title === 'string' ? (

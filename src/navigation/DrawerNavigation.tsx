@@ -10,6 +10,7 @@ import {useState} from 'react';
 import SearchInput from '../components/searcInput/SearchInput';
 import COLOR from '../constant/constant';
 import {menuItems} from '../constant/screen';
+import FONTS from 'assets/fonts';
 const CustomDrawer = ({navigation}: DrawerContentComponentProps) => {
   const handleLogout = () => {
     auth().signOut();
@@ -51,6 +52,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'space-between',
+    backgroundColor: COLOR.white,
   },
   container: {
     flex: 1,
@@ -68,15 +70,19 @@ const styles = StyleSheet.create({
   },
   menuText: {
     color: COLOR.primary,
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight:600,
+    fontFamily: 'MontserratRegular',
+
   },
   logoutButton: {
     marginBottom: 30,
   },
   logoutText: {
-    color: 'red',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color:COLOR.error,
+    fontSize: 18,
+    fontWeight: 600,
+    fontFamily: 'MontserratRegular',
   },
 });
 

@@ -3,10 +3,10 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 12,
+    
     borderRadius: 37,
     alignItems: 'center',
-    height: 79,
+    height: 74,
     justifyContent: 'center',
   },
   buttonText: {

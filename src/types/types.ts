@@ -127,6 +127,7 @@ export interface LoginButtonProps {
   backgroundColor?: string;
   textColor?: string;
   width?: DimensionValue;
+  height?: DimensionValue;
   disabled?: boolean;
 }
 
