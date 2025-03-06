@@ -92,7 +92,7 @@ export interface PetDonationCreate {
   amount?: number | string; 
 }
 
-export interface PetDonation extends PetDonationCreate {
+export interface pet extends PetDonationCreate {
   id: string;
   userId: string;
   requests: AdoptionRequestBasic[];
@@ -419,7 +419,7 @@ export interface TabConfig {
 
 export interface RootState {
   donation: {
-    donations: PetDonation[];
+    pet: pet[];
   };
 }
 

@@ -1,32 +1,32 @@
 import {useState, useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../hooks/hooks';
-import {updateProfile, fetchProfile} from '../redux/slices/profileImageSlice';
+import {updateProfile, fetchProfile} from '../redux/slices/authSlice'; // Ensure this path points to the updated authSlice
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Alert} from 'react-native';
 
 const useProfileScreen = () => {
   const dispatch = useAppDispatch();
-  const {userDetails} = useAppSelector(state => state.user);
-  const {profileData, loading: profileLoading} = useAppSelector(
-    state => state.profile,
-  );
+  // Access data from the updated authSlice
+  const {user, profileData, loading} = useAppSelector(state => state.auth);
 
   const [uploading, setUploading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [imageUri, setImageUri] = useState<string | null>(null);
 
+  // Fetch profile data on mount
   useEffect(() => {
     dispatch(fetchProfile());
   }, [dispatch]);
 
+  // Sync local state with Redux state when user or profileData changes
   useEffect(() => {
-    if (profileData || userDetails) {
-      setName(profileData?.displayName ?? userDetails?.displayName ?? '');
-      setEmail(profileData?.email ?? userDetails?.email ?? '');
-      setImageUri(profileData?.photoURL ?? userDetails?.photoURL ?? null);
+    if (profileData || user) {
+      setName(profileData?.displayName ?? user?.displayName ?? '');
+      setEmail(profileData?.email ?? user?.email ?? '');
+      setImageUri(profileData?.photoURL ?? user?.photoURL ?? null);
     }
-  }, [profileData, userDetails]);
+  }, [profileData, user]);
 
   const pickImage = async () => {
     try {
@@ -67,6 +67,7 @@ const useProfileScreen = () => {
         }),
       ).unwrap();
 
+      // Fetch updated profile data after update
       dispatch(fetchProfile());
       Alert.alert('Success', 'Profile updated successfully!');
     } catch (error) {
@@ -85,7 +86,7 @@ const useProfileScreen = () => {
     imageUri,
     pickImage,
     handleUpdateProfile,
-    loading: profileLoading || uploading,
+    loading: loading || uploading, // Combine Redux loading with local uploading state
   };
 };
 

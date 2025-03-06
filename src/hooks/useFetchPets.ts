@@ -23,7 +23,7 @@ const useFetchPets = (selectedTab: string) => {
         }
 
         const snapshot = await firestore()
-          .collection('donations')
+          .collection('pets')
           .where('petType', '==', queryPetType)
           .get();
 
@@ -37,7 +37,6 @@ const useFetchPets = (selectedTab: string) => {
               id: doc.id,
             };
           })
-
           .filter(pet => pet.userId !== currentUserId);
 
         setPets(fetchedPets);

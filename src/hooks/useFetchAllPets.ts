@@ -1,17 +1,17 @@
 import {useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
 import {useAppDispatch, useAppSelector} from '../hooks/hooks';
-import {fetchDonations, deleteDonation} from '../redux/slices/donateSlice';
-import {PetDonation} from '../types/types';
+import {fetchDonations, deleteDonation} from '../redux/slices/petSlice';
+import {pet} from '../types/types';
 
 const useFetchUserDonations = () => {
   const dispatch = useAppDispatch();
   const user = auth().currentUser;
 
   const {donations, loading, error} = useAppSelector(state => ({
-    donations: state.donation.donations,
-    loading: state.donation.loading,
-    error: state.donation.error,
+    donations: state.pet.donations,
+    loading: state.pet.loading,
+    error: state.pet.error,
   }));
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const useFetchUserDonations = () => {
   }, [dispatch, user]);
 
   const userDonations = donations.filter(
-    (donation: PetDonation) => donation.userId === user?.uid,
+    (donation: pet) => donation.userId === user?.uid,
   );
 
   const handleDeletePet = async (petId: string) => {

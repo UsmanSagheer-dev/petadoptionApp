@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../redux/store';
-import {donatePet} from '../redux/slices/donateSlice';
+import {donatePet} from '../redux/slices/petSlice';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Image as RNImage} from 'react-native-compressor';
 import {PetDonationCreate} from '../types/types';
@@ -10,7 +10,7 @@ import RNFS from 'react-native-fs';
 
 const useDonateScreen = (navigation: any) => {
   const dispatch = useDispatch<AppDispatch>();
-  const {loading, error} = useSelector((state: RootState) => state.donation);
+  const {loading, error} = useSelector((state: RootState) => state.pet);
 
   const [formData, setFormData] = useState({
     petType: '',

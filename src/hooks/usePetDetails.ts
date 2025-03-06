@@ -4,7 +4,7 @@ import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList, Pet, ProfileData } from '../types/types';
-import { requestAdoption } from '../redux/slices/donateSlice';
+import { requestAdoption } from '../redux/slices/petSlice';
 import firestore from '@react-native-firebase/firestore';
 
 export const usePetDetails = (selectedPet?: Pet | null) => {
