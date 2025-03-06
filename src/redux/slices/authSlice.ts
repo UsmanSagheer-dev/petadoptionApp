@@ -1,15 +1,19 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {User, authState} from '../../types/types';
-
-const initialState: authState = {
+import {User} from '../../types/types';
+interface AuthState {
+  user: User | null;
+  initializing: boolean;
+  showSplash: boolean;
+  error: string | null;
+}
+const initialState: AuthState = {
   user: null,
   initializing: true,
   showSplash: true,
   error: null,
 };
-
 export const googleSignup = createAsyncThunk(
   'auth/googleSignup',
   async (userInfo: {idToken: string}, {rejectWithValue}) => {

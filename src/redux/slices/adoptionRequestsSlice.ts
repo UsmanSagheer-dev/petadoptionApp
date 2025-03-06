@@ -18,7 +18,6 @@ export const fetchProfile = createAsyncThunk(
       }
 
       const data = doc.data();
-      console.log('🚀 ~ data:', data);
       const dateJoined = data?.dateJoined?.toDate()?.toLocaleDateString();
 
       return {

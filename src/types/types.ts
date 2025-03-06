@@ -63,7 +63,7 @@ export interface AdoptionRequest {
     email: string;
     phone?: string;
     userId: string;
-    userName: string;
+    userName?: string;
     userEmail: string;
     timestamp: string;
   };
@@ -372,6 +372,7 @@ export interface TabsProps {
 }
 
 export interface ProfileData {
+
   displayName: string;
   photoURL: string | null;
   petBreed?: string;
@@ -450,3 +451,4 @@ export interface FormDataState {
   searchText: string;
   allPets: Pet[];
 }
+
