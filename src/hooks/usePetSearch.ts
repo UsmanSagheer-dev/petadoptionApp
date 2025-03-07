@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Pet, FormDataState } from '../types/types';
+import {useState, useEffect} from 'react';
+import {FormDataState} from '../types/types';
 import useFetchPets from './useFetchPets';
 
 export const usePetSearch = (initialTab: string = 'Dogs') => {
@@ -9,7 +9,7 @@ export const usePetSearch = (initialTab: string = 'Dogs') => {
     allPets: [],
   });
 
-  const { pets, loading, error } = useFetchPets(formData.selectedTab);
+  const {pets, loading, error} = useFetchPets(formData.selectedTab);
 
   useEffect(() => {
     if (pets.length > 0) {

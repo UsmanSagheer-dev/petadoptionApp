@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {useAppDispatch} from '../hooks/hooks';
 import {RootState} from '../redux/store';
-import {fetchProfile} from '../redux/slices/authSlice'; 
+import {fetchProfile} from '../redux/slices/authSlice';
 
 const useProfile = () => {
   const dispatch = useAppDispatch();

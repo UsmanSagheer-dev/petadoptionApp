@@ -1,13 +1,14 @@
-// hooks/useDonations.ts
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../redux/store';
-import { fetchDonations } from '../redux/slices/petSlice';
-import { pet } from '../types/types';
+import {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppDispatch, RootState} from '../redux/store';
+import {fetchDonations} from '../redux/slices/petSlice';
+import {pet} from '../types/types';
 
 export const useDonations = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { donations, loading, error } = useSelector((state: RootState) => state.pet);
+  const {donations, loading, error} = useSelector(
+    (state: RootState) => state.pet,
+  );
 
   useEffect(() => {
     dispatch(fetchDonations());
@@ -30,7 +31,7 @@ export const useDonations = () => {
   };
 
   return {
-    pet: donations, 
+    pet: donations,
     loading,
     error,
     isPetDonation,

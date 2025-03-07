@@ -1,25 +1,25 @@
 // screens/SearchScreen.tsx
-import React, { useRef } from 'react';
-import { View, ScrollView, ActivityIndicator, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../redux/store';
+import React, {useRef} from 'react';
+import {View, ScrollView, ActivityIndicator, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '../../redux/store';
 import SearchInput from '../../components/searcInput/SearchInput';
 import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
 import PetCard from '../../components/petCard/PetCard';
 import IMAGES from '../../assets/images/index';
-import { PET_TABS } from '../../constant/constant';
-import { Pet, SearchScreenNavigationProp } from '../../types/types';
-import { toggleFavoriteStatus } from '../../redux/slices/favoritesSlice';
+import {PET_TABS} from '../../constant/constant';
+import {Pet, SearchScreenNavigationProp} from '../../types/types';
+import {toggleFavoriteStatus} from '../../redux/slices/petSlice';
 import ICONS from '../../constant/icons';
 import styles from './style';
-import { usePetSearch } from '../../hooks/usePetSearch';
+import {usePetSearch} from '../../hooks/usePetSearch';
 
 const SearchScreen = () => {
   const scrollViewRef = useRef<ScrollView>(null);
   const navigation = useNavigation<SearchScreenNavigationProp>();
   const dispatch = useDispatch<AppDispatch>();
-  
+
   const {
     formData,
     loading,
@@ -30,7 +30,7 @@ const SearchScreen = () => {
   } = usePetSearch();
 
   const handlePetPress = (pet: Pet) => {
-    navigation.navigate('Detail', { pet });
+    navigation.navigate('Detail', {pet});
   };
 
   const handleFavoriteToggle = async (pet: Pet) => {

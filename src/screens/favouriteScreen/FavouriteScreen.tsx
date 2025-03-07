@@ -8,6 +8,7 @@ import IMAGES from '../../assets/images/index';
 import COLOR from '../../constant/constant';
 import ICONS from '../../constant/icons';
 import styles from './style';
+
 const FavouriteScreen = () => {
   const {
     favorites,
@@ -17,18 +18,21 @@ const FavouriteScreen = () => {
     toggleFavorite,
     closeModal,
     loading,
+    error,
   } = useFavorites();
 
   return (
     <View style={styles.container}>
- <CustomeHeader title="Favourite " navigateTo="SearchScreen" />
+      <CustomeHeader title="Favourite" navigateTo="SearchScreen" />
       {loading ? (
         <ActivityIndicator size="large" color={COLOR.primary} />
+      ) : error ? (
+        <Text style={styles.noFavoritesText}>Error: {error}</Text>
       ) : favorites.length === 0 ? (
         <Text style={styles.noFavoritesText}>No favorites found</Text>
       ) : (
         <ScrollView style={styles.petCardsContainer}>
-          {favorites?.map(pet => (
+          {favorites.map(pet => (
             <PetCard
               key={pet.id}
               imageUrl={pet.imageUrl}
@@ -39,7 +43,12 @@ const FavouriteScreen = () => {
               icon={pet.isFavorite ? ICONS.ONCLICKFAV() : ICONS.OFCLICKFAV()}
               locationIcon={IMAGES.LOCATION_VECTOR}
               onPress={() => handlePetClick(pet)}
-              onIconPress={() => toggleFavorite(pet)}
+              onIconPress={() => {
+                console.log(
+                  `Toggling favorite for ${pet.id}, current status: ${pet.isFavorite}`,
+                );
+                toggleFavorite(pet);
+              }}
             />
           ))}
         </ScrollView>

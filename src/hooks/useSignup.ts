@@ -11,7 +11,6 @@ const useSignUp = (): SignUpState => {
   const [showError, setShowError] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
-
   const checkEmailExists = async (email: string): Promise<boolean> => {
     try {
       const methods = await auth().fetchSignInMethodsForEmail(email);

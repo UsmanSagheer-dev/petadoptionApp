@@ -5,17 +5,17 @@ import firestore, {
 } from '@react-native-firebase/firestore';
 import {adoptionRequest, pet} from '../../types/types';
 import {updatePetDonationsProfile} from './authSlice';
-
 interface PetState {
   loading: boolean;
   error: string | null;
   donations: pet[];
+  favorites: pet[];
 }
-
 const initialState: PetState = {
   loading: false,
   error: null,
   donations: [],
+  favorites: [],
 };
 
 export const donatePet = createAsyncThunk<
@@ -49,7 +49,76 @@ export const donatePet = createAsyncThunk<
     return rejectWithValue((error as Error).message);
   }
 });
+export const toggleFavoriteStatus = createAsyncThunk<
+  {pet: pet; isFavorite: boolean},
+  pet,
+  {rejectValue: string}
+>('pet/toggleFavoriteStatus', async (pet, {rejectWithValue}) => {
+  try {
+    const user = auth().currentUser;
+    if (!user) throw new Error('User not authenticated');
 
+    const petId = pet.id;
+    const newFavoriteStatus = !pet.isFavorite;
+
+    const favRef = firestore()
+      .collection('pets')
+      .doc(user.uid)
+      .collection('favoritePets')
+      .doc(petId);
+
+    const petData: pet = {
+      ...pet,
+      isFavorite: newFavoriteStatus,
+      createdAt:
+        pet.createdAt instanceof firestore.Timestamp
+          ? pet.createdAt
+          : firestore.Timestamp.fromDate(new Date(pet.createdAt)),
+    };
+
+    if (newFavoriteStatus) {
+      await favRef.set({
+        ...petData,
+        favoritedAt: firestore.Timestamp.now(),
+      });
+    } else {
+      await favRef.delete();
+    }
+
+    return {pet: petData, isFavorite: newFavoriteStatus};
+  } catch (error) {
+    return rejectWithValue((error as Error).message);
+  }
+});
+
+export const fetchFavorites = createAsyncThunk<
+  pet[],
+  void,
+  {rejectValue: string}
+>('pet/fetchFavorites', async (_, {rejectWithValue}) => {
+  try {
+    const user = auth().currentUser;
+    if (!user) throw new Error('User not authenticated');
+
+    const snapshot = await firestore()
+      .collection('userFavorites')
+      .doc(user.uid)
+      .collection('favoritePets')
+      .get();
+
+    return snapshot.docs.map(doc => ({
+      ...doc.data(),
+      id: doc.id,
+      isFavorite: true,
+      createdAt:
+        doc.data().createdAt instanceof firestore.Timestamp
+          ? doc.data().createdAt
+          : firestore.Timestamp.fromDate(new Date(doc.data().createdAt)),
+    })) as pet[];
+  } catch (error) {
+    return rejectWithValue((error as Error).message);
+  }
+});
 export const fetchDonations = createAsyncThunk<
   pet[],
   void,
@@ -133,6 +202,7 @@ const petSlice = createSlice({
   },
   extraReducers: builder => {
     builder
+
       .addCase(donatePet.pending, state => {
         state.loading = true;
         state.error = null;
@@ -146,6 +216,48 @@ const petSlice = createSlice({
         state.error = action.payload as string;
       })
 
+      .addCase(fetchFavorites.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchFavorites.fulfilled,
+        (state, action: PayloadAction<pet[]>) => {
+          state.loading = false;
+          state.favorites = action.payload;
+        },
+      )
+      .addCase(fetchFavorites.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      .addCase(toggleFavoriteStatus.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(toggleFavoriteStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        const {pet, isFavorite} = action.payload;
+
+        if (isFavorite) {
+          if (!state.favorites.some(f => f.id === pet.id)) {
+            state.favorites.push(pet);
+          }
+        } else {
+          console.log(`Removing pet ${pet.id} from favorites`);
+          state.favorites = state.favorites.filter(f => f.id !== pet.id);
+        }
+
+        state.donations = state.donations.map(d =>
+          d.id === pet.id ? {...d, isFavorite} : d,
+        );
+      })
+
+      .addCase(toggleFavoriteStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
       .addCase(fetchDonations.pending, state => {
         state.loading = true;
         state.error = null;

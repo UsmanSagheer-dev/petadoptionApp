@@ -89,7 +89,7 @@ export interface PetDonationCreate {
   location: string;
   contactNumber: string;
   imageUrl: string[];
-  amount?: number | string; 
+  amount?: number | string;
 }
 
 export interface pet extends PetDonationCreate {
@@ -100,6 +100,7 @@ export interface pet extends PetDonationCreate {
   ownerDisplayName?: string;
   ownerEmail?: string;
   ownerPhotoURL?: string;
+  isFavorite?: boolean;
 }
 
 export type Pet = {
@@ -117,6 +118,8 @@ export type Pet = {
   type: string;
   description: string;
   petType: string;
+  petName: string;
+  contactNumber: string;
   donation: string;
   amount?: number;
 };
