@@ -1,4 +1,5 @@
-import React, {useState, useRef, useEffect} from 'react';
+// screens/SearchScreen.tsx
+import React, {useRef} from 'react';
 import {View, ScrollView, ActivityIndicator, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
@@ -7,53 +8,26 @@ import SearchInput from '../../components/searcInput/SearchInput';
 import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
 import PetCard from '../../components/petCard/PetCard';
 import IMAGES from '../../assets/images/index';
-import useFetchPets from '../../hooks/useFetchPets';
 import {PET_TABS} from '../../constant/constant';
-import {Pet} from '../../types/types';
-import {toggleFavoriteStatus} from '../../redux/slices/favoritesSlice';
+import {Pet, SearchScreenNavigationProp} from '../../types/types';
+import {toggleFavoriteStatus} from '../../redux/slices/petSlice';
 import ICONS from '../../constant/icons';
 import styles from './style';
-import {SearchScreenNavigationProp,FormDataState} from '../../types/types';
+import {usePetSearch} from '../../hooks/usePetSearch';
 
 const SearchScreen = () => {
-  const [formData, setFormData] = useState<FormDataState>({
-    selectedTab: 'Dogs',
-    searchText: '',
-    allPets: [],
-  });
   const scrollViewRef = useRef<ScrollView>(null);
-  const {pets, loading, error} = useFetchPets(formData.selectedTab);
   const navigation = useNavigation<SearchScreenNavigationProp>();
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    if (pets.length > 0) {
-      setFormData(prevState => {
-        const uniquePets = [...prevState.allPets, ...pets].filter(
-          (pet, index, self) => index === self.findIndex(p => p.id === pet.id),
-        );
-        return {
-          ...prevState,
-          allPets: uniquePets,
-        };
-      });
-    }
-  }, [pets]);
-
-  const handleTabPress = (tabId: string) => {
-    setFormData(prevState => ({
-      ...prevState,
-      selectedTab: tabId,
-      allPets: !prevState.searchText.trim() ? [] : prevState.allPets,
-    }));
-  };
-
-  const handleSearchTextChange = (text: string) => {
-    setFormData(prevState => ({
-      ...prevState,
-      searchText: text,
-    }));
-  };
+  const {
+    formData,
+    loading,
+    error,
+    filteredPets,
+    handleTabPress,
+    handleSearchTextChange,
+  } = usePetSearch();
 
   const handlePetPress = (pet: Pet) => {
     navigation.navigate('Detail', {pet});
@@ -62,29 +36,10 @@ const SearchScreen = () => {
   const handleFavoriteToggle = async (pet: Pet) => {
     try {
       await dispatch(toggleFavoriteStatus(pet)).unwrap();
-      setFormData(prevState => ({
-        ...prevState,
-        allPets: prevState.allPets.map(p =>
-          p.id === pet.id ? {...p, isFavorite: !p.isFavorite} : p,
-        ),
-      }));
     } catch (error) {
-      console.error(' Failed to toggle favorite:', error);
+      console.error('Failed to toggle favorite:', error);
     }
   };
-
-  const filteredPets = formData.searchText.trim()
-    ? formData.allPets.filter(
-        pet =>
-          pet.petBreed
-            .toLowerCase()
-            .includes(formData.searchText.toLowerCase()) ||
-          pet.location
-            .toLowerCase()
-            .includes(formData.searchText.toLowerCase()) ||
-          pet.gender.toLowerCase().includes(formData.searchText.toLowerCase()),
-      )
-    : pets;
 
   return (
     <View style={styles.container}>

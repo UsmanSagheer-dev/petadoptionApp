@@ -1,9 +1,7 @@
-import COLOR from '../../constant/constant';
 import Header from '../../components/header/Header';
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
   Platform,

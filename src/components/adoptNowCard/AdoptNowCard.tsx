@@ -6,49 +6,66 @@ import useProfile from "../../hooks/useProfile";
 import CustomButton from "../customButton/CustomButton";
 import IMAGES from "../../assets/images/index";
 import styles from "./style";
-import {RootState} from '../../types/types'
+import { RootState } from '../../types/types';
 
 const AdoptNowCard = () => {
   const { profileData } = useProfile();
-  const donations = useSelector((state: RootState) => state.donation.donations);
-  const userDonation = donations.find((donation) => 
-    donation.requests?.some(request => request.userId === profileData?.uid)
+  const donations = useSelector((state: RootState) => state.pet?.donations ?? []);
+  
+  const userDonation = donations.find((donation) =>
+    donation.requests?.some((request) => request.userId === profileData?.uid)
   );
+  console.log('Profile Data:', profileData);
+  console.log('User Donation:', userDonation);
+  console.log('Photo URL:', userDonation?.ownerPhotoURL);
   const handleContactPress = () => {
     if (userDonation?.ownerEmail) {
       Linking.openURL(`mailto:${userDonation.ownerEmail}`);
     }
   };
 
+  if (!userDonation) {
+    return (
+      <View style={styles.card}>
+        <Text style={styles.name}>No adoption requests found</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.card}>
       <View style={styles.profileData}>
         <Image
-          source={userDonation?.ownerPhotoURL 
-            ? { uri: userDonation.ownerPhotoURL } 
-            : IMAGES.PROFILEIMG
+          source={
+            userDonation.ownerPhotoURL
+              ? { uri: userDonation.ownerPhotoURL }
+              : IMAGES.PROFILEIMG
           }
           style={styles.image}
         />
         <View>
           <Text style={styles.name}>
-            {userDonation?.ownerDisplayName || "Guest User"}
+            {userDonation.ownerDisplayName || "Guest User"}
           </Text>
-          <Text style={styles.breed}>{userDonation?.petType || "Unknown Type"}</Text>
+          <Text style={styles.breed}>{userDonation.petType || "Unknown Type"}</Text>
           <Text style={styles.email}>
-            {userDonation?.ownerEmail || "No email available"}
+            {userDonation.ownerEmail || "No email available"}
           </Text>
           <View style={styles.locationContainer}>
             <MaterialIcons name="location-on" size={16} color="#ff4d4d" />
-            <Text style={styles.location}>{userDonation?.location || "Unknown Location"}</Text>
+            <Text style={styles.location}>
+              {userDonation.location || "Unknown Location"}
+            </Text>
           </View>
           <Text style={styles.date}>
-            {userDonation?.createdAt?.toDate().toLocaleDateString() || "Date not available"}
+            {userDonation.createdAt?.toDate
+              ? userDonation.createdAt.toDate().toLocaleDateString()
+              : "Date not available"}
           </Text>
         </View>
       </View>
-      <CustomButton 
-        title="Contact" 
+      <CustomButton
+        title="Contact"
         onClick={handleContactPress}
         backgroundColor="black"
         textColor="white"
@@ -57,6 +74,7 @@ const AdoptNowCard = () => {
       />
     </View>
   );
+            
 };
 
 export default AdoptNowCard;

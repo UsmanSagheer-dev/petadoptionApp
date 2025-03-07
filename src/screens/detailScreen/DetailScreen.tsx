@@ -1,25 +1,25 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native';
+// screens/DetailScreen.tsx
+import React from 'react';
+import { View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLOR from '../../constant/constant';
 import styles from './style';
 import useFavorites from '../../hooks/useFavourite';
+import { usePetDetails } from '../../hooks/usePetDetails';
 
-const DetailScreen = ({route, navigation}) => {
-  const {pet} = route.params;
-  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-  const {toggleFavorite, favorites} = useFavorites();
+const DetailScreen = ({ route, navigation }) => {
+  const { pet } = route.params;
+  const { toggleFavorite, favorites } = useFavorites();
+  const { profileData, handleAdoptNow } = usePetDetails(pet);
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = React.useState(true);
   const isFavorite = favorites.some((favPet) => favPet.id === pet.id);
 
-  useEffect(() => {
-    setIsBottomSheetVisible(true);
-  }, []);
+  const handleClose = () => {
+    setIsBottomSheetVisible(false);
+    navigation.goBack();
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => setIsBottomSheetVisible(false)}>
@@ -41,11 +41,10 @@ const DetailScreen = ({route, navigation}) => {
 
         <PetDetailsModal
           isVisible={isBottomSheetVisible}
-          onClose={() => {
-            setIsBottomSheetVisible(false);
-            navigation.goBack();
-          }}
+          onClose={handleClose}
           selectedPet={pet}
+          ownerData={profileData}
+          onAdoptNow={handleAdoptNow}
         />
       </View>
     </TouchableWithoutFeedback>

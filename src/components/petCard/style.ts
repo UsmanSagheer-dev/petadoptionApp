@@ -16,9 +16,10 @@ export const styles = StyleSheet.create({
     shadowRadius: 3.84,
     shadowColor: '#000',
     elevation: 4,
+    marginBottom: 10,
   },
   imageContainer: {
-    borderRadius: 10,
+    borderRadius: 15,
   },
   image: {
     height: 140,

@@ -63,7 +63,7 @@ export interface AdoptionRequest {
     email: string;
     phone?: string;
     userId: string;
-    userName: string;
+    userName?: string;
     userEmail: string;
     timestamp: string;
   };
@@ -89,10 +89,10 @@ export interface PetDonationCreate {
   location: string;
   contactNumber: string;
   imageUrl: string[];
-  amount?: number | string; 
+  amount?: number | string;
 }
 
-export interface PetDonation extends PetDonationCreate {
+export interface pet extends PetDonationCreate {
   id: string;
   userId: string;
   requests: AdoptionRequestBasic[];
@@ -100,6 +100,7 @@ export interface PetDonation extends PetDonationCreate {
   ownerDisplayName?: string;
   ownerEmail?: string;
   ownerPhotoURL?: string;
+  isFavorite?: boolean;
 }
 
 export type Pet = {
@@ -117,6 +118,8 @@ export type Pet = {
   type: string;
   description: string;
   petType: string;
+  petName: string;
+  contactNumber: string;
   donation: string;
   amount?: number;
 };
@@ -372,6 +375,7 @@ export interface TabsProps {
 }
 
 export interface ProfileData {
+
   displayName: string;
   photoURL: string | null;
   petBreed?: string;
@@ -418,7 +422,7 @@ export interface TabConfig {
 
 export interface RootState {
   donation: {
-    donations: PetDonation[];
+    pet: pet[];
   };
 }
 
@@ -450,3 +454,4 @@ export interface FormDataState {
   searchText: string;
   allPets: Pet[];
 }
+

@@ -1,35 +1,37 @@
 import {useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from './hooks';
-import {fetchDonations} from '../redux/slices/donateSlice';
-import {PetDonation} from '../types/types';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppDispatch, RootState} from '../redux/store';
+import {fetchDonations} from '../redux/slices/petSlice';
+import {pet} from '../types/types';
 
 export const useDonations = () => {
-  const dispatch = useAppDispatch();
-  const {donations, loading, error} = useAppSelector(state => state.donation);
+  const dispatch = useDispatch<AppDispatch>();
+  const {donations, loading, error} = useSelector(
+    (state: RootState) => state.pet,
+  );
 
   useEffect(() => {
     dispatch(fetchDonations());
   }, [dispatch]);
 
-  const isPetDonation = (donation: unknown): donation is PetDonation => {
-    const d = donation as any;
-    return (
-      d &&
-      typeof d === 'object' &&
-      'petBreed' in d &&
-      'petType' in d &&
-      'amount' in d &&
-      'imageUrl' in d
-    );
+  const formatDate = (timestamp: any) => {
+    if (!timestamp) return 'Unknown date';
+    try {
+      if (timestamp.toDate) {
+        return timestamp.toDate().toLocaleDateString();
+      }
+      return new Date(timestamp).toLocaleDateString();
+    } catch (e) {
+      return 'Invalid date';
+    }
   };
 
-  const formatDate = (seconds?: number) => {
-    if (!seconds) return 'Pending...';
-    return new Date(seconds * 1000).toISOString().split('T')[0];
+  const isPetDonation = (item: any): item is pet => {
+    return item && item.petType !== undefined && item.petBreed !== undefined;
   };
 
   return {
-    donations,
+    pet: donations,
     loading,
     error,
     isPetDonation,

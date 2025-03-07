@@ -1,16 +1,12 @@
 import {useState, useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../hooks/hooks';
-import {updateProfile, fetchProfile} from '../redux/slices/profileImageSlice';
+import {updateProfile, fetchProfile} from '../redux/slices/authSlice';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {Alert} from 'react-native';
+import {unwrapResult} from '@reduxjs/toolkit';
 
 const useProfileScreen = () => {
   const dispatch = useAppDispatch();
-  const {userDetails} = useAppSelector(state => state.user);
-  const {profileData, loading: profileLoading} = useAppSelector(
-    state => state.profile,
-  );
-
+  const {user, profileData, loading} = useAppSelector(state => state.auth);
   const [uploading, setUploading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -21,12 +17,12 @@ const useProfileScreen = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (profileData || userDetails) {
-      setName(profileData?.displayName ?? userDetails?.displayName ?? '');
-      setEmail(profileData?.email ?? userDetails?.email ?? '');
-      setImageUri(profileData?.photoURL ?? userDetails?.photoURL ?? null);
+    if (profileData || user) {
+      setName(profileData?.displayName ?? user?.displayName ?? '');
+      setEmail(profileData?.email ?? user?.email ?? '');
+      setImageUri(profileData?.photoURL ?? user?.photoURL ?? null);
     }
-  }, [profileData, userDetails]);
+  }, [profileData, user]);
 
   const pickImage = async () => {
     try {
@@ -45,33 +41,30 @@ const useProfileScreen = () => {
         result.assets.length === 0 ||
         !result.assets[0].base64
       ) {
-        Alert.alert('Error', 'Failed to process image');
         return;
       }
 
       const {base64} = result.assets[0];
       const imageString = `data:image/jpeg;base64,${base64}`;
       setImageUri(imageString);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to pick image');
-    }
+    } catch (error) {}
   };
 
   const handleUpdateProfile = async () => {
     try {
       setUploading(true);
-      await dispatch(
+
+      const resultAction = await dispatch(
         updateProfile({
           name,
           imageUrl: imageUri || '',
         }),
-      ).unwrap();
+      );
 
-      dispatch(fetchProfile());
-      Alert.alert('Success', 'Profile updated successfully!');
+      const result = unwrapResult(resultAction);
+
+      await dispatch(fetchProfile());
     } catch (error) {
-      const err = error as Error;
-      Alert.alert('Error', err.message || 'Failed to update profile');
     } finally {
       setUploading(false);
     }
@@ -85,7 +78,7 @@ const useProfileScreen = () => {
     imageUri,
     pickImage,
     handleUpdateProfile,
-    loading: profileLoading || uploading,
+    loading: loading || uploading,
   };
 };
 

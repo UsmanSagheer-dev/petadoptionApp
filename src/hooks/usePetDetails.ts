@@ -1,12 +1,11 @@
-import {useState, useEffect} from 'react';
-import {useAppDispatch} from '../hooks/hooks';
+import { useState, useRef } from 'react';
+import { useAppDispatch } from '../hooks/hooks';
 import auth from '@react-native-firebase/auth';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList, Pet} from '../types/types';
-import {requestAdoption} from '../redux/slices/donateSlice';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList, Pet, ProfileData } from '../types/types';
+import { requestAdoption } from '../redux/slices/petSlice';
 import firestore from '@react-native-firebase/firestore';
-import {ProfileData} from '../types/types';
 
 export const usePetDetails = (selectedPet?: Pet | null) => {
   const dispatch = useAppDispatch();
@@ -18,39 +17,40 @@ export const usePetDetails = (selectedPet?: Pet | null) => {
     name: 'Loading...',
     imageUrl: null,
   });
+  const prevPetRef = useRef<Pet | null | undefined>(undefined);
 
-  useEffect(() => {
-    const fetchOwnerData = async () => {
-      if (selectedPet?.userId) {
-        try {
-          const userDoc = await firestore()
-            .collection('users')
-            .doc(selectedPet.userId)
-            .get();
+  const fetchOwnerData = async () => {
+    if (!selectedPet?.userId) return;
 
-          const userData = userDoc.data();
-          setOwnerData({
-            displayName: userData?.displayName || 'Pet Owner',
-            photoURL: userData?.photoURL || null,
-            name: userData?.displayName || 'Pet Owner',
-            imageUrl: userData?.photoURL || null,
-          });
-        } catch (error) {
-          console.error('Error fetching owner data:', error);
-          setOwnerData({
-            displayName: 'Pet Owner',
-            photoURL: null,
-            name: 'Pet Owner',
-            imageUrl: null,
-          });
-        }
-      }
-    };
+    try {
+      const userDoc = await firestore()
+        .collection('users')
+        .doc(selectedPet.userId)
+        .get();
 
-    if (selectedPet) {
-      fetchOwnerData();
+      const userData = userDoc.data();
+      setOwnerData({
+        displayName: userData?.displayName || 'Pet Owner',
+        photoURL: userData?.photoURL || null,
+        name: userData?.displayName || 'Pet Owner',
+        imageUrl: userData?.photoURL || null,
+      });
+    } catch (error) {
+      console.error('Error fetching owner data:', error);
+      setOwnerData({
+        displayName: 'Pet Owner',
+        photoURL: null,
+        name: 'Pet Owner',
+        imageUrl: null,
+      });
     }
-  }, [selectedPet]);
+  };
+
+  // Check if selectedPet has changed
+  if (selectedPet !== prevPetRef.current && selectedPet) {
+    fetchOwnerData();
+    prevPetRef.current = selectedPet;
+  }
 
   const handleAdoptNow = async () => {
     if (!firebaseUser || !firebaseUser.email || !selectedPet) {
@@ -79,5 +79,5 @@ export const usePetDetails = (selectedPet?: Pet | null) => {
     }
   };
 
-  return {profileData: ownerData, handleAdoptNow};
+  return { profileData: ownerData, handleAdoptNow, fetchOwnerData };
 };

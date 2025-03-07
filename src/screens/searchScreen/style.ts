@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
       marginTop: 25,
     },
     petCardsContainer: {
-    
+    gap: 20,
       marginTop: 20,
     },
     errorText: {

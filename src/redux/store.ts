@@ -1,18 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
-import donateReducer from './slices/donateSlice';
-import userReducer from './slices/userSlice';
-import profileReducer from './slices/profileImageSlice'
-import favoritesReducer from './slices/favoritesSlice'
-import adoptionRequestsReducer from "./slices/adoptionRequestsSlice";
+import petReducer from './slices/petSlice';
+
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    donation: donateReducer,
-    user: userReducer,
-    profile:profileReducer,
-    favorites: favoritesReducer,
-    adoptionRequests: adoptionRequestsReducer,
+    pet: petReducer,
   },
 });
 
