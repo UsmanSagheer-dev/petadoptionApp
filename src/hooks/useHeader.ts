@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import {useNavigation, DrawerActions} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../hooks/hooks';
-import {fetchProfile} from '../redux/slices/authSlice';
+import {fetchProfile} from '../redux/slices/authSlice'; // Ensure this points to the updated authSlice
 import IMAGES from '../assets/images';
 
 const useHeader = () => {

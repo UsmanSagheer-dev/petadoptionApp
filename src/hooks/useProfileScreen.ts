@@ -1,12 +1,11 @@
 import {useState, useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../hooks/hooks';
-import {updateProfile, fetchProfile} from '../redux/slices/authSlice'; // Ensure this path points to the updated authSlice
+import {updateProfile, fetchProfile} from '../redux/slices/authSlice';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {Alert} from 'react-native';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const useProfileScreen = () => {
   const dispatch = useAppDispatch();
-  // Access data from the updated authSlice
   const {user, profileData, loading} = useAppSelector(state => state.auth);
 
   const [uploading, setUploading] = useState(false);
@@ -14,12 +13,10 @@ const useProfileScreen = () => {
   const [email, setEmail] = useState('');
   const [imageUri, setImageUri] = useState<string | null>(null);
 
-  // Fetch profile data on mount
   useEffect(() => {
     dispatch(fetchProfile());
   }, [dispatch]);
 
-  // Sync local state with Redux state when user or profileData changes
   useEffect(() => {
     if (profileData || user) {
       setName(profileData?.displayName ?? user?.displayName ?? '');
@@ -45,7 +42,6 @@ const useProfileScreen = () => {
         result.assets.length === 0 ||
         !result.assets[0].base64
       ) {
-        Alert.alert('Error', 'Failed to process image');
         return;
       }
 
@@ -53,26 +49,30 @@ const useProfileScreen = () => {
       const imageString = `data:image/jpeg;base64,${base64}`;
       setImageUri(imageString);
     } catch (error) {
-      Alert.alert('Error', 'Failed to pick image');
+      // Error handling silently fails
     }
   };
 
   const handleUpdateProfile = async () => {
     try {
       setUploading(true);
-      await dispatch(
+      
+      // Dispatch the updateProfile action and unwrap the result
+      const resultAction = await dispatch(
         updateProfile({
           name,
           imageUrl: imageUri || '',
-        }),
-      ).unwrap();
-
-      // Fetch updated profile data after update
-      dispatch(fetchProfile());
-      Alert.alert('Success', 'Profile updated successfully!');
+        })
+      );
+      
+      // Use unwrapResult to properly handle the fulfilled case
+      const result = unwrapResult(resultAction);
+      
+      // Fetch updated profile data
+      await dispatch(fetchProfile());
+      
     } catch (error) {
-      const err = error as Error;
-      Alert.alert('Error', err.message || 'Failed to update profile');
+      // Error handling silently fails
     } finally {
       setUploading(false);
     }
@@ -86,7 +86,7 @@ const useProfileScreen = () => {
     imageUri,
     pickImage,
     handleUpdateProfile,
-    loading: loading || uploading, // Combine Redux loading with local uploading state
+    loading: loading || uploading,
   };
 };
 

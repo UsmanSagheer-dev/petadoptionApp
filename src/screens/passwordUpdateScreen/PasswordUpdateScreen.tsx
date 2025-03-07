@@ -20,7 +20,7 @@ const PasswordUpdateScreen: React.FC<PasswordUpdateScreenProps> = ({
     <View style={styles.container}>
       <View>
         <View style={styles.titleContainer}>
-          <CustomText title="Profile Settings" style={styles.title} />
+          <CustomText title="Update Password" style={styles.title} />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Current Password</Text>

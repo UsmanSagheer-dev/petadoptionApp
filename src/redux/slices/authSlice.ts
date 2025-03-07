@@ -2,14 +2,13 @@ import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import auth from '@react-native-firebase/auth';
 import firestore, {serverTimestamp} from '@react-native-firebase/firestore';
 import {User} from '../../types/types';
-
 interface AuthState {
-  user: User | null;              // Authenticated user object
-  profileData: any | null;        // Firestore profile data (merged from profileSlice)
-  initializing: boolean;          // App initialization state
-  showSplash: boolean;            // Splash screen state
-  loading: boolean;              // Loading state for async operations
-  error: string | null;          // Error state
+  user: User | null;
+  profileData: any | null;
+  initializing: boolean;
+  showSplash: boolean;
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: AuthState = {
@@ -21,7 +20,6 @@ const initialState: AuthState = {
   error: null,
 };
 
-// Google Signup
 export const googleSignup = createAsyncThunk(
   'auth/googleSignup',
   async (userInfo: {idToken: string}, {rejectWithValue}) => {
@@ -34,7 +32,9 @@ export const googleSignup = createAsyncThunk(
         throw new Error('Google authentication failed');
       }
 
-      const userDoc = firestore().collection('users').doc(userCredential.user.uid);
+      const userDoc = firestore()
+        .collection('users')
+        .doc(userCredential.user.uid);
       const docSnapshot = await userDoc.get();
 
       if (!docSnapshot.exists) {
@@ -47,7 +47,9 @@ export const googleSignup = createAsyncThunk(
         });
       }
 
-      const profileData = docSnapshot.exists ? docSnapshot.data() : await userDoc.get().then(doc => doc.data());
+      const profileData = docSnapshot.exists
+        ? docSnapshot.data()
+        : await userDoc.get().then(doc => doc.data());
       return {user: userCredential.user, profileData};
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -55,7 +57,6 @@ export const googleSignup = createAsyncThunk(
   },
 );
 
-// Email Signup
 export const signup = createAsyncThunk(
   'auth/signup',
   async (
@@ -63,14 +64,19 @@ export const signup = createAsyncThunk(
     {rejectWithValue},
   ) => {
     try {
-      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+      const userCredential = await auth().createUserWithEmailAndPassword(
+        email,
+        password,
+      );
 
       if (!userCredential.user) {
         throw new Error('User creation failed');
       }
 
       await userCredential.user.updateProfile({displayName: name});
-      const userDoc = firestore().collection('users').doc(userCredential.user.uid);
+      const userDoc = firestore()
+        .collection('users')
+        .doc(userCredential.user.uid);
       await userDoc.set({
         uid: userCredential.user.uid,
         displayName: name,
@@ -86,7 +92,6 @@ export const signup = createAsyncThunk(
   },
 );
 
-// Signin
 export const signin = createAsyncThunk(
   'auth/signin',
   async (
@@ -94,8 +99,13 @@ export const signin = createAsyncThunk(
     {rejectWithValue},
   ) => {
     try {
-      const userCredential = await auth().signInWithEmailAndPassword(email, password);
-      const userDoc = firestore().collection('users').doc(userCredential.user.uid);
+      const userCredential = await auth().signInWithEmailAndPassword(
+        email,
+        password,
+      );
+      const userDoc = firestore()
+        .collection('users')
+        .doc(userCredential.user.uid);
       const profileData = await userDoc.get().then(doc => doc.data());
       return {user: userCredential.user, profileData};
     } catch (error: any) {
@@ -104,7 +114,6 @@ export const signin = createAsyncThunk(
   },
 );
 
-// Update Password
 export const updatePassword = createAsyncThunk(
   'auth/updatePassword',
   async (
@@ -116,7 +125,10 @@ export const updatePassword = createAsyncThunk(
       if (!user || !user.email) {
         throw new Error('User not found. Please login again.');
       }
-      const credential = auth.EmailAuthProvider.credential(user.email, oldPassword);
+      const credential = auth.EmailAuthProvider.credential(
+        user.email,
+        oldPassword,
+      );
       await user.reauthenticateWithCredential(credential);
       await user.updatePassword(newPassword);
       return 'Password updated successfully';
@@ -132,7 +144,6 @@ export const updatePassword = createAsyncThunk(
   },
 );
 
-// Signout
 export const signout = createAsyncThunk(
   'auth/signout',
   async (_, {rejectWithValue}) => {
@@ -144,14 +155,12 @@ export const signout = createAsyncThunk(
   },
 );
 
-// Fetch Profile (Moved from profileSlice)
 export const fetchProfile = createAsyncThunk(
   'auth/fetchProfile',
   async (_, {rejectWithValue}) => {
     try {
       const userId = auth().currentUser?.uid;
       if (!userId) throw new Error('User not authenticated');
-
       const doc = await firestore().collection('users').doc(userId).get();
       return doc.exists ? doc.data() : null;
     } catch (error: any) {
@@ -160,12 +169,42 @@ export const fetchProfile = createAsyncThunk(
   },
 );
 
-// Update Profile (Moved from profileSlice)
+export const updatePetDonationsProfile = createAsyncThunk(
+  'auth/updatePetDonationsProfile',
+  async (
+    {photoURL, displayName}: {photoURL: string; displayName: string},
+    {rejectWithValue},
+  ) => {
+    try {
+      const userId = auth().currentUser?.uid;
+      if (!userId) throw new Error('User not authenticated');
+
+      const petSnapshot = await firestore()
+        .collection('pets')
+        .where('userId', '==', userId)
+        .get();
+
+      const batch = firestore().batch();
+      petSnapshot.docs.forEach(doc => {
+        batch.update(doc.ref, {
+          ownerPhotoURL: photoURL,
+          ownerDisplayName: displayName,
+          updatedAt: serverTimestamp(),
+        });
+      });
+
+      await batch.commit();
+      return {photoURL, displayName};
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
 export const updateProfile = createAsyncThunk(
   'auth/updateProfile',
   async (
     {name, imageUrl}: {name: string; imageUrl: string},
-    {rejectWithValue},
+    {dispatch, rejectWithValue},
   ) => {
     try {
       const userId = auth().currentUser?.uid;
@@ -179,6 +218,16 @@ export const updateProfile = createAsyncThunk(
         },
         {merge: true},
       );
+
+      await auth().currentUser?.updateProfile({
+        displayName: name,
+        photoURL: imageUrl,
+      });
+
+      await dispatch(
+        updatePetDonationsProfile({photoURL: imageUrl, displayName: name}),
+      ).unwrap();
+
       return {displayName: name, photoURL: imageUrl};
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -200,18 +249,17 @@ const authSlice = createSlice({
     setShowSplash: (state, action: PayloadAction<boolean>) => {
       state.showSplash = action.payload;
     },
-    clearError: (state) => {
+    clearError: state => {
       state.error = null;
     },
-    clearProfile: (state) => {
+    clearProfile: state => {
       state.profileData = null;
       state.error = null;
     },
   },
   extraReducers: builder => {
     builder
-      // Google Signup
-      .addCase(googleSignup.pending, (state) => {
+      .addCase(googleSignup.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -225,7 +273,7 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
       // Signup
-      .addCase(signup.pending, (state) => {
+      .addCase(signup.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -238,8 +286,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Signin
-      .addCase(signin.pending, (state) => {
+      .addCase(signin.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -253,23 +300,22 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
       // Update Password
-      .addCase(updatePassword.pending, (state) => {
+      .addCase(updatePassword.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updatePassword.fulfilled, (state) => {
+      .addCase(updatePassword.fulfilled, state => {
         state.loading = false;
       })
       .addCase(updatePassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Signout
-      .addCase(signout.pending, (state) => {
+      .addCase(signout.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(signout.fulfilled, (state) => {
+      .addCase(signout.fulfilled, state => {
         state.loading = false;
         state.user = null;
         state.profileData = null;
@@ -278,8 +324,19 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+      .addCase(updatePetDonationsProfile.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updatePetDonationsProfile.fulfilled, state => {
+        state.loading = false;
+      })
+      .addCase(updatePetDonationsProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
       // Fetch Profile
-      .addCase(fetchProfile.pending, (state) => {
+      .addCase(fetchProfile.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -291,8 +348,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Update Profile
-      .addCase(updateProfile.pending, (state) => {
+      .addCase(updateProfile.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -309,5 +365,11 @@ const authSlice = createSlice({
   },
 });
 
-export const {setUser, setInitializing, setShowSplash, clearError, clearProfile} = authSlice.actions;
+export const {
+  setUser,
+  setInitializing,
+  setShowSplash,
+  clearError,
+  clearProfile,
+} = authSlice.actions;
 export default authSlice.reducer;
