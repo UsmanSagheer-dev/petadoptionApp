@@ -68,13 +68,13 @@ const SearchScreen = () => {
           {filteredPets.map(pet => (
             <PetCard
               key={pet.id}
-              imageUrl={pet.imageUrl}
-              name={pet.petBreed}
-              age={pet.petAge}
-              location={pet.location}
-              gender={pet.gender}
+              imageUrl={pet?.imageUrl}
+              name={pet?.petBreed}
+              age={pet?.petAge}
+              location={pet?.location}
+              gender={pet?.gender}
               icon={pet.isFavorite ? ICONS.ONCLICKFAV() : ICONS.OFCLICKFAV()}
-              locationIcon={IMAGES.LOCATION_VECTOR}
+              locationIcon={IMAGES?.LOCATION_VECTOR}
               onPress={() => handlePetPress(pet)}
               onIconPress={() => handleFavoriteToggle(pet)}
             />

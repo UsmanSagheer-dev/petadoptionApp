@@ -1,14 +1,9 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
-import { PetCardProps } from '../../types/types';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {PetCardProps} from '../../types/types';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLOR from '../../constants/constant';
-import { styles } from './style';
+import {styles} from './style';
 import useImageSource from '../../hooks/useImageSource';
 
 const PetCard: React.FC<PetCardProps> = ({
@@ -21,7 +16,7 @@ const PetCard: React.FC<PetCardProps> = ({
   onPress,
   onIconPress,
 }) => {
-  const { getImageSource } = useImageSource();
+  const {getImageSource} = useImageSource();
   const imageSource = getImageSource(imageUrl);
 
   return (
@@ -33,7 +28,7 @@ const PetCard: React.FC<PetCardProps> = ({
               source={imageSource}
               style={styles.image}
               resizeMode="cover"
-              onError={(error) =>
+              onError={error =>
                 console.warn('Image load error:', error.nativeEvent.error)
               }
             />
@@ -52,17 +47,24 @@ const PetCard: React.FC<PetCardProps> = ({
             {age} {age === 1 ? 'year' : 'years'}
           </Text>
           <View style={styles.locationRow}>
-            <Text style={styles.location} numberOfLines={1} ellipsizeMode="tail">
+            <Text
+              style={styles.location}
+              numberOfLines={1}
+              ellipsizeMode="tail">
               {location}
             </Text>
-            <MaterialIcons name="location-on" size={18} color={COLOR.PRIMARY_RED} />
+            <MaterialIcons
+              name="location-on"
+              size={18}
+              color={COLOR.PRIMARY_RED}
+            />
           </View>
           <View style={styles.genderContainer}>
             <Text style={styles.gender}>{gender}</Text>
             <View style={styles.genderContainer}>
               <TouchableOpacity
                 onPress={onIconPress}
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+                hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
                 <View>
                   <Text>{icon}</Text>
                 </View>

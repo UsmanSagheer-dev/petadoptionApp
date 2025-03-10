@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import { Text, TouchableOpacity, ScrollView} from 'react-native';
+import {Text, TouchableOpacity, ScrollView} from 'react-native';
 import styles from './style';
-import { TabsProps} from '../../types/types';
+import {TabsProps} from '../../types/types';
 const HorizontalTabs: React.FC<TabsProps> = ({tabs, onTabPress}) => {
   const [selectedTab, setSelectedTab] = useState<string>(tabs[0]?.id || '');
 
@@ -15,7 +15,7 @@ const HorizontalTabs: React.FC<TabsProps> = ({tabs, onTabPress}) => {
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.container}>
-      {tabs.map(tab => (
+      {tabs?.map(tab => (
         <TouchableOpacity
           key={tab.id}
           style={[styles.tab, selectedTab === tab.id && styles.selectedTab]}

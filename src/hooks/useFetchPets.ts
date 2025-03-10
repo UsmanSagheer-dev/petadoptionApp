@@ -42,10 +42,8 @@ const useFetchPets = (selectedTab: string) => {
         setPets(fetchedPets);
       } catch (err) {
         if (err instanceof Error) {
-          console.error('Error fetching pets:', err.message);
           setError('Failed to fetch pets: ' + err.message);
         } else {
-          console.error('Unknown error fetching pets');
           setError('An unknown error occurred');
         }
       } finally {

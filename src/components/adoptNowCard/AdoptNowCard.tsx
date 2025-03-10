@@ -1,24 +1,21 @@
-import React from "react";
-import { View, Text, Image, Linking } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { useAppSelector } from "../../hooks/hooks";
-import useProfile from "../../hooks/useProfile";
-import CustomButton from "../customButton/CustomButton";
-import IMAGES from "../../assets/images/index";
-import styles from "./style";
-import { RootState } from "../../redux/store";
+import React from 'react';
+import {View, Text, Image, Linking} from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useAppSelector} from '../../hooks/hooks';
+import useProfile from '../../hooks/useProfile';
+import CustomButton from '../customButton/CustomButton';
+import IMAGES from '../../assets/images/index';
+import styles from './style';
+import {RootState} from '../../redux/store';
+import Toast from 'react-native-toast-message';
 
 const AdoptNowCard = () => {
-  const { profileData } = useProfile();
+  const {profileData} = useProfile();
   const donations = useAppSelector((state: RootState) => state.pet.donations);
 
-  const userDonation = donations.find((donation) =>
-    donation.requests?.some((request) => request.userId === profileData?.uid)
+  const userDonation = donations.find(donation =>
+    donation.requests?.some(request => request.userId === profileData?.uid),
   );
-
-  console.log("Profile Data:", profileData);
-  console.log("User Donation:", userDonation);
-  console.log("Photo URL:", userDonation?.ownerPhotoURL);
 
   const handleContactPress = () => {
     if (userDonation?.ownerEmail) {
@@ -27,6 +24,11 @@ const AdoptNowCard = () => {
   };
 
   if (!userDonation) {
+    Toast.show({
+      type: 'info',
+      text1: 'No Adoption Requests',
+      text2: 'No adoption requests found at this time.',
+    });
     return (
       <View style={styles.card}>
         <Text style={styles.name}>No adoption requests found</Text>
@@ -40,29 +42,31 @@ const AdoptNowCard = () => {
         <Image
           source={
             userDonation.ownerPhotoURL
-              ? { uri: userDonation.ownerPhotoURL }
+              ? {uri: userDonation.ownerPhotoURL}
               : IMAGES.PROFILEIMG
           }
           style={styles.image}
         />
         <View>
           <Text style={styles.name}>
-            {userDonation.ownerDisplayName || "Guest User"}
+            {userDonation.ownerDisplayName || 'Guest User'}
           </Text>
-          <Text style={styles.breed}>{userDonation.petType || "Unknown Type"}</Text>
+          <Text style={styles.breed}>
+            {userDonation.petType || 'Unknown Type'}
+          </Text>
           <Text style={styles.email}>
-            {userDonation.ownerEmail || "No email available"}
+            {userDonation.ownerEmail || 'No email available'}
           </Text>
           <View style={styles.locationContainer}>
             <MaterialIcons name="location-on" size={16} color="#ff4d4d" />
             <Text style={styles.location}>
-              {userDonation.location ?? "Unknown Location"}
+              {userDonation.location ?? 'Unknown Location'}
             </Text>
           </View>
           <Text style={styles.date}>
             {userDonation.createdAt?.toDate instanceof Function
               ? userDonation.createdAt.toDate().toLocaleDateString()
-              : "Date not available"}
+              : 'Date not available'}
           </Text>
         </View>
       </View>

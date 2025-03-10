@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   line: {
     flex: 1,
     height: 1,
-    backgroundColor:COLOR.lightGrey,
+    backgroundColor: COLOR.lightGrey,
   },
   text: {
     marginHorizontal: 10,

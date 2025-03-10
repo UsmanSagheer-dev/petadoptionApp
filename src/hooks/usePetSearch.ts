@@ -1,5 +1,5 @@
-import {useState, useEffect} from 'react';
-import {FormDataState} from '../types/types';
+import { useState, useEffect } from 'react';
+import { FormDataState } from '../types/types';
 import useFetchPets from './useFetchPets';
 
 export const usePetSearch = (initialTab: string = 'Dogs') => {
@@ -9,13 +9,13 @@ export const usePetSearch = (initialTab: string = 'Dogs') => {
     allPets: [],
   });
 
-  const {pets, loading, error} = useFetchPets(formData.selectedTab);
+  const { pets, loading, error } = useFetchPets(formData.selectedTab);
 
   useEffect(() => {
     if (pets.length > 0) {
-      setFormData(prevState => {
+      setFormData((prevState) => {
         const uniquePets = [...prevState.allPets, ...pets].filter(
-          (pet, index, self) => index === self.findIndex(p => p.id === pet.id),
+          (pet, index, self) => index === self.findIndex((p) => p.id === pet.id),
         );
         return {
           ...prevState,
@@ -26,7 +26,7 @@ export const usePetSearch = (initialTab: string = 'Dogs') => {
   }, [pets]);
 
   const handleTabPress = (tabId: string) => {
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       selectedTab: tabId,
       allPets: !prevState.searchText.trim() ? [] : prevState.allPets,
@@ -34,7 +34,7 @@ export const usePetSearch = (initialTab: string = 'Dogs') => {
   };
 
   const handleSearchTextChange = (text: string) => {
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       searchText: text,
     }));
@@ -42,14 +42,14 @@ export const usePetSearch = (initialTab: string = 'Dogs') => {
 
   const filteredPets = formData.searchText.trim()
     ? formData.allPets.filter(
-        pet =>
+        (pet) =>
           pet.petBreed
-            .toLowerCase()
+            ?.toLowerCase()
             .includes(formData.searchText.toLowerCase()) ||
           pet.location
-            .toLowerCase()
+            ?.toLowerCase()
             .includes(formData.searchText.toLowerCase()) ||
-          pet.gender.toLowerCase().includes(formData.searchText.toLowerCase()),
+          pet.gender?.toLowerCase().includes(formData.searchText.toLowerCase()),
       )
     : pets;
 
@@ -62,3 +62,5 @@ export const usePetSearch = (initialTab: string = 'Dogs') => {
     handleSearchTextChange,
   };
 };
+
+export default usePetSearch;

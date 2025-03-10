@@ -1,5 +1,5 @@
 import {View, Text, ScrollView, ActivityIndicator} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import PetCard from '../../components/petCard/PetCard';
 import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import useFavorites from '../../hooks/useFavourite';
@@ -20,15 +20,36 @@ const FavouriteScreen = () => {
     closeModal,
     loading,
     error,
+    noFavoritesMessage,
   } = useFavorites();
+
+  useEffect(() => {
+    if (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Favorites Error',
+        text2: error,
+      });
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (noFavoritesMessage && !loading) {
+      Toast.show({
+        type: 'info',
+        text1: 'Favorites',
+        text2: noFavoritesMessage,
+      });
+    }
+  }, [noFavoritesMessage, loading]);
 
   const handleToggleFavorite = (pet: any) => {
     toggleFavorite(pet);
     Toast.show({
-      type: pet.isFavorite ? 'success' : 'info',
-      text1: pet.isFavorite
-        ? `${pet.petBreed} removed from favorites`
-        : `${pet.petBreed} added to favorites`,
+      type: pet?.isFavorite ? 'success' : 'info',
+      text1: pet?.isFavorite
+        ? `${pet?.petBreed ?? 'Pet'} removed from favorites`
+        : `${pet?.petBreed ?? 'Pet'} added to favorites`,
     });
   };
 
@@ -39,19 +60,19 @@ const FavouriteScreen = () => {
         <ActivityIndicator size="large" color={COLOR.primary} />
       ) : error ? (
         <Text style={styles.noFavoritesText}>Error: {error}</Text>
-      ) : favorites.length === 0 ? (
-        <Text style={styles.noFavoritesText}>No favorites found</Text>
+      ) : favorites?.length === 0 ? (
+        <Text style={styles.noFavoritesText}>{noFavoritesMessage}</Text>
       ) : (
         <ScrollView style={styles.petCardsContainer}>
-          {favorites.map(pet => (
+          {favorites?.map(pet => (
             <PetCard
-              key={pet.id}
-              imageUrl={pet.imageUrl}
-              name={pet.petBreed}
-              age={pet.petAge}
-              location={pet.location}
-              gender={pet.gender}
-              icon={pet.isFavorite ? ICONS.ONCLICKFAV() : ICONS.OFCLICKFAV()}
+              key={pet?.id}
+              imageUrl={pet?.imageUrl ?? IMAGES.DELETEICON}
+              name={pet?.petBreed ?? 'Unknown Breed'}
+              age={pet?.petAge ?? 'N/A'}
+              location={pet?.location ?? 'Unknown Location'}
+              gender={pet?.gender ?? 'N/A'}
+              icon={pet?.isFavorite ? ICONS.ONCLICKFAV() : ICONS.OFCLICKFAV()}
               locationIcon={IMAGES.LOCATION_VECTOR}
               onPress={() => handlePetClick(pet)}
               onIconPress={() => handleToggleFavorite(pet)}

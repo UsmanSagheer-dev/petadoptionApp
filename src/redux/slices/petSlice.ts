@@ -1,16 +1,16 @@
-import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import auth from '@react-native-firebase/auth';
-import firestore, {
-  FirebaseFirestoreTypes,
-} from '@react-native-firebase/firestore';
-import {adoptionRequest, pet} from '../../types/types';
-import {updatePetDonationsProfile} from './authSlice';
+import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { AdoptionRequest, Pet } from '../../types/types'; // Updated import with correct capitalized types
+import { updatePetDonationsProfile } from './authSlice';
+
 interface PetState {
   loading: boolean;
   error: string | null;
-  donations: pet[];
-  favorites: pet[];
+  donations: Pet[];
+  favorites: Pet[];
 }
+
 const initialState: PetState = {
   loading: false,
   error: null,
@@ -19,10 +19,10 @@ const initialState: PetState = {
 };
 
 export const donatePet = createAsyncThunk<
-  pet,
-  Omit<pet, 'id' | 'userId' | 'requests' | 'createdAt'>,
-  {rejectValue: string}
->('pet/donatePet', async (petData, {rejectWithValue}) => {
+  Pet,
+  Omit<Pet, 'id' | 'userId' | 'requests' | 'createdAt'>,
+  { rejectValue: string }
+>('pet/donatePet', async (petData, { rejectWithValue }) => {
   try {
     const user = auth().currentUser;
     if (!user) throw new Error('User not authenticated');
@@ -32,7 +32,7 @@ export const donatePet = createAsyncThunk<
 
     const userDoc = await firestore().collection('users').doc(user.uid).get();
     const userProfile = userDoc.data();
-    const donationData: pet = {
+    const donationData: Pet = {
       ...petData,
       id: docRef.id,
       userId: user.uid,
@@ -49,11 +49,12 @@ export const donatePet = createAsyncThunk<
     return rejectWithValue((error as Error).message);
   }
 });
+
 export const toggleFavoriteStatus = createAsyncThunk<
-  {pet: pet; isFavorite: boolean},
-  pet,
-  {rejectValue: string}
->('pet/toggleFavoriteStatus', async (pet, {rejectWithValue}) => {
+  { pet: Pet; isFavorite: boolean },
+  Pet,
+  { rejectValue: string }
+>('pet/toggleFavoriteStatus', async (pet, { rejectWithValue }) => {
   try {
     const user = auth().currentUser;
     if (!user) throw new Error('User not authenticated');
@@ -67,7 +68,7 @@ export const toggleFavoriteStatus = createAsyncThunk<
       .collection('favoritePets')
       .doc(petId);
 
-    const petData: pet = {
+    const petData: Pet = {
       ...pet,
       isFavorite: newFavoriteStatus,
       createdAt:
@@ -85,17 +86,17 @@ export const toggleFavoriteStatus = createAsyncThunk<
       await favRef.delete();
     }
 
-    return {pet: petData, isFavorite: newFavoriteStatus};
+    return { pet: petData, isFavorite: newFavoriteStatus };
   } catch (error) {
     return rejectWithValue((error as Error).message);
   }
 });
 
 export const fetchFavorites = createAsyncThunk<
-  pet[],
+  Pet[],
   void,
-  {rejectValue: string}
->('pet/fetchFavorites', async (_, {rejectWithValue}) => {
+  { rejectValue: string }
+>('pet/fetchFavorites', async (_, { rejectWithValue }) => {
   try {
     const user = auth().currentUser;
     if (!user) throw new Error('User not authenticated');
@@ -114,16 +115,17 @@ export const fetchFavorites = createAsyncThunk<
         doc.data().createdAt instanceof firestore.Timestamp
           ? doc.data().createdAt
           : firestore.Timestamp.fromDate(new Date(doc.data().createdAt)),
-    })) as pet[];
+    })) as Pet[];
   } catch (error) {
     return rejectWithValue((error as Error).message);
   }
 });
+
 export const fetchDonations = createAsyncThunk<
-  pet[],
+  Pet[],
   void,
-  {rejectValue: string}
->('pet/fetchDonations', async (_, {rejectWithValue}) => {
+  { rejectValue: string }
+>('pet/fetchDonations', async (_, { rejectWithValue }) => {
   try {
     const snapshot = await firestore()
       .collection('pets')
@@ -137,7 +139,7 @@ export const fetchDonations = createAsyncThunk<
         ...data,
         requests: data.requests || [],
         createdAt: data.createdAt as FirebaseFirestoreTypes.Timestamp,
-      } as pet;
+      } as Pet;
     });
   } catch (error) {
     return rejectWithValue((error as Error).message);
@@ -145,27 +147,30 @@ export const fetchDonations = createAsyncThunk<
 });
 
 export const requestAdoption = createAsyncThunk<
-  {donationId: string; requestData: adoptionRequest},
-  {donationId: string; userData: {uid: string; name: string; email: string}},
-  {rejectValue: string}
->('pet/requestAdoption', async ({donationId, userData}, {rejectWithValue}) => {
+  { donationId: string; requestData: AdoptionRequest },
+  { donationId: string; userData: { uid: string; name: string; email: string } },
+  { rejectValue: string }
+>('pet/requestAdoption', async ({ donationId, userData }, { rejectWithValue }) => {
   try {
     const user = auth().currentUser;
     if (!user) throw new Error('User not authenticated');
     const petRef = firestore().collection('pets').doc(donationId);
 
-    const requestData: adoptionRequest = {
+    const requestData: AdoptionRequest = {
       userId: userData.uid,
       userName: userData.name,
       userEmail: userData.email,
       timestamp: firestore.Timestamp.now().toDate().toISOString(),
+      petId: donationId, // Added petId as it's required by AdoptionRequest interface
+      status: 'pending', // Added status as it's required by AdoptionRequest interface
+      createdAt: firestore.Timestamp.now(), // Added createdAt as it's required
     };
 
     await petRef.update({
       requests: firestore.FieldValue.arrayUnion(requestData),
     });
 
-    return {donationId, requestData};
+    return { donationId, requestData };
   } catch (error) {
     return rejectWithValue((error as Error).message);
   }
@@ -174,8 +179,8 @@ export const requestAdoption = createAsyncThunk<
 export const deleteDonation = createAsyncThunk<
   string,
   string,
-  {rejectValue: string}
->('pet/deleteDonation', async (donationId, {rejectWithValue}) => {
+  { rejectValue: string }
+>('pet/deleteDonation', async (donationId, { rejectWithValue }) => {
   try {
     const user = auth().currentUser;
     if (!user) throw new Error('User not authenticated');
@@ -202,12 +207,11 @@ const petSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-
       .addCase(donatePet.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(donatePet.fulfilled, (state, action: PayloadAction<pet>) => {
+      .addCase(donatePet.fulfilled, (state, action: PayloadAction<Pet>) => {
         state.loading = false;
         state.donations.unshift(action.payload);
       })
@@ -220,13 +224,10 @@ const petSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        fetchFavorites.fulfilled,
-        (state, action: PayloadAction<pet[]>) => {
-          state.loading = false;
-          state.favorites = action.payload;
-        },
-      )
+      .addCase(fetchFavorites.fulfilled, (state, action: PayloadAction<Pet[]>) => {
+        state.loading = false;
+        state.favorites = action.payload;
+      })
       .addCase(fetchFavorites.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -238,7 +239,7 @@ const petSlice = createSlice({
       })
       .addCase(toggleFavoriteStatus.fulfilled, (state, action) => {
         state.loading = false;
-        const {pet, isFavorite} = action.payload;
+        const { pet, isFavorite } = action.payload;
 
         if (isFavorite) {
           if (!state.favorites.some(f => f.id === pet.id)) {
@@ -250,25 +251,22 @@ const petSlice = createSlice({
         }
 
         state.donations = state.donations.map(d =>
-          d.id === pet.id ? {...d, isFavorite} : d,
+          d.id === pet.id ? { ...d, isFavorite } : d,
         );
       })
-
       .addCase(toggleFavoriteStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
+
       .addCase(fetchDonations.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        fetchDonations.fulfilled,
-        (state, action: PayloadAction<pet[]>) => {
-          state.loading = false;
-          state.donations = action.payload;
-        },
-      )
+      .addCase(fetchDonations.fulfilled, (state, action: PayloadAction<Pet[]>) => {
+        state.loading = false;
+        state.donations = action.payload;
+      })
       .addCase(fetchDonations.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -280,13 +278,20 @@ const petSlice = createSlice({
       })
       .addCase(requestAdoption.fulfilled, (state, action) => {
         state.loading = false;
-        const {donationId, requestData} = action.payload;
+        const { donationId, requestData } = action.payload;
         const donation = state.donations.find(d => d.id === donationId);
         if (donation) {
           if (!donation.requests) {
             donation.requests = [];
           }
-          donation.requests.push(requestData);
+          donation.requests.push({
+            userId: requestData.userId,
+            userName: requestData.userName,
+            userEmail: requestData.userEmail,
+            timestamp: requestData.timestamp,
+            id: requestData.id,
+            status: requestData.status,
+          });
         }
       })
       .addCase(requestAdoption.rejected, (state, action) => {
@@ -333,5 +338,5 @@ const petSlice = createSlice({
   },
 });
 
-export const {clearPetError, resetPetState} = petSlice.actions;
+export const { clearPetError, resetPetState } = petSlice.actions;
 export default petSlice.reducer;

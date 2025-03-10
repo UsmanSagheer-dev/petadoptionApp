@@ -22,7 +22,7 @@ import useGoogleSignIn from '../../hooks/useGoogleSignIn';
 import styles from './style';
 import Loader from '../../components/loader/Loader';
 import {Props} from '../../types/types';
-import { GOOGLE_WEB_CLIENT_ID } from '../../config/config';
+import {GOOGLE_WEB_CLIENT_ID} from '../../config/config';
 import CustomButton from '../../components/customButton/CustomButton';
 import Toast from 'react-native-toast-message';
 

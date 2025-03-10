@@ -4,22 +4,21 @@ import COLOR from '../../constants/constant';
 const styles = StyleSheet.create({
   container: {
     marginBottom: 10,
-    
   },
   label: {
     fontSize: 18,
     fontWeight: '600',
-    fontFamily:'MontserratRegular',
+    fontFamily: 'MontserratRegular',
     color: COLOR.primary,
   },
   pickerContainer: {
     borderBottomWidth: 2,
-    borderBottomColor:COLOR.primary,
+    borderBottomColor: COLOR.primary,
   },
   picker: {
     fontSize: 16,
-    fontFamily:'MontserratRegular',
-    color:'gray',
+    fontFamily: 'MontserratRegular',
+    color: 'gray',
   },
 });
 

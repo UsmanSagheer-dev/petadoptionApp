@@ -1,36 +1,36 @@
-import {useEffect, useState} from 'react';
-import {useAppDispatch, useAppSelector} from './hooks';
-import {fetchFavorites, toggleFavoriteStatus} from '../redux/slices/petSlice';
-import {pet} from '../types/types';
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { fetchFavorites, toggleFavoriteStatus } from '../redux/slices/petSlice';
+import { Pet } from '../types/types'; // Assuming 'Pet' is the correct type
 
 const useFavorites = () => {
   const dispatch = useAppDispatch();
-  const favorites = useAppSelector(state => state.pet.favorites);
-  const loadingState = useAppSelector(state => state.pet.loading);
-  const error = useAppSelector(state => state.pet.error);
-  const [selectedPet, setSelectedPet] = useState<pet | null>(null);
+  const favorites = useAppSelector((state) => state.pet.favorites);
+  const loadingState = useAppSelector((state) => state.pet.loading);
+  const error = useAppSelector((state) => state.pet.error);
+  const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [localLoading, setLocalLoading] = useState(true);
   const [togglingPets, setTogglingPets] = useState<Set<string>>(new Set());
+  const [fetchError, setFetchError] = useState<string | null>(null);
+  const [toggleError, setToggleError] = useState<string | null>(null);
 
   useEffect(() => {
     setLocalLoading(true);
     dispatch(fetchFavorites())
       .unwrap()
-      .catch(err => console.error('Failed to fetch favorites:', err))
+      .catch((err: any) => setFetchError(err.message || 'Failed to fetch favorites'))
       .finally(() => setLocalLoading(false));
   }, [dispatch]);
 
-  const toggleFavorite = async (petItem: pet) => {
+  const toggleFavorite = async (petItem: Pet) => {
     try {
-      setTogglingPets(prev => new Set(prev).add(petItem.id));
-
-      const result = await dispatch(toggleFavoriteStatus(petItem)).unwrap();
-      console.log('Toggle result:', result);
-    } catch (err) {
-      console.error('Failed to toggle favorite:', err);
+      setTogglingPets((prev) => new Set(prev).add(petItem.id));
+      await dispatch(toggleFavoriteStatus(petItem)).unwrap();
+    } catch (err: any) {
+      setToggleError(err.message || 'Failed to toggle favorite');
     } finally {
-      setTogglingPets(prev => {
+      setTogglingPets((prev) => {
         const newSet = new Set(prev);
         newSet.delete(petItem.id);
         return newSet;
@@ -38,7 +38,7 @@ const useFavorites = () => {
     }
   };
 
-  const handlePetClick = (petItem: pet) => {
+  const handlePetClick = (petItem: Pet) => {
     setSelectedPet(petItem);
     setModalVisible(true);
   };
@@ -56,7 +56,9 @@ const useFavorites = () => {
     isModalVisible,
     loading: isLoading,
     togglingPets,
-    error,
+    error, 
+    fetchError, 
+    toggleError, 
     noFavoritesMessage:
       favorites.length === 0 && !isLoading ? 'No favorites found' : '',
     handlePetClick,

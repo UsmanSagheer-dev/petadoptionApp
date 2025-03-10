@@ -1,26 +1,22 @@
-import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import {
-  BottomTabBarProps,
   BottomTabNavigationProp,
 } from '@react-navigation/bottom-tabs';
-import {
-  DrawerNavigationProp as DrawerNavProp,
-} from '@react-navigation/drawer';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {ReactNode} from 'react';
+import { DrawerNavigationProp as DrawerNavProp } from '@react-navigation/drawer';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { ReactNode } from 'react';
 import {
   ViewStyle,
   TextStyle,
   DimensionValue,
   ImageSourcePropType,
 } from 'react-native';
+import { CompositeNavigationProp } from '@react-navigation/native';
 
-
-import {CompositeNavigationProp} from '@react-navigation/native';
 export interface User {
   uid: string;
   email: string | null;
@@ -51,6 +47,18 @@ export interface SigninPayload {
   password: string;
 }
 
+export interface Pet extends PetDonationCreate {
+  id: string;
+  userId: string;
+  requests: AdoptionRequestBasic[];
+  createdAt: FirebaseFirestoreTypes.Timestamp;
+  ownerDisplayName?: string;
+  ownerEmail?: string;
+  ownerPhotoURL?: string;
+  isFavorite?: boolean;
+  minWeight: number;
+}
+
 export interface AdoptionRequest {
   id?: string;
   userId: string;
@@ -58,7 +66,11 @@ export interface AdoptionRequest {
   status: 'pending' | 'approved' | 'rejected';
   createdAt: FirebaseFirestoreTypes.Timestamp;
   message?: string;
+  userName?: string;
+    userEmail: string;
+    timestamp: string;
   userDetails?: {
+    id: string;
     name: string;
     email: string;
     phone?: string;
@@ -68,11 +80,10 @@ export interface AdoptionRequest {
     timestamp: string;
   };
 }
-
 export interface AdoptionRequestBasic {
   id: string;
   userId: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: 'pending' | 'approved' | 'rejected'; // Union type, kept as is
   timestamp?: string;
   userName?: string;
   userEmail?: string;
@@ -92,7 +103,7 @@ export interface PetDonationCreate {
   amount?: number | string;
 }
 
-export interface pet extends PetDonationCreate {
+export interface Pet extends PetDonationCreate {
   id: string;
   userId: string;
   requests: AdoptionRequestBasic[];
@@ -101,29 +112,8 @@ export interface pet extends PetDonationCreate {
   ownerEmail?: string;
   ownerPhotoURL?: string;
   isFavorite?: boolean;
-}
-
-export interface Pet {  
-  id: string;
-  userId: string;
-  requests: AdoptionRequestBasic[];
-  createdAt: FirebaseFirestoreTypes.Timestamp;
-  ownerDisplayName?: string;
-  ownerEmail?: string;
-  ownerPhotoURL?: string;
-  isFavorite?: boolean;
-  petType: string;
   minWeight: number;
-  gender: string;
-  vaccinated: string;
-  petBreed: string;
-  petName: string;
-  petAge: string;
-  description: string;
-  location: string;
-  contactNumber: string;
-  imageUrl: string[];
-  amount?: number | string;
+
 }
 
 export interface LoginButtonProps {
@@ -169,7 +159,7 @@ export interface PickerInputProps {
   label: string;
   selectedValue: string;
   onValueChange: (value: string) => void;
-  items: {label: string; value: string}[];
+  items: { label: string; value: string }[];
 }
 
 export interface TermsCheckboxProps {
@@ -196,7 +186,7 @@ export interface CustomBottomSheetProps {
   selectedPet: Pet | null | undefined;
 }
 
-export type RootStackParamList = {
+export interface RootStackParamList {
   Home: undefined;
   Details: undefined;
   AdoptNow: undefined;
@@ -208,21 +198,23 @@ export type RootStackParamList = {
   Login: undefined;
   RecoverPassword: undefined;
   Search: undefined;
-  Detail: {pet: Pet};
+  Detail: { pet: Pet };
   SignUp: undefined;
   setLoading: (loading: boolean) => void;
   Main: undefined;
-};
+  [key: string]: any; 
+}
 
-export type AuthStackParamList = {
+export interface AuthStackParamList {
   App: undefined;
   Login: undefined;
   SignUp: undefined;
   Recover: undefined;
   PasswordUpdate: undefined;
-};
+  [key: string]: any; 
+}
 
-export type AppStackParamList = {
+export interface AppStackParamList {
   Detail: {
     id: string;
     name: string;
@@ -233,30 +225,32 @@ export type AppStackParamList = {
     name: string;
     pet: Pet;
   };
-  ProfileScreen: {userId?: string};
+  ProfileScreen: { userId?: string };
   PasswordUpdate: undefined;
   AdoptNow: undefined;
   DonateScreen: undefined;
   MyDonationScreen: undefined;
   Main: undefined;
   Drawer: undefined;
-  Donate: {donationType: string};
-  MyDonations: {filter: 'active' | 'completed'};
+  Donate: { donationType: string };
+  MyDonations: { filter: 'active' | 'completed' };
   SearchScreen: undefined;
-};
+  [key: string]: any; // Index signature for ParamListBase compatibility
+}
 
-export type DrawerParamList = {
+export interface DrawerParamList {
   AdoptNow: undefined;
   PasswordUpdate: undefined;
   MainTabs: undefined;
   Profile: undefined;
   Settings: undefined;
   MainStack: undefined;
-  Donate: {donationType?: string};
-  MyDonation: {donationType?: string};
-};
+  Donate: { donationType?: string };
+  MyDonation: { donationType?: string };
+  [key: string]: any; // Index signature for ParamListBase compatibility
+}
 
-export type TabParamList = {
+export interface TabParamList {
   Home: undefined;
   Search: undefined;
   Favorites: undefined;
@@ -265,56 +259,53 @@ export type TabParamList = {
   SearchTab: undefined;
   FavouriteTab: undefined;
   ProfileTab: undefined;
-};
+  [key: string]: any; // Index signature for ParamListBase compatibility
+}
 
-export type PasswordUpdateNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'PasswordUpdate'
->;
-export type NavigationProps = NativeStackNavigationProp<
-  AppStackParamList,
-  'PasswordUpdate' | 'DonateScreen'
->;
-export type SignUpScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'SignUp'
->;
+export interface PasswordUpdateNavigationProp
+  extends NativeStackNavigationProp<RootStackParamList, 'PasswordUpdate'> {}
+
+export interface NavigationProps
+  extends NativeStackNavigationProp<AppStackParamList, 'PasswordUpdate' | 'DonateScreen'> {}
+
+export interface SignUpScreenNavigationProp
+  extends NativeStackNavigationProp<RootStackParamList, 'SignUp'> {}
+
 export interface Props {
   navigation: SignUpScreenNavigationProp;
 }
+
 export interface RecoverProps {
   navigation: RecoverPasswordScreenNavigationProp;
 }
 
-export type RootStackNavigationProp =
-  NativeStackNavigationProp<RootStackParamList>;
-export type AuthStackNavigationProp =
-  NativeStackNavigationProp<AuthStackParamList>;
-export type AppStackNavigationProp =
-  NativeStackNavigationProp<AppStackParamList>;
-export type DrawerNavigationProp = DrawerNavProp<DrawerParamList>;
-export type TabNavigationProp = BottomTabNavigationProp<TabParamList>;
-export type LoginScreenNavigationProp = StackNavigationProp<
-  AuthStackParamList,
-  'Login'
->;
+export interface RootStackNavigationProp
+  extends NativeStackNavigationProp<RootStackParamList> {}
 
-export type PasswordUpdateScreenProps = NativeStackScreenProps<
-  AuthStackParamList,
-  'PasswordUpdate'
->;
-export type DetailScreenProps = NativeStackScreenProps<
-  AppStackParamList,
-  'Detail'
->;
-export type DonateScreenProps = NativeStackScreenProps<
-  AppStackParamList,
-  'Donate'
->;
-export type MyDonationsScreenProps = NativeStackScreenProps<
-  AppStackParamList,
-  'MyDonations'
->;
+export interface AuthStackNavigationProp
+  extends NativeStackNavigationProp<AuthStackParamList> {}
+
+export interface AppStackNavigationProp
+  extends NativeStackNavigationProp<AppStackParamList> {}
+
+export interface DrawerNavigationProp extends DrawerNavProp<DrawerParamList> {}
+
+export interface TabNavigationProp extends BottomTabNavigationProp<TabParamList> {}
+
+export interface LoginScreenNavigationProp
+  extends StackNavigationProp<AuthStackParamList, 'Login'> {}
+
+export interface PasswordUpdateScreenProps
+  extends NativeStackScreenProps<AuthStackParamList, 'PasswordUpdate'> {}
+
+export interface DetailScreenProps
+  extends NativeStackScreenProps<AppStackParamList, 'Detail'> {}
+
+export interface DonateScreenProps
+  extends NativeStackScreenProps<AppStackParamList, 'Donate'> {}
+
+export interface MyDonationsScreenProps
+  extends NativeStackScreenProps<AppStackParamList, 'MyDonations'> {}
 
 export interface UpdatePasswordPayload {
   oldPassword: string;
@@ -347,18 +338,16 @@ export interface SignUpState {
   showError: boolean;
   emailError: string | null;
   handleRegister: () => Promise<
-    {name: string; email: string; password: string} | undefined
+    { name: string; email: string; password: string } | undefined
   >;
   termsAccepted: boolean;
   setTermsAccepted: (termsAccepted: boolean) => void;
   setLoading: (loading: boolean) => void;
 }
 
-export type {BottomTabBarProps};
-
-export type NavigationProp = {
+export interface NavigationProp {
   replace: (screen: string) => void;
-};
+}
 
 export interface ImgWithTextProps {
   imageSource: ImageSourcePropType;
@@ -377,7 +366,6 @@ export interface TabsProps {
 }
 
 export interface ProfileData {
-
   displayName: string;
   photoURL: string | null;
   petBreed?: string;
@@ -396,24 +384,23 @@ export interface ProfileState {
   profileData: ProfileData | null;
 }
 
-export type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+export interface HomeScreenNavigationProp
+  extends StackNavigationProp<RootStackParamList, 'Home'> {}
+
 export interface HomeScreenProps {
   navigation: HomeScreenNavigationProp;
 }
-export type RecoverPasswordScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'RecoverPassword'
->;
 
-export type SearchScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Search'
->;
+export interface RecoverPasswordScreenNavigationProp
+  extends NativeStackNavigationProp<RootStackParamList, 'RecoverPassword'> {}
 
-export type ScreenConfig = {
+export interface SearchScreenNavigationProp
+  extends StackNavigationProp<RootStackParamList, 'Search'> {}
+
+export interface ScreenConfig {
   name: keyof AppStackParamList;
   component: React.ComponentType<any>;
-};
+}
 
 export interface TabConfig {
   name: keyof TabParamList;
@@ -424,7 +411,7 @@ export interface TabConfig {
 
 export interface RootState {
   donation: {
-    pet: Pet[];  // Use the capitalized Pet interface
+    pet: Pet[];
   };
 }
 
@@ -456,4 +443,3 @@ export interface FormDataState {
   searchText: string;
   allPets: Pet[];
 }
-

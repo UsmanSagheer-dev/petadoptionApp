@@ -1,14 +1,13 @@
-import React, { useEffect, useRef } from 'react';
-import { View,  Animated, Easing } from 'react-native';
-import  styles from './style'
+import React, {useEffect, useRef} from 'react';
+import {View, Animated, Easing} from 'react-native';
+import styles from './style';
 const Loader = () => {
-
   const dot1 = useRef(new Animated.Value(0)).current;
   const dot2 = useRef(new Animated.Value(0)).current;
   const dot3 = useRef(new Animated.Value(0)).current;
 
   const animateDots = () => {
-    const createAnimation = (value) => {
+    const createAnimation = value => {
       return Animated.sequence([
         Animated.timing(value, {
           toValue: 1,
@@ -30,7 +29,7 @@ const Loader = () => {
         createAnimation(dot1),
         createAnimation(dot2),
         createAnimation(dot3),
-      ])
+      ]),
     ).start();
   };
 
@@ -40,26 +39,38 @@ const Loader = () => {
 
   const dot1Style = {
     opacity: dot1,
-    transform: [{ translateY: dot1.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, -15]
-    }) }],
+    transform: [
+      {
+        translateY: dot1.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, -15],
+        }),
+      },
+    ],
   };
 
   const dot2Style = {
     opacity: dot2,
-    transform: [{ translateY: dot2.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, -15]
-    }) }],
+    transform: [
+      {
+        translateY: dot2.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, -15],
+        }),
+      },
+    ],
   };
 
   const dot3Style = {
     opacity: dot3,
-    transform: [{ translateY: dot3.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, -15]
-    }) }],
+    transform: [
+      {
+        translateY: dot3.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, -15],
+        }),
+      },
+    ],
   };
 
   return (
@@ -70,6 +81,5 @@ const Loader = () => {
     </View>
   );
 };
-
 
 export default Loader;

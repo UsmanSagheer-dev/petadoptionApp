@@ -88,7 +88,7 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
               width={185}
               disabled={!termsAccepted || loading}
             />
-           <CustomButton
+            <CustomButton
               onClick={() => navigation.navigate('SignUp')}
               title="Sign Up"
               backgroundColor={COLOR.white}

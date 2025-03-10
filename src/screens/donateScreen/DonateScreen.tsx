@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 import CustomInput from '../../components/input/customInput';
 import PickerInput from '../../components/pickerInput/PickerInput';
 import useDonateScreen from '../../hooks/useDonateScreen';
@@ -33,21 +33,21 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
       <PickerInput
         label="Pet Type"
         selectedValue={formData.petType}
-        onValueChange={(value) => updateFormData('petType', value)}
+        onValueChange={value => updateFormData('petType', value)}
         items={PET_TYPE_OPTIONS}
       />
 
       <PickerInput
         label="Vaccinated"
         selectedValue={formData.vaccinated}
-        onValueChange={(value) => updateFormData('vaccinated', value)}
+        onValueChange={value => updateFormData('vaccinated', value)}
         items={VACCINATION_OPTIONS}
       />
 
       <PickerInput
         label="Gender"
         selectedValue={formData.gender}
-        onValueChange={(value) => updateFormData('gender', value)}
+        onValueChange={value => updateFormData('gender', value)}
         items={GENDER_OPTIONS}
       />
 
@@ -56,7 +56,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         type="text"
         placeholder="Name"
         value={formData.petBreed}
-        onChange={(value) => updateFormData('petBreed', value)}
+        onChange={value => updateFormData('petBreed', value)}
       />
 
       <Text style={styles.label}>Amount</Text>
@@ -64,7 +64,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         type="numeric"
         placeholder="$"
         value={formData.amount}
-        onChange={(value) => updateFormData('amount', value)}
+        onChange={value => updateFormData('amount', value)}
       />
 
       <Text style={styles.label}>Weight</Text>
@@ -72,7 +72,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         type="numeric"
         placeholder="KG"
         value={formData.minWeight}
-        onChange={(value) => updateFormData('minWeight', value)}
+        onChange={value => updateFormData('minWeight', value)}
       />
 
       <Text style={styles.label}>Age</Text>
@@ -80,7 +80,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         type="numeric"
         placeholder="Years"
         value={formData.petAge}
-        onChange={(value) => updateFormData('petAge', value)}
+        onChange={value => updateFormData('petAge', value)}
       />
 
       <Text style={styles.label}>Location</Text>
@@ -88,7 +88,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         type="text"
         placeholder="Location"
         value={formData.location}
-        onChange={(value) => updateFormData('location', value)}
+        onChange={value => updateFormData('location', value)}
       />
 
       <Text style={styles.label}>Description</Text>
@@ -96,7 +96,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
         type="text"
         placeholder="Description"
         value={formData.description}
-        onChange={(value) => updateFormData('description', value)}
+        onChange={value => updateFormData('description', value)}
       />
 
       <View>
