@@ -1,23 +1,25 @@
 import React from "react";
 import { View, Text, Image, Linking } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../hooks/hooks";
 import useProfile from "../../hooks/useProfile";
 import CustomButton from "../customButton/CustomButton";
 import IMAGES from "../../assets/images/index";
 import styles from "./style";
-import { RootState } from '../../types/types';
+import { RootState } from "../../redux/store";
 
 const AdoptNowCard = () => {
   const { profileData } = useProfile();
-  const donations = useSelector((state: RootState) => state.pet?.donations ?? []);
-  
+  const donations = useAppSelector((state: RootState) => state.pet.donations);
+
   const userDonation = donations.find((donation) =>
     donation.requests?.some((request) => request.userId === profileData?.uid)
   );
-  console.log('Profile Data:', profileData);
-  console.log('User Donation:', userDonation);
-  console.log('Photo URL:', userDonation?.ownerPhotoURL);
+
+  console.log("Profile Data:", profileData);
+  console.log("User Donation:", userDonation);
+  console.log("Photo URL:", userDonation?.ownerPhotoURL);
+
   const handleContactPress = () => {
     if (userDonation?.ownerEmail) {
       Linking.openURL(`mailto:${userDonation.ownerEmail}`);
@@ -54,11 +56,11 @@ const AdoptNowCard = () => {
           <View style={styles.locationContainer}>
             <MaterialIcons name="location-on" size={16} color="#ff4d4d" />
             <Text style={styles.location}>
-              {userDonation.location || "Unknown Location"}
+              {userDonation.location ?? "Unknown Location"}
             </Text>
           </View>
           <Text style={styles.date}>
-            {userDonation.createdAt?.toDate
+            {userDonation.createdAt?.toDate instanceof Function
               ? userDonation.createdAt.toDate().toLocaleDateString()
               : "Date not available"}
           </Text>
@@ -74,7 +76,6 @@ const AdoptNowCard = () => {
       />
     </View>
   );
-            
 };
 
 export default AdoptNowCard;

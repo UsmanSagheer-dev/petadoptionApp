@@ -5,8 +5,8 @@ import {PlatformPressable} from '@react-navigation/elements';
 import {useTheme} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {TabParamList} from '../types/types';
-import {tabs} from '../constant/screen';
-import COLOR from '../constant/constant';
+import {tabs} from '../constants/screen';
+import COLOR from '../constants/constant';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 

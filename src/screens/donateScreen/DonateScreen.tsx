@@ -9,7 +9,7 @@ import {
   PET_TYPE_OPTIONS,
   VACCINATION_OPTIONS,
   GENDER_OPTIONS,
-} from '../../constant/constant';
+} from '../../constants/constant';
 
 const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
   const {

@@ -1,14 +1,11 @@
 import {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../redux/store';
+import {useAppDispatch, useAppSelector} from '../hooks/hooks';
 import {fetchDonations} from '../redux/slices/petSlice';
 import {pet} from '../types/types';
 
 export const useDonations = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const {donations, loading, error} = useSelector(
-    (state: RootState) => state.pet,
-  );
+  const dispatch = useAppDispatch();
+  const {donations, loading, error} = useAppSelector(state => state.pet);
 
   useEffect(() => {
     dispatch(fetchDonations());

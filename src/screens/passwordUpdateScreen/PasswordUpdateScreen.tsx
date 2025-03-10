@@ -3,7 +3,7 @@ import React from 'react';
 import {PasswordUpdateNavigationProp} from '../../types/types';
 import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
-import COLOR from '../../constant/constant';
+import COLOR from '../../constants/constant';
 import CustomButton from '../../components/customButton/CustomButton';
 import {usePasswordUpdate} from '../../hooks/usePasswordUpdate';
 import styles from './style';

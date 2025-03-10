@@ -1,15 +1,11 @@
 import {useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useAppDispatch} from '../hooks/hooks';
 import {updatePassword, signout} from '../redux/slices/authSlice';
-import {AppDispatch} from '../redux/store';
-import {Alert} from 'react-native';
-import {
-  PasswordUpdateNavigationProp,
-  PasswordUpdateState,
-} from '../types/types';
+import {PasswordUpdateNavigationProp, PasswordUpdateState} from '../types/types';
+import Toast from 'react-native-toast-message';
 
 export const usePasswordUpdate = (navigation: PasswordUpdateNavigationProp) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const [state, setState] = useState<PasswordUpdateState>({
     oldPassword: '',
     newPassword: '',
@@ -19,15 +15,27 @@ export const usePasswordUpdate = (navigation: PasswordUpdateNavigationProp) => {
 
   const validatePasswords = (): boolean => {
     if (!state.oldPassword || !state.newPassword || !state.confirmNewPassword) {
-      Alert.alert('Error', 'Please fill in all password fields');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Please fill in all password fields',
+      });
       return false;
     }
     if (state.newPassword !== state.confirmNewPassword) {
-      Alert.alert('Error', 'New passwords do not match');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'New passwords do not match',
+      });
       return false;
     }
     if (state.newPassword.length < 6) {
-      Alert.alert('Error', 'New password must be at least 6 characters');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'New password must be at least 6 characters',
+      });
       return false;
     }
     return true;
@@ -44,38 +52,38 @@ export const usePasswordUpdate = (navigation: PasswordUpdateNavigationProp) => {
           newPassword: state.newPassword,
         }),
       ).unwrap();
-      Alert.alert('Success', 'Password updated successfully', [
-        {
-          text: 'OK',
-          onPress: () => {
-            setState({
-              oldPassword: '',
-              newPassword: '',
-              confirmNewPassword: '',
-              isLoading: false,
-            });
-            navigation.goBack();
-          },
-        },
-      ]);
+
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Password updated successfully',
+      });
+
+      setState({
+        oldPassword: '',
+        newPassword: '',
+        confirmNewPassword: '',
+        isLoading: false,
+      });
+
+      navigation.goBack();
     } catch (error: any) {
       const errorMessage = error.toString();
       if (errorMessage.includes('login again')) {
-        Alert.alert(
-          'Session Expired',
-          'Please login again to update your password',
-          [
-            {
-              text: 'OK',
-              onPress: async () => {
-                await dispatch(signout());
-                navigation.navigate('Login');
-              },
-            },
-          ],
-        );
+        Toast.show({
+          type: 'error',
+          text1: 'Session Expired',
+          text2: 'Please login again to update your password',
+        });
+
+        await dispatch(signout());
+        navigation.navigate('Login');
       } else {
-        Alert.alert('Error', errorMessage);
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: errorMessage,
+        });
       }
     } finally {
       setState(prev => ({...prev, isLoading: false}));

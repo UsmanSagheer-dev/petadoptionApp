@@ -103,26 +103,28 @@ export interface pet extends PetDonationCreate {
   isFavorite?: boolean;
 }
 
-export type Pet = {
+export interface Pet {  
   id: string;
-  userId?: string;
-  petBreed: string;
-  petWeight?: number;
-  location: string;
-  gender: string;
+  userId: string;
+  requests: AdoptionRequestBasic[];
+  createdAt: FirebaseFirestoreTypes.Timestamp;
+  ownerDisplayName?: string;
+  ownerEmail?: string;
+  ownerPhotoURL?: string;
   isFavorite?: boolean;
-  imageUrl: string;
-  petAge: string;
-  minWeight?: string;
-  vaccinated: boolean;
-  type: string;
-  description: string;
   petType: string;
+  minWeight: number;
+  gender: string;
+  vaccinated: string;
+  petBreed: string;
   petName: string;
+  petAge: string;
+  description: string;
+  location: string;
   contactNumber: string;
-  donation: string;
-  amount?: number;
-};
+  imageUrl: string[];
+  amount?: number | string;
+}
 
 export interface LoginButtonProps {
   onClick: () => void;
@@ -422,7 +424,7 @@ export interface TabConfig {
 
 export interface RootState {
   donation: {
-    pet: pet[];
+    pet: Pet[];  // Use the capitalized Pet interface
   };
 }
 

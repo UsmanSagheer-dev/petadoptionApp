@@ -1,13 +1,14 @@
 import {View, Text, ScrollView, ActivityIndicator} from 'react-native';
 import React from 'react';
-import CustomeHeader from '../../components/customeHeader/CustomeHeader';
 import PetCard from '../../components/petCard/PetCard';
 import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import useFavorites from '../../hooks/useFavourite';
 import IMAGES from '../../assets/images/index';
-import COLOR from '../../constant/constant';
-import ICONS from '../../constant/icons';
+import COLOR from '../../constants/constant';
+import ICONS from '../../constants/icons';
 import styles from './style';
+import AppBar from '../../components/appBar/AppBar';
+import Toast from 'react-native-toast-message';
 
 const FavouriteScreen = () => {
   const {
@@ -21,9 +22,19 @@ const FavouriteScreen = () => {
     error,
   } = useFavorites();
 
+  const handleToggleFavorite = (pet: any) => {
+    toggleFavorite(pet);
+    Toast.show({
+      type: pet.isFavorite ? 'success' : 'info',
+      text1: pet.isFavorite
+        ? `${pet.petBreed} removed from favorites`
+        : `${pet.petBreed} added to favorites`,
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <CustomeHeader title="Favourite" navigateTo="SearchScreen" />
+      <AppBar title="Favourite" navigateTo="SearchScreen" />
       {loading ? (
         <ActivityIndicator size="large" color={COLOR.primary} />
       ) : error ? (
@@ -43,12 +54,7 @@ const FavouriteScreen = () => {
               icon={pet.isFavorite ? ICONS.ONCLICKFAV() : ICONS.OFCLICKFAV()}
               locationIcon={IMAGES.LOCATION_VECTOR}
               onPress={() => handlePetClick(pet)}
-              onIconPress={() => {
-                console.log(
-                  `Toggling favorite for ${pet.id}, current status: ${pet.isFavorite}`,
-                );
-                toggleFavorite(pet);
-              }}
+              onIconPress={() => handleToggleFavorite(pet)}
             />
           ))}
         </ScrollView>

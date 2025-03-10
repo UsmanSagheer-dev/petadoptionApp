@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { TermsCheckboxProps } from "../../types/types";
 import styles from "./style";
-import COLOR from "../../constant/constant";
+import COLOR from "../../constants/constant";
 
 const TermsCheckbox = ({ checked, onChange }: TermsCheckboxProps) => {
   return (

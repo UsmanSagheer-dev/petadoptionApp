@@ -2,7 +2,7 @@ import React from 'react';
 import {TouchableOpacity, Text} from 'react-native';
 import {LoginButtonProps} from '../../types/types';
 import styles from './style'
-import COLOR from '../../constant/constant';
+import COLOR from '../../constants/constant';
 
 const CustomButton = ({
   onClick,

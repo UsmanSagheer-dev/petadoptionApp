@@ -1,16 +1,18 @@
 import React, {useRef} from 'react';
-import {View, ScrollView, ActivityIndicator, Text, Alert} from 'react-native';
+import {View, ScrollView, ActivityIndicator, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {CompositeNavigationProp} from '@react-navigation/native';
-import CustomeHeader from '../../components/customeHeader/CustomeHeader';
 import PetCard from '../../components/petCard/PetCard';
 import IMAGES from '../../assets/images/index';
 import useFetchAllPets from '../../hooks/useFetchAllPets';
 import {AppStackParamList} from '../../types/types';
-import ICONS from '../../constant/icons';
+import ICONS from '../../constants/icons';
 import styles from './style';
+import AppBar from '../../components/appBar/AppBar';
+import Toast from 'react-native-toast-message';
+
 type MyDonationScreenNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<AppStackParamList, 'MyDonationScreen'>,
   NativeStackNavigationProp<AppStackParamList>
@@ -21,7 +23,7 @@ const MyDonationScreen = () => {
   const {pets, loading, error, deletePet} = useFetchAllPets();
   const navigation = useNavigation<MyDonationScreenNavigationProp>();
 
-  const handlePetClick = pet => {
+  const handlePetClick = (pet: any) => {
     navigation.navigate('Detail', {
       id: pet.id,
       name: pet.name,
@@ -29,20 +31,32 @@ const MyDonationScreen = () => {
     });
   };
 
-  const handleDeletePet = (petId: string) => {
-    Alert.alert(
-      'Confirm Deletion',
-      'Are you sure you want to delete this pet?',
-      [
-        {text: 'Cancel', style: 'cancel'},
-        {text: 'Delete', onPress: () => deletePet(petId), style: 'destructive'},
-      ],
-    );
+  const handleDeletePet = async (petId: string) => {
+    Toast.show({
+      type: 'info',
+      text1: 'Deleting Pet...',
+      text2: 'Please wait while we remove the pet.',
+    });
+
+    try {
+      await deletePet(petId);
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Pet deleted successfully!',
+      });
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to delete pet. Please try again.',
+      });
+    }
   };
-  console.log('Pet data:', pets[0]?.imageUrl);
+
   return (
     <View style={styles.container}>
-   <CustomeHeader title="Donation Screen" navigateTo="Donate" />
+      <AppBar title="Donation Screen" navigateTo="Donate" />
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : error ? (
@@ -53,15 +67,15 @@ const MyDonationScreen = () => {
             pets.map(pet => (
               <View key={pet.id} style={styles.petCardWrapper}>
                 <PetCard
-                  imageUrl={pet.imageUrl}
-                  name={pet.petBreed}
-                  age={pet.petAge}
-                  location={pet.location}
-                  gender={pet.gender}
-                  icon={ICONS.delete()}
-                  locationIcon={IMAGES.LOCATION_VECTOR}
+                  imageUrl={pet?.imageUrl}
+                  name={pet?.petBreed}
+                  age={pet?.petAge}
+                  location={pet?.location}
+                  gender={pet?.gender}
+                  icon={ICONS?.delete()}
+                  locationIcon={IMAGES?.LOCATION_VECTOR}
                   onPress={() => handlePetClick(pet)}
-                  onIconPress={() => handleDeletePet(pet.id)}
+                  onIconPress={() => handleDeletePet(pet?.id)}
                 />
               </View>
             ))

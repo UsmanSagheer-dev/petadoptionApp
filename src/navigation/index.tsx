@@ -6,7 +6,6 @@ import SplashScreen from '../screens/splashScreen/SplashScreen';
 import AuthNavigator from './AuthNavigator';
 import AppNavigator from './AppNavigator';
 import useAuth from '../hooks/useAuth';
-const Stack = createNativeStackNavigator();
 const RootNavigator = () => {
   const {initializing, user, showSplash} = useAuth();
 

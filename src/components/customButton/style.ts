@@ -1,4 +1,3 @@
-import FONTS from '../../assets/fonts/index';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({

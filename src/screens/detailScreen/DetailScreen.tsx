@@ -4,7 +4,7 @@ import { View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import COLOR from '../../constant/constant';
+import COLOR from '../../constants/constant';
 import styles from './style';
 import useFavorites from '../../hooks/useFavourite';
 import { usePetDetails } from '../../hooks/usePetDetails';

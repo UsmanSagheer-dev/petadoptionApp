@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View,  Animated, Easing } from 'react-native';
 import  styles from './style'
-const CustomLoader = () => {
+const Loader = () => {
 
   const dot1 = useRef(new Animated.Value(0)).current;
   const dot2 = useRef(new Animated.Value(0)).current;
@@ -72,4 +72,4 @@ const CustomLoader = () => {
 };
 
 
-export default CustomLoader;
+export default Loader;

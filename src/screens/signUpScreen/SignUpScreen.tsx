@@ -6,26 +6,25 @@ import {
   ScrollView,
   Platform,
   ActivityIndicator,
-  Alert,
   Image,
   TouchableOpacity,
 } from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch} from '../../redux/store';
+import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
 import {signup} from '../../redux/slices/authSlice';
 import useSignUp from '../../hooks/useSignup';
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
-import COLOR from '../../constant/constant';
+import COLOR from '../../constants/constant';
 import OrDivider from '../../components/onDivider/OnDivider';
 import IMAGES from '../../assets/images/index';
 import useGoogleSignIn from '../../hooks/useGoogleSignIn';
 import styles from './style';
-import CustomLoader from '../../components/radarLoader/RadarLoader';
+import Loader from '../../components/loader/Loader';
 import {Props} from '../../types/types';
 import { GOOGLE_WEB_CLIENT_ID } from '../../config/config';
 import CustomButton from '../../components/customButton/CustomButton';
+import Toast from 'react-native-toast-message';
 
 const SignUpScreen: React.FC<Props> = ({navigation}) => {
   const {
@@ -44,12 +43,12 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
     setTermsAccepted,
   } = useSignUp();
   const {onGoogleButtonPress, isGoogleLoading} = useGoogleSignIn();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const {
     isAuthenticated,
     error,
     loading: reduxLoading,
-  } = useSelector((state: any) => state.auth);
+  } = useAppSelector(state => state.auth);
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -65,7 +64,11 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
 
   const handleSignUp = async () => {
     if (!termsAccepted) {
-      Alert.alert('Please accept the terms and conditions.');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Please accept the terms and conditions.',
+      });
       return;
     }
 
@@ -76,16 +79,20 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
 
       if (userData) {
         await dispatch(signup(userData)).unwrap();
-        
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Account created successfully!',
+        });
       } else {
-   
         setLoading(false);
       }
     } catch (error: any) {
-      Alert.alert(
-        'Error',
-        error.message || 'Email is Already given , please sign in',
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error.message || 'Email is already registered. Please sign in.',
+      });
       setLoading(false);
     }
   };
@@ -136,7 +143,7 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
           </View>
           <View style={styles.buttonGroupContainer}>
             <View style={styles.signupButtonContainer}>
-            <CustomButton
+              <CustomButton
                 onClick={handleSignUp}
                 title={loading ? 'Signing up...' : 'Sign Up'}
                 backgroundColor={COLOR.primary}
@@ -176,7 +183,7 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
               )}
             </TouchableOpacity>
             <Text style={styles.googleText}>
-              {isGoogleLoading ? <CustomLoader /> : 'Sign in with Google'}
+              {isGoogleLoading ? 'Loading...' : 'Sign in with Google'}
             </Text>
           </TouchableOpacity>
         </View>
