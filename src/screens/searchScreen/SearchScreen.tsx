@@ -8,10 +8,10 @@ import SearchInput from '../../components/searcInput/SearchInput';
 import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
 import PetCard from '../../components/petCard/PetCard';
 import IMAGES from '../../assets/images/index';
-import {PET_TABS} from '../../constant/constant';
+import {PET_TABS} from '../../constants/constant';
 import {Pet, SearchScreenNavigationProp} from '../../types/types';
 import {toggleFavoriteStatus} from '../../redux/slices/petSlice';
-import ICONS from '../../constant/icons';
+import ICONS from '../../constants/icons';
 import styles from './style';
 import {usePetSearch} from '../../hooks/usePetSearch';
 
@@ -68,13 +68,13 @@ const SearchScreen = () => {
           {filteredPets.map(pet => (
             <PetCard
               key={pet.id}
-              imageUrl={pet.imageUrl}
-              name={pet.petBreed}
-              age={pet.petAge}
-              location={pet.location}
-              gender={pet.gender}
+              imageUrl={pet?.imageUrl}
+              name={pet?.petBreed}
+              age={pet?.petAge}
+              location={pet?.location}
+              gender={pet?.gender}
               icon={pet.isFavorite ? ICONS.ONCLICKFAV() : ICONS.OFCLICKFAV()}
-              locationIcon={IMAGES.LOCATION_VECTOR}
+              locationIcon={IMAGES?.LOCATION_VECTOR}
               onPress={() => handlePetPress(pet)}
               onIconPress={() => handleFavoriteToggle(pet)}
             />

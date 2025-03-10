@@ -1,11 +1,12 @@
-import { useState, useRef } from 'react';
-import { useAppDispatch } from '../hooks/hooks';
+import {useState, useRef} from 'react';
+import {useAppDispatch} from '../hooks/hooks';
 import auth from '@react-native-firebase/auth';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList, Pet, ProfileData } from '../types/types';
-import { requestAdoption } from '../redux/slices/petSlice';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList, Pet, ProfileData} from '../types/types';
+import {requestAdoption} from '../redux/slices/petSlice';
 import firestore from '@react-native-firebase/firestore';
+import Toast from 'react-native-toast-message';
 
 export const usePetDetails = (selectedPet?: Pet | null) => {
   const dispatch = useAppDispatch();
@@ -35,8 +36,12 @@ export const usePetDetails = (selectedPet?: Pet | null) => {
         name: userData?.displayName || 'Pet Owner',
         imageUrl: userData?.photoURL || null,
       });
-    } catch (error) {
-      console.error('Error fetching owner data:', error);
+    } catch (err: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Fetch Error',
+        text2: err.message || 'Error fetching owner data',
+      });
       setOwnerData({
         displayName: 'Pet Owner',
         photoURL: null,
@@ -54,9 +59,11 @@ export const usePetDetails = (selectedPet?: Pet | null) => {
 
   const handleAdoptNow = async () => {
     if (!firebaseUser || !firebaseUser.email || !selectedPet) {
-      console.error(
-        'User not logged in or email not available or pet not selected',
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Adoption Error',
+        text2: 'User not logged in, email missing, or pet not selected',
+      });
       return;
     }
 
@@ -72,12 +79,22 @@ export const usePetDetails = (selectedPet?: Pet | null) => {
         }),
       ).unwrap();
 
-      console.log('Adoption request submitted successfully');
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Adoption request submitted successfully',
+      });
       navigation.navigate('AdoptNow');
-    } catch (error) {
-      console.error('Error submitting adoption request:', error);
+    } catch (err: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Adoption Error',
+        text2: err.message || 'Error submitting adoption request',
+      });
     }
   };
 
-  return { profileData: ownerData, handleAdoptNow, fetchOwnerData };
+  return {profileData: ownerData, handleAdoptNow, fetchOwnerData};
 };
+
+export default usePetDetails;

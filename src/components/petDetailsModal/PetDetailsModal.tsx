@@ -6,7 +6,7 @@ import IMAGES from '../../assets/images';
 import {usePetDetails} from '../../hooks/usePetDetails';
 import styles from './style';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import COLOR from '../../constant/constant';
+import COLOR from '../../constants/constant';
 import CustomButton from '../../components/customButton/CustomButton';
 
 const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
@@ -47,7 +47,7 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
         <View style={styles.infoContainer}>
           {petInfoItems?.map((item, index) => (
             <View key={index} style={styles.infoBox}>
-              <Text style={styles.labelTitle}>{item.label}</Text>
+              <Text style={styles.labelTitle}>{item?.label}</Text>
               <Text style={styles.labelSub}>{item?.value}</Text>
             </View>
           ))}
@@ -76,12 +76,12 @@ const PetDetailsModal: React.FC<CustomBottomSheetProps> = ({
               size={18}
               color={COLOR.PRIMARY_RED}
             />
-            <Text style={styles.subtitle}>{selectedPet.location}</Text>
+            <Text style={styles.subtitle}>{selectedPet?.location}</Text>
           </View>
         </View>
 
         <View style={styles.descriptionContainer}>
-          <Text style={styles.description}>{selectedPet.description}</Text>
+          <Text style={styles.description}>{selectedPet?.description}</Text>
         </View>
         <CustomButton title="Adopt Now" onClick={handleAdoptNow} height={74} />
       </View>

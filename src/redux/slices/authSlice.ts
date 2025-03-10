@@ -7,11 +7,13 @@ interface AuthState {
   profileData: any | null;
   initializing: boolean;
   showSplash: boolean;
+  isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: AuthState = {
+  isAuthenticated: false,
   user: null,
   profileData: null,
   initializing: true,

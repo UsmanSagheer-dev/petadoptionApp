@@ -1,16 +1,15 @@
 import {useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../redux/store';
+import {useAppDispatch, useAppSelector} from '../hooks/hooks';
 import {donatePet} from '../redux/slices/petSlice';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Image as RNImage} from 'react-native-compressor';
 import {PetDonationCreate} from '../types/types';
-import {Alert} from 'react-native';
+import Toast from 'react-native-toast-message';
 import RNFS from 'react-native-fs';
 
 const useDonateScreen = (navigation: any) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const {loading, error} = useSelector((state: RootState) => state.pet);
+  const dispatch = useAppDispatch();
+  const {loading, error} = useAppSelector(state => state.pet);
 
   const [formData, setFormData] = useState({
     petType: '',
@@ -39,7 +38,11 @@ const useDonateScreen = (navigation: any) => {
         if (response.didCancel) return;
 
         if (response.errorCode) {
-          Alert.alert('Error', 'Image picker error');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: 'Image picker error',
+          });
           return;
         }
 
@@ -58,8 +61,11 @@ const useDonateScreen = (navigation: any) => {
           const base64String = await RNFS.readFile(compressedUri, 'base64');
           setImageUri(`data:image/jpeg;base64,${base64String}`);
         } catch (error) {
-          console.log('Image processing error:', error);
-          Alert.alert('Error', 'Failed to process image');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: 'Failed to process image',
+          });
         }
       },
     );
@@ -67,7 +73,11 @@ const useDonateScreen = (navigation: any) => {
 
   const handleDonate = () => {
     if (!imageUri) {
-      Alert.alert('Error', 'Please select an image');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Please select an image',
+      });
       return;
     }
 
@@ -78,7 +88,12 @@ const useDonateScreen = (navigation: any) => {
 
     dispatch(donatePet(petData)).then(result => {
       if (result.meta.requestStatus === 'fulfilled') {
-        Alert.alert('Success', 'Donation submitted successfully!');
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Donation submitted successfully!',
+        });
+
         setFormData({
           petType: '',
           gender: '',
@@ -96,7 +111,11 @@ const useDonateScreen = (navigation: any) => {
         setImagePreviewUri(null);
         navigation.goBack();
       } else {
-        Alert.alert('Error', result.payload as string);
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: result.payload as string,
+        });
       }
     });
   };

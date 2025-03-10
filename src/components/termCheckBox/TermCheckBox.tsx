@@ -1,18 +1,17 @@
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { TermsCheckboxProps } from "../../types/types";
-import styles from "./style";
-import COLOR from "../../constant/constant";
+import React from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
+import {TermsCheckboxProps} from '../../types/types';
+import styles from './style';
+import COLOR from '../../constants/constant';
 
-const TermsCheckbox = ({ checked, onChange }: TermsCheckboxProps) => {
+const TermsCheckbox = ({checked, onChange}: TermsCheckboxProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.checkbox}
-        onPress={() => onChange(!checked)}
-      >
+        onPress={() => onChange(!checked)}>
         {checked && (
-          <Text style={[styles.checked, { color:COLOR.infoText, fontSize: 12 }]}>
+          <Text style={[styles.checked, {color: COLOR.infoText, fontSize: 12}]}>
             ✓
           </Text>
         )}

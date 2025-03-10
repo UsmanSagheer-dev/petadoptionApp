@@ -10,7 +10,7 @@ import {
 import {LoginScreenNavigationProp} from '../../types/types';
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
-import COLOR from '../../constant/constant';
+import COLOR from '../../constants/constant';
 import useLogin from '../../hooks/useLogin';
 import styles from './style';
 import CustomButton from '../../components/customButton/CustomButton';
@@ -88,7 +88,7 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
               width={185}
               disabled={!termsAccepted || loading}
             />
-           <CustomButton
+            <CustomButton
               onClick={() => navigation.navigate('SignUp')}
               title="Sign Up"
               backgroundColor={COLOR.white}

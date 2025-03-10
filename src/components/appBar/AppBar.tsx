@@ -4,7 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import {CustomeHeaderProps, NavigationProps} from '../../types/types';
 import styles from './style';
 
-const CustomeHeader: React.FC<CustomeHeaderProps> = ({
+const AppBar: React.FC<CustomeHeaderProps> = ({
   title,
   navigateTo,
   onPress,
@@ -31,4 +31,4 @@ const CustomeHeader: React.FC<CustomeHeaderProps> = ({
   );
 };
 
-export default CustomeHeader;
+export default AppBar;

@@ -3,7 +3,7 @@ import CustomText from '../../components/customText/CustomText';
 import CustomInput from '../../components/input/customInput';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import useProfileScreen from '../../hooks/useProfileScreen';
-import COLOR from '../../constant/constant';
+import COLOR from '../../constants/constant';
 import styles from './style';
 import CustomButton from '../../components/customButton/CustomButton';
 const ProfileScreen = () => {

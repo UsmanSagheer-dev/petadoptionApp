@@ -1,12 +1,13 @@
-import {useState, useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from '../hooks/hooks';
-import {updateProfile, fetchProfile} from '../redux/slices/authSlice';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {unwrapResult} from '@reduxjs/toolkit';
+import { useState, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { updateProfile, fetchProfile } from '../redux/slices/authSlice';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { unwrapResult } from '@reduxjs/toolkit';
+import Toast from 'react-native-toast-message';
 
 const useProfileScreen = () => {
   const dispatch = useAppDispatch();
-  const {user, profileData, loading} = useAppSelector(state => state.auth);
+  const { user, profileData, loading } = useAppSelector((state) => state.auth);
   const [uploading, setUploading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -41,13 +42,24 @@ const useProfileScreen = () => {
         result.assets.length === 0 ||
         !result.assets[0].base64
       ) {
+        Toast.show({
+          type: 'error',
+          text1: 'Image Error',
+          text2: 'No image selected or invalid image data',
+        });
         return;
       }
 
-      const {base64} = result.assets[0];
+      const { base64 } = result.assets[0];
       const imageString = `data:image/jpeg;base64,${base64}`;
       setImageUri(imageString);
-    } catch (error) {}
+    } catch (err: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Image Picker Error',
+        text2: err.message || 'Failed to pick image',
+      });
+    }
   };
 
   const handleUpdateProfile = async () => {
@@ -61,10 +73,20 @@ const useProfileScreen = () => {
         }),
       );
 
-      const result = unwrapResult(resultAction);
+      unwrapResult(resultAction); // Throws if the action fails
 
       await dispatch(fetchProfile());
-    } catch (error) {
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Profile updated successfully',
+      });
+    } catch (err: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Update Error',
+        text2: err.message || 'Failed to update profile',
+      });
     } finally {
       setUploading(false);
     }

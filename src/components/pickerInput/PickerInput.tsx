@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import { PickerInputProps } from '../../types/types';
+import {View, Text} from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+import {PickerInputProps} from '../../types/types';
 import styles from './style';
 
 const PickerInput: React.FC<PickerInputProps> = ({

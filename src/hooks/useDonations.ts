@@ -1,33 +1,35 @@
-import {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../redux/store';
-import {fetchDonations} from '../redux/slices/petSlice';
-import {pet} from '../types/types';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { fetchDonations } from '../redux/slices/petSlice';
+import { Pet } from '../types/types';
 
 export const useDonations = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const {donations, loading, error} = useSelector(
-    (state: RootState) => state.pet,
-  );
+  const dispatch = useAppDispatch();
+  const { donations, loading, error } = useAppSelector((state) => state.pet);
 
   useEffect(() => {
     dispatch(fetchDonations());
   }, [dispatch]);
 
-  const formatDate = (timestamp: any) => {
+  const formatDate = (timestamp?: any): string => {
     if (!timestamp) return 'Unknown date';
     try {
-      if (timestamp.toDate) {
+      if ('toDate' in timestamp) {
         return timestamp.toDate().toLocaleDateString();
       }
       return new Date(timestamp).toLocaleDateString();
-    } catch (e) {
+    } catch {
       return 'Invalid date';
     }
   };
 
-  const isPetDonation = (item: any): item is pet => {
-    return item && item.petType !== undefined && item.petBreed !== undefined;
+  const isPetDonation = (item: any): item is Pet => {
+    return (
+      item !== null &&
+      typeof item === 'object' &&
+      'petType' in item &&
+      'petBreed' in item
+    );
   };
 
   return {

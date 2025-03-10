@@ -6,15 +6,15 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { useState } from 'react';
+import {useState} from 'react';
 import styles from './style';
 import SearchInput from '../../components/searcInput/SearchInput';
 import ImgWithText from '../../components/imgWithText/ImgWithText';
 import CardSection from '../../components/cardSection/CardSection';
-import { PET_DETAILS} from '../../constant/constant';
-import {HomeScreenProps} from '../../types/types'
+import {PET_DETAILS} from '../../constants/constant';
+import {HomeScreenProps} from '../../types/types';
 
-const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const [searchText, setSearchText] = useState<string>('');
 
   return (
@@ -32,7 +32,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             <Text style={styles.heading}>Find an Awesome Pets for You</Text>
           </View>
           <View style={styles.searchContainer}>
-            <SearchInput searchText={searchText} setSearchText={setSearchText} />
+            <SearchInput
+              searchText={searchText}
+              setSearchText={setSearchText}
+            />
           </View>
           <View>
             <ScrollView

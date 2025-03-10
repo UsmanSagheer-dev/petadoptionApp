@@ -1,15 +1,11 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  ImageSourcePropType,
-} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {PetCardProps} from '../../types/types';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import COLOR from '../../constant/constant';
+import COLOR from '../../constants/constant';
 import {styles} from './style';
+import useImageSource from '../../hooks/useImageSource';
+
 const PetCard: React.FC<PetCardProps> = ({
   imageUrl,
   name,
@@ -20,27 +16,8 @@ const PetCard: React.FC<PetCardProps> = ({
   onPress,
   onIconPress,
 }) => {
-  const getImageSource = (): ImageSourcePropType | null => {
-    try {
-      if (!imageUrl) return null;
-
-      const uri = Array.isArray(imageUrl) ? imageUrl[0] : imageUrl;
-
-      if (!uri) return null;
-      if (typeof uri !== 'string') return null;
-
-      if (uri.startsWith('http') || uri.startsWith('data:image')) {
-        return {uri};
-      }
-
-      return {uri: `data:image/jpeg;base64,${uri}`};
-    } catch (error) {
-      console.warn('Image processing error:', error);
-      return null;
-    }
-  };
-
-  const imageSource = getImageSource();
+  const {getImageSource} = useImageSource();
+  const imageSource = getImageSource(imageUrl);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
@@ -61,43 +38,41 @@ const PetCard: React.FC<PetCardProps> = ({
             </View>
           )}
         </View>
-        
-          <View style={styles.details}>
-            <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
-              {name}
+
+        <View style={styles.details}>
+          <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
+            {name}
+          </Text>
+          <Text style={styles.age}>
+            {age} {age === 1 ? 'year' : 'years'}
+          </Text>
+          <View style={styles.locationRow}>
+            <Text
+              style={styles.location}
+              numberOfLines={1}
+              ellipsizeMode="tail">
+              {location}
             </Text>
-            <Text style={styles.age}>
-              {age} {age === 1 ? 'year' : 'years'}
-            </Text>
-            <View style={styles.locationRow}>
-             
-              <Text
-                style={styles.location}
-                numberOfLines={1}
-                ellipsizeMode="tail">
-                {location}
-              </Text>
-              <MaterialIcons
-                name="location-on"
-                size={18}
-                color={COLOR.PRIMARY_RED}
-              />
-            </View>
+            <MaterialIcons
+              name="location-on"
+              size={18}
+              color={COLOR.PRIMARY_RED}
+            />
+          </View>
+          <View style={styles.genderContainer}>
+            <Text style={styles.gender}>{gender}</Text>
             <View style={styles.genderContainer}>
-              <Text style={styles.gender}>{gender}</Text>
-              <View style={styles.genderContainer}>
-                <TouchableOpacity
-                  onPress={onIconPress}
-                  hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
-                  <View>
-                    <Text>{icon}</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                onPress={onIconPress}
+                hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+                <View>
+                  <Text>{icon}</Text>
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
-  
+      </View>
     </TouchableOpacity>
   );
 };

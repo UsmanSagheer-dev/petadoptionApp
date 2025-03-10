@@ -8,9 +8,8 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useState} from 'react';
 import SearchInput from '../components/searcInput/SearchInput';
-import COLOR from '../constant/constant';
-import {menuItems} from '../constant/screen';
-import FONTS from 'assets/fonts';
+import COLOR from '../constants/constant';
+import {menuItems} from '../constants/screen';
 const CustomDrawer = ({navigation}: DrawerContentComponentProps) => {
   const handleLogout = () => {
     auth().signOut();
@@ -71,15 +70,14 @@ const styles = StyleSheet.create({
   menuText: {
     color: COLOR.primary,
     fontSize: 18,
-    fontWeight:600,
+    fontWeight: 600,
     fontFamily: 'MontserratRegular',
-
   },
   logoutButton: {
     marginBottom: 30,
   },
   logoutText: {
-    color:COLOR.error,
+    color: COLOR.error,
     fontSize: 18,
     fontWeight: 600,
     fontFamily: 'MontserratRegular',

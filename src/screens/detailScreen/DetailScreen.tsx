@@ -1,20 +1,20 @@
 // screens/DetailScreen.tsx
 import React from 'react';
-import { View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import {View, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import COLOR from '../../constant/constant';
+import COLOR from '../../constants/constant';
 import styles from './style';
 import useFavorites from '../../hooks/useFavourite';
-import { usePetDetails } from '../../hooks/usePetDetails';
+import {usePetDetails} from '../../hooks/usePetDetails';
 
-const DetailScreen = ({ route, navigation }) => {
-  const { pet } = route.params;
-  const { toggleFavorite, favorites } = useFavorites();
-  const { profileData, handleAdoptNow } = usePetDetails(pet);
+const DetailScreen = ({route, navigation}) => {
+  const {pet} = route.params;
+  const {toggleFavorite, favorites} = useFavorites();
+  const {profileData, handleAdoptNow} = usePetDetails(pet);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = React.useState(true);
-  const isFavorite = favorites.some((favPet) => favPet.id === pet.id);
+  const isFavorite = favorites.some(favPet => favPet.id === pet.id);
 
   const handleClose = () => {
     setIsBottomSheetVisible(false);

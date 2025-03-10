@@ -1,7 +1,7 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import CustomDrawer from '../navigation/DrawerNavigation';
-import { Screen } from '../constant/screen'; 
+import { Screen } from '../constants/screen'; 
 import { DrawerParamList } from '../types/types';
 const Drawer = createDrawerNavigator<DrawerParamList>();
 const AppNavigator = () => {

@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {Pet} from '../types/types';
-import {PET_TYPE_MAP} from '../constant/constant';
+import {PET_TYPE_MAP} from '../constants/constant';
 
 const useFetchPets = (selectedTab: string) => {
   const [pets, setPets] = useState<Pet[]>([]);
@@ -42,10 +42,8 @@ const useFetchPets = (selectedTab: string) => {
         setPets(fetchedPets);
       } catch (err) {
         if (err instanceof Error) {
-          console.error('Error fetching pets:', err.message);
           setError('Failed to fetch pets: ' + err.message);
         } else {
-          console.error('Unknown error fetching pets');
           setError('An unknown error occurred');
         }
       } finally {
