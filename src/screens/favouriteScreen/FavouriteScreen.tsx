@@ -1,14 +1,13 @@
-import {View, Text, ScrollView, ActivityIndicator} from 'react-native';
-import React, {useEffect} from 'react';
+import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
+import React from 'react';
 import PetCard from '../../components/petCard/PetCard';
 import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
-import useFavorites from '../../hooks/useFavourite';
+import useFavouriteScreen from './hook';
 import IMAGES from '../../assets/images/index';
 import COLOR from '../../constants/constant';
 import ICONS from '../../constants/icons';
 import styles from './style';
 import AppBar from '../../components/appBar/AppBar';
-import Toast from 'react-native-toast-message';
 
 const FavouriteScreen = () => {
   const {
@@ -16,42 +15,14 @@ const FavouriteScreen = () => {
     selectedPet,
     isModalVisible,
     handlePetClick,
-    toggleFavorite,
+    handleToggleFavorite,
     closeModal,
     loading,
     error,
     noFavoritesMessage,
-  } = useFavorites();
-
-  useEffect(() => {
-    if (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Favorites Error',
-        text2: error,
-      });
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (noFavoritesMessage && !loading) {
-      Toast.show({
-        type: 'info',
-        text1: 'Favorites',
-        text2: noFavoritesMessage,
-      });
-    }
-  }, [noFavoritesMessage, loading]);
-
-  const handleToggleFavorite = (pet: any) => {
-    toggleFavorite(pet);
-    Toast.show({
-      type: pet?.isFavorite ? 'success' : 'info',
-      text1: pet?.isFavorite
-        ? `${pet?.petBreed ?? 'Pet'} removed from favorites`
-        : `${pet?.petBreed ?? 'Pet'} added to favorites`,
-    });
-  };
+    profileData,
+    handleAdoptNow,
+  } = useFavouriteScreen();
 
   return (
     <View style={styles.container}>
@@ -64,7 +35,7 @@ const FavouriteScreen = () => {
         <Text style={styles.noFavoritesText}>{noFavoritesMessage}</Text>
       ) : (
         <ScrollView style={styles.petCardsContainer}>
-          {favorites?.map(pet => (
+          {favorites?.map((pet) => (
             <PetCard
               key={pet?.id}
               imageUrl={pet?.imageUrl ?? IMAGES.DELETEICON}
@@ -84,6 +55,8 @@ const FavouriteScreen = () => {
         isVisible={isModalVisible}
         onClose={closeModal}
         selectedPet={selectedPet}
+        ownerData={profileData}
+        onAdoptNow={handleAdoptNow}
       />
     </View>
   );

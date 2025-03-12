@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { fetchFavorites, toggleFavoriteStatus } from '../redux/slices/petSlice';
-import { Pet } from '../types/types'; // Assuming 'Pet' is the correct type
+import { Pet } from 'types'; 
 
 const useFavorites = () => {
   const dispatch = useAppDispatch();
@@ -14,7 +14,6 @@ const useFavorites = () => {
   const [togglingPets, setTogglingPets] = useState<Set<string>>(new Set());
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [toggleError, setToggleError] = useState<string | null>(null);
-
   useEffect(() => {
     setLocalLoading(true);
     dispatch(fetchFavorites())

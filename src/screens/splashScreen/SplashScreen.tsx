@@ -4,7 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import IMAGES from '../../assets/images';
 import useAuth from '../../hooks/useAuth';
 import styles from './style';
-import {NavigationProp} from '../../types/types';
+import {NavigationProp} from 'types';
 const SplashScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const {showSplash} = useAuth();

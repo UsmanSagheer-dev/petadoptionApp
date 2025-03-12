@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
-  backButton: {},
+
 });
 
 export default styles;

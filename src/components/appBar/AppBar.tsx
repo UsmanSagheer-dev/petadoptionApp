@@ -1,7 +1,7 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {CustomeHeaderProps, NavigationProps} from '../../types/types';
+import {CustomeHeaderProps, NavigationProps} from 'types';
 import styles from './style';
 
 const AppBar: React.FC<CustomeHeaderProps> = ({

@@ -1,7 +1,7 @@
 import {ImageBackground, Text, View} from 'react-native';
 import React from 'react';
 import styles from './style';
-import {CardProps} from '../../types/types';
+import {CardProps} from 'types';
 import IMAGES from '../../assets/images/index';
 const Card: React.FC<CardProps> = ({
   title,

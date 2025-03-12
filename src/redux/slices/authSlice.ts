@@ -1,7 +1,7 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import auth from '@react-native-firebase/auth';
 import firestore, {serverTimestamp} from '@react-native-firebase/firestore';
-import {User, AuthState} from '../../types/types';
+import {User, AuthState} from 'types';
 
 const initialState: AuthState = {
   isAuthenticated: false,

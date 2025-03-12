@@ -8,7 +8,7 @@ import {
   AdoptionRequestBasic,
   Pet,
   PetState,
-} from '../../types/types';
+} from 'types';
 import {updatePetDonationsProfile} from './authSlice';
 
 const initialState: PetState = {
@@ -63,7 +63,7 @@ export const toggleFavoriteStatus = createAsyncThunk<
     const newFavoriteStatus = !pet.isFavorite;
 
     const favRef = firestore()
-      .collection('pets')
+      .collection('userFavorites')
       .doc(user.uid)
       .collection('favoritePets')
       .doc(petId);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import {PetCardProps} from '../../types/types';
+import {PetCardProps} from 'types';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLOR from '../../constants/constant';
 import {styles} from './style';

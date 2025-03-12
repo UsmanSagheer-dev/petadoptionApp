@@ -1,27 +1,16 @@
 import React, {useRef} from 'react';
 import {View, ScrollView, ActivityIndicator, Text} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {DrawerNavigationProp} from '@react-navigation/drawer';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {CompositeNavigationProp} from '@react-navigation/native';
 import PetCard from '../../components/petCard/PetCard';
 import IMAGES from '../../assets/images/index';
 import useFetchAllPets from '../../hooks/useFetchAllPets';
-import {AppStackParamList} from '../../types/types';
 import ICONS from '../../constants/icons';
 import styles from './style';
 import AppBar from '../../components/appBar/AppBar';
 import Toast from 'react-native-toast-message';
-
-type MyDonationScreenNavigationProp = CompositeNavigationProp<
-  DrawerNavigationProp<AppStackParamList, 'MyDonationScreen'>,
-  NativeStackNavigationProp<AppStackParamList>
->;
-
-const MyDonationScreen = () => {
+import { MyDonationsScreenProps } from 'types';
+const MyDonationScreen: React.FC<MyDonationsScreenProps> = ({navigation}) => {
   const scrollViewRef = useRef<ScrollView>(null);
   const {pets, loading, error, deletePet} = useFetchAllPets();
-  const navigation = useNavigation<MyDonationScreenNavigationProp>();
 
   const handlePetClick = (pet: any) => {
     navigation.navigate('Detail', {

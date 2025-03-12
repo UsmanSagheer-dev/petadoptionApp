@@ -12,9 +12,9 @@ import SearchInput from '../../components/searcInput/SearchInput';
 import ImgWithText from '../../components/imgWithText/ImgWithText';
 import CardSection from '../../components/cardSection/CardSection';
 import {PET_DETAILS} from '../../constants/constant';
-import {HomeScreenProps} from '../../types/types';
+import {HomeScreenProps} from 'types';
 
-const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
+const HomeScreen: React.FC<HomeScreenProps> = () => {
   const [searchText, setSearchText] = useState<string>('');
 
   return (

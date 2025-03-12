@@ -3,7 +3,7 @@ import React from 'react';
 import IMAGES from '../../assets/images';
 import styles from './style';
 import COLOR from '../../constants/constant';
-import {SearchInputProps} from '../../types/types';
+import {SearchInputProps} from 'types';
 const SearchInput: React.FC<SearchInputProps> = ({
   searchText,
   setSearchText,

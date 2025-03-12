@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F0F0F0',
+    backgroundColor:COLOR.imageupload,
     height: 161,
     borderRadius: 10,
     marginTop: 20,

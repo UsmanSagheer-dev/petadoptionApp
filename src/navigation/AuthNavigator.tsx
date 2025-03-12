@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AuthStackParamList } from '../types/types';
+import { AuthStackParamList } from 'types';
 import {authRoutes} from '../constants/screen'
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 const AuthStack = () => {

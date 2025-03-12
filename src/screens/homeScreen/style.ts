@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     innerContainer: {
       flex: 1,
       paddingHorizontal: 17,
-      backgroundColor: 'white',
+      backgroundColor:COLOR.white,
     },
     heading: {
       fontSize: 36,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
       marginBottom: 30,
       backgroundColor: 'white',
       borderRadius: 10,
-      shadowColor: '#000',
+      shadowColor:COLOR.black,
     },
   });
 

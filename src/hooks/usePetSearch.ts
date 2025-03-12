@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FormDataState } from '../types/types';
+import { FormDataState } from 'types';
 import useFetchPets from './useFetchPets';
 
 export const usePetSearch = (initialTab: string = 'Dogs') => {

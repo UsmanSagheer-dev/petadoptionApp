@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { fetchDonations } from '../redux/slices/petSlice';
-import { Pet } from '../types/types';
+import { Pet } from 'types';
 
 export const useDonations = () => {
   const dispatch = useAppDispatch();

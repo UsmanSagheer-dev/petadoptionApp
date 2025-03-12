@@ -7,18 +7,14 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import {LoginScreenNavigationProp} from '../../types/types';
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
 import COLOR from '../../constants/constant';
 import useLogin from '../../hooks/useLogin';
 import styles from './style';
 import CustomButton from '../../components/customButton/CustomButton';
-interface Props {
-  navigation: LoginScreenNavigationProp;
-}
-
-const LoginScreen: React.FC<Props> = ({navigation}) => {
+import {LoginScreenProps} from 'types';
+const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   const {
     email,
     setEmail,

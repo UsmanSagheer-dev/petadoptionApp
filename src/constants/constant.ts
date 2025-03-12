@@ -15,6 +15,7 @@ const COLOR = {
   infoBar: '#fef6ea',
   infoText: '#F6A530',
   PRIMARY_RED: '#ff5733',
+  imageupload:'#E2E2E2'
 };
 export default COLOR;
 export const PET_TABS = [

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
-import {TermsCheckboxProps} from '../../types/types';
+import {TermsCheckboxProps} from 'types';
 import styles from './style';
 import COLOR from '../../constants/constant';
 

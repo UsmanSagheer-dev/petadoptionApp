@@ -9,7 +9,7 @@ import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
 import PetCard from '../../components/petCard/PetCard';
 import IMAGES from '../../assets/images/index';
 import {PET_TABS} from '../../constants/constant';
-import {Pet, SearchScreenNavigationProp} from '../../types/types';
+import {Pet, SearchScreenNavigationProp} from 'types';
 import {toggleFavoriteStatus} from '../../redux/slices/petSlice';
 import ICONS from '../../constants/icons';
 import styles from './style';

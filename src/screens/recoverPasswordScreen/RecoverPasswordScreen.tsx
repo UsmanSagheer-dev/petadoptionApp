@@ -12,7 +12,7 @@ import COLOR from '../../constants/constant';
 import CustomInput from '../../components/input/customInput';
 import CustomButton from '../../components/customButton/CustomButton';
 import auth from '@react-native-firebase/auth';
-import {Props} from '../../types/types';
+import {Props} from 'types';
 import styles from './style';
 import Toast from 'react-native-toast-message';
 

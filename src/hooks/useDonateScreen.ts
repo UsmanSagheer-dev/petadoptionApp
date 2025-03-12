@@ -3,7 +3,7 @@ import {useAppDispatch, useAppSelector} from '../hooks/hooks';
 import {donatePet} from '../redux/slices/petSlice';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Image as RNImage} from 'react-native-compressor';
-import {PetDonationCreate} from '../types/types';
+import {PetDonationCreate} from 'types';
 import Toast from 'react-native-toast-message';
 import RNFS from 'react-native-fs';
 

@@ -3,7 +3,7 @@ import DonateScreen from '../screens/donateScreen/DonateScreen';
 import MyDonationScreen from '../screens/myDonationScreen/MyDonationScreen';
 import PasswordUpdateScreen from '../screens/passwordUpdateScreen/PasswordUpdateScreen';
 import AdoptNowScreen from '../screens/adoptNowScreen/AdoptNowScreen';
-import { DrawerParamList,ScreenConfig,TabConfig } from '../types/types';
+import { DrawerParamList,ScreenConfig,TabConfig } from 'types';
 import DetailScreen from '../screens/detailScreen/DetailScreen';
 import TabNavigator from '../navigation/TabNavigator';
 import ProfileScreen from '../screens/profilescreen/ProfileScreen';

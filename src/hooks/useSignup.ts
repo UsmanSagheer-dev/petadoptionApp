@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import auth from '@react-native-firebase/auth';
-import {SignUpState} from '../types/types';
+import {SignUpState} from 'types';
 import {validateSignUp} from '../utils/signupValidation';
 import Toast from 'react-native-toast-message';
 import {useAppDispatch, useAppSelector} from './hooks';

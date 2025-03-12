@@ -25,7 +25,6 @@ const DetailScreen = ({route, navigation}) => {
       <View style={styles.container}>
         <View style={styles.detailHeader}>
           <TouchableOpacity
-            style={styles.backButton}
             onPress={() => navigation.goBack()}>
             <Icon name="long-arrow-left" size={24} color={COLOR.white} />
           </TouchableOpacity>

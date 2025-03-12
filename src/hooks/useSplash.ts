@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {AuthState} from '../types/types';
+import {AuthState} from 'types';
 const useAuth = () => {
   const [showSplash, setShowSplash] = useState<AuthState['showSplash']>(true);
 

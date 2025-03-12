@@ -1,6 +1,6 @@
 import React from 'react';
 import {TouchableOpacity, Text} from 'react-native';
-import {LoginButtonProps} from '../../types/types';
+import {LoginButtonProps} from 'types';
 import styles from './style'
 import COLOR from '../../constants/constant';
 
