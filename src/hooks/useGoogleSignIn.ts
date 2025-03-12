@@ -14,7 +14,7 @@ const useGoogleSignIn = () => {
     try {
       setIsGoogleLoading(true);
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      const userInfo = await GoogleSignin.signIn();
+      await GoogleSignin.signIn(); 
       const { idToken } = await GoogleSignin.getTokens();
 
       if (!idToken) {

@@ -51,7 +51,6 @@ export const usePetDetails = (selectedPet?: Pet | null) => {
     }
   };
 
-  // Check if selectedPet has changed
   if (selectedPet !== prevPetRef.current && selectedPet) {
     fetchOwnerData();
     prevPetRef.current = selectedPet;

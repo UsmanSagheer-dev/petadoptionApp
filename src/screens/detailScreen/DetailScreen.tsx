@@ -1,4 +1,3 @@
-// screens/DetailScreen.tsx
 import React from 'react';
 import {View, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';

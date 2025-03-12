@@ -9,7 +9,7 @@ const useProfile = () => {
 
   useEffect(() => {
     dispatch(fetchProfile());
-  }, [dispatch]);
+  }, []);
 
   return { profileData, loading };
 };

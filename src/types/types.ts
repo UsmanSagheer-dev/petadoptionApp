@@ -1,21 +1,19 @@
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
-import {
-  BottomTabNavigationProp,
-} from '@react-navigation/bottom-tabs';
-import { DrawerNavigationProp as DrawerNavProp } from '@react-navigation/drawer';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { ReactNode } from 'react';
+import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
+import {DrawerNavigationProp as DrawerNavProp} from '@react-navigation/drawer';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {ReactNode} from 'react';
 import {
   ViewStyle,
   TextStyle,
   DimensionValue,
   ImageSourcePropType,
 } from 'react-native';
-import { CompositeNavigationProp } from '@react-navigation/native';
+import {CompositeNavigationProp} from '@react-navigation/native';
 
 export interface User {
   uid: string;
@@ -25,15 +23,13 @@ export interface User {
 }
 
 export interface AuthState {
-  currentUser: User | null;
-  isAuthenticated: boolean;
-  error: string | null;
-  showSplash: boolean;
-  user: {
-    uid: string;
-    email: string;
-  } | null;
+  user: User | null;
+  profileData: any | null;
   initializing: boolean;
+  showSplash: boolean;
+  isAuthenticated: boolean;
+  loading: boolean;
+  error: string | null;
 }
 
 export interface SignupPayload {
@@ -67,8 +63,8 @@ export interface AdoptionRequest {
   createdAt: FirebaseFirestoreTypes.Timestamp;
   message?: string;
   userName?: string;
-    userEmail: string;
-    timestamp: string;
+  userEmail: string;
+  timestamp: string;
   userDetails?: {
     id: string;
     name: string;
@@ -113,7 +109,6 @@ export interface Pet extends PetDonationCreate {
   ownerPhotoURL?: string;
   isFavorite?: boolean;
   minWeight: number;
-
 }
 
 export interface LoginButtonProps {
@@ -159,7 +154,7 @@ export interface PickerInputProps {
   label: string;
   selectedValue: string;
   onValueChange: (value: string) => void;
-  items: { label: string; value: string }[];
+  items: {label: string; value: string}[];
 }
 
 export interface TermsCheckboxProps {
@@ -198,11 +193,11 @@ export interface RootStackParamList {
   Login: undefined;
   RecoverPassword: undefined;
   Search: undefined;
-  Detail: { pet: Pet };
+  Detail: {pet: Pet};
   SignUp: undefined;
   setLoading: (loading: boolean) => void;
   Main: undefined;
-  [key: string]: any; 
+  [key: string]: any;
 }
 
 export interface AuthStackParamList {
@@ -211,7 +206,7 @@ export interface AuthStackParamList {
   SignUp: undefined;
   Recover: undefined;
   PasswordUpdate: undefined;
-  [key: string]: any; 
+  [key: string]: any;
 }
 
 export interface AppStackParamList {
@@ -225,15 +220,15 @@ export interface AppStackParamList {
     name: string;
     pet: Pet;
   };
-  ProfileScreen: { userId?: string };
+  ProfileScreen: {userId?: string};
   PasswordUpdate: undefined;
   AdoptNow: undefined;
   DonateScreen: undefined;
   MyDonationScreen: undefined;
   Main: undefined;
   Drawer: undefined;
-  Donate: { donationType: string };
-  MyDonations: { filter: 'active' | 'completed' };
+  Donate: {donationType: string};
+  MyDonations: {filter: 'active' | 'completed'};
   SearchScreen: undefined;
   [key: string]: any; // Index signature for ParamListBase compatibility
 }
@@ -245,8 +240,8 @@ export interface DrawerParamList {
   Profile: undefined;
   Settings: undefined;
   MainStack: undefined;
-  Donate: { donationType?: string };
-  MyDonation: { donationType?: string };
+  Donate: {donationType?: string};
+  MyDonation: {donationType?: string};
   [key: string]: any; // Index signature for ParamListBase compatibility
 }
 
@@ -266,7 +261,10 @@ export interface PasswordUpdateNavigationProp
   extends NativeStackNavigationProp<RootStackParamList, 'PasswordUpdate'> {}
 
 export interface NavigationProps
-  extends NativeStackNavigationProp<AppStackParamList, 'PasswordUpdate' | 'DonateScreen'> {}
+  extends NativeStackNavigationProp<
+    AppStackParamList,
+    'PasswordUpdate' | 'DonateScreen'
+  > {}
 
 export interface SignUpScreenNavigationProp
   extends NativeStackNavigationProp<RootStackParamList, 'SignUp'> {}
@@ -290,7 +288,8 @@ export interface AppStackNavigationProp
 
 export interface DrawerNavigationProp extends DrawerNavProp<DrawerParamList> {}
 
-export interface TabNavigationProp extends BottomTabNavigationProp<TabParamList> {}
+export interface TabNavigationProp
+  extends BottomTabNavigationProp<TabParamList> {}
 
 export interface LoginScreenNavigationProp
   extends StackNavigationProp<AuthStackParamList, 'Login'> {}
@@ -338,7 +337,7 @@ export interface SignUpState {
   showError: boolean;
   emailError: string | null;
   handleRegister: () => Promise<
-    { name: string; email: string; password: string } | undefined
+    {name: string; email: string; password: string} | undefined
   >;
   termsAccepted: boolean;
   setTermsAccepted: (termsAccepted: boolean) => void;
@@ -442,4 +441,25 @@ export interface FormDataState {
   selectedTab: string;
   searchText: string;
   allPets: Pet[];
+}
+
+
+export interface ValidationRule {
+  condition: boolean;
+  message: string;
+}
+
+
+export interface SignUpData {
+  name: string;
+  email: string;
+  password: string;
+  termsAccepted: boolean;
+}
+
+export interface PetState {
+  loading: boolean;
+  error: string | null;
+  donations: Pet[];
+  favorites: Pet[];
 }
