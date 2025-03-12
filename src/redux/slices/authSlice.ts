@@ -1,16 +1,7 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import auth from '@react-native-firebase/auth';
 import firestore, {serverTimestamp} from '@react-native-firebase/firestore';
-import {User} from '../../types/types';
-interface AuthState {
-  user: User | null;
-  profileData: any | null;
-  initializing: boolean;
-  showSplash: boolean;
-  isAuthenticated: boolean;
-  loading: boolean;
-  error: string | null;
-}
+import {User, AuthState} from '../../types/types';
 
 const initialState: AuthState = {
   isAuthenticated: false,
@@ -274,7 +265,6 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Signup
       .addCase(signup.pending, state => {
         state.loading = true;
         state.error = null;
@@ -301,7 +291,6 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Update Password
       .addCase(updatePassword.pending, state => {
         state.loading = true;
         state.error = null;
@@ -337,7 +326,6 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Fetch Profile
       .addCase(fetchProfile.pending, state => {
         state.loading = true;
         state.error = null;

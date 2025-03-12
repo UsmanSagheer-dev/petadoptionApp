@@ -10,8 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
-import {signup} from '../../redux/slices/authSlice';
+import {useAppSelector} from '../../hooks/hooks';
 import useSignUp from '../../hooks/useSignup';
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
@@ -20,11 +19,9 @@ import OrDivider from '../../components/onDivider/OnDivider';
 import IMAGES from '../../assets/images/index';
 import useGoogleSignIn from '../../hooks/useGoogleSignIn';
 import styles from './style';
-import Loader from '../../components/loader/Loader';
 import {Props} from '../../types/types';
 import {GOOGLE_WEB_CLIENT_ID} from '../../config/config';
 import CustomButton from '../../components/customButton/CustomButton';
-import Toast from 'react-native-toast-message';
 
 const SignUpScreen: React.FC<Props> = ({navigation}) => {
   const {
@@ -35,20 +32,15 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
     password,
     setPassword,
     loading,
-    setLoading,
-    handleRegister,
     showError,
     emailError,
     termsAccepted,
     setTermsAccepted,
-  } = useSignUp();
+    handleSignUp,
+  } = useSignUp(navigation);
+
   const {onGoogleButtonPress, isGoogleLoading} = useGoogleSignIn();
-  const dispatch = useAppDispatch();
-  const {
-    isAuthenticated,
-    error,
-    loading: reduxLoading,
-  } = useAppSelector(state => state.auth);
+  const {isAuthenticated} = useAppSelector(state => state.auth);
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -61,41 +53,6 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
       navigation.navigate('App');
     }
   }, [isAuthenticated, navigation]);
-
-  const handleSignUp = async () => {
-    if (!termsAccepted) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Please accept the terms and conditions.',
-      });
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const userData = await handleRegister();
-
-      if (userData) {
-        await dispatch(signup(userData)).unwrap();
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Account created successfully!',
-        });
-      } else {
-        setLoading(false);
-      }
-    } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error.message || 'Email is already registered. Please sign in.',
-      });
-      setLoading(false);
-    }
-  };
 
   return (
     <KeyboardAvoidingView
@@ -159,7 +116,7 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
                 />
               )}
             </View>
-            {showError && <Text style={styles.errorText}>{error}</Text>}
+            {showError && <Text style={styles.errorText}>{showError}</Text>}
             <CustomButton
               onClick={() => navigation.navigate('Login')}
               title="Login"
