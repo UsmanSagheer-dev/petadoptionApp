@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import COLOR from "../../constants/constant";
+import {StyleSheet} from 'react-native';
+import COLOR from '../../constants/constant';
 
 const styles = StyleSheet.create({
   container: {
@@ -7,13 +7,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLOR.quaternary,
   },
   detailHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
-
 });
 
 export default styles;

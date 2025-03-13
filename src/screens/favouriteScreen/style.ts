@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   },
   noFavoritesText: {
     fontSize: 18,
-    color: 'gray',
+    color:COLOR.mediumGray,
     textAlign: 'center',
     marginTop: 20,
   },

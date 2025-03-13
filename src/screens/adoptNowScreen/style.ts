@@ -5,10 +5,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLOR.white,
     paddingHorizontal: 17,
-
-
   },
-  
+
   cardContainer: {
     marginTop: 20,
     marginBottom: 30,

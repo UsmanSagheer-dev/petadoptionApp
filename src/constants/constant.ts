@@ -15,7 +15,14 @@ const COLOR = {
   infoBar: '#fef6ea',
   infoText: '#F6A530',
   PRIMARY_RED: '#ff5733',
-  imageupload:'#E2E2E2'
+  imageupload:'#E2E2E2',
+  dotRed: '#FF6B6B',
+  dotTeal: '#4ECDC4',
+  dotBlue: '#45B7D1',
+  mediumGray: '#666',
+  gold:'#FFA500',
+    lightGray2: '#E5E5E5',
+
 };
 export default COLOR;
 export const PET_TABS = [

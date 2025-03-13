@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {TermsCheckboxProps} from 'types';
 import styles from './style';
 import COLOR from '../../constants/constant';
-
+import Ionicons from "react-native-vector-icons/Ionicons";
 const TermsCheckbox = ({checked, onChange}: TermsCheckboxProps) => {
   return (
     <View style={styles.container}>
@@ -12,7 +12,7 @@ const TermsCheckbox = ({checked, onChange}: TermsCheckboxProps) => {
         onPress={() => onChange(!checked)}>
         {checked && (
           <Text style={[styles.checked, {color: COLOR.infoText, fontSize: 12}]}>
-            ✓
+          <Ionicons name="checkmark-outline"  color={COLOR.infoText}  />
           </Text>
         )}
       </TouchableOpacity>

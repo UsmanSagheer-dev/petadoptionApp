@@ -1,8 +1,8 @@
-import {View, TextInput, TouchableOpacity, Image} from 'react-native';
+import {View, TextInput, TouchableOpacity} from 'react-native';
 import React from 'react';
-import IMAGES from '../../assets/images';
 import styles from './style';
 import COLOR from '../../constants/constant';
+import Ionicons from "react-native-vector-icons/Ionicons";
 import {SearchInputProps} from 'types';
 const SearchInput: React.FC<SearchInputProps> = ({
   searchText,
@@ -18,7 +18,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
         placeholderTextColor={COLOR.black}
       />
       <TouchableOpacity style={styles.iconContainer}>
-        <Image source={IMAGES.SEARCHICON} style={styles.icon} />
+     <Ionicons name="search" size={25} color={COLOR.white} />
       </TouchableOpacity>
     </View>
   );

@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
-import useFavorites from '../../hooks/useFavourite'; 
-import { usePetDetails } from '../../hooks/usePetDetails';
+import useFavorites from '../../hooks/useFavourite';
+import {usePetDetails} from '../../hooks/usePetDetails';
 
 const useFavouriteScreen = () => {
   const {
@@ -16,9 +16,8 @@ const useFavouriteScreen = () => {
     noFavoritesMessage,
   } = useFavorites();
 
-  const { profileData, handleAdoptNow } = usePetDetails(selectedPet);
+  const {profileData, handleAdoptNow} = usePetDetails(selectedPet);
 
-  // Show error toast when error occurs
   useEffect(() => {
     if (error) {
       Toast.show({
@@ -29,7 +28,6 @@ const useFavouriteScreen = () => {
     }
   }, [error]);
 
-  // Show info toast when there are no favorites and not loading
   useEffect(() => {
     if (noFavoritesMessage && !loading) {
       Toast.show({
@@ -40,8 +38,7 @@ const useFavouriteScreen = () => {
     }
   }, [noFavoritesMessage, loading]);
 
-  // Handler for toggling favorite
-  const handleToggleFavorite = (pet) => {
+  const handleToggleFavorite = pet => {
     toggleFavorite(pet);
   };
 

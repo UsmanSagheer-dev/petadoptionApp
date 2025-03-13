@@ -23,7 +23,6 @@ const CardSection: React.FC = () => {
   }
 
   if (!pet?.length) {
-   
     return <Text style={styles.noDataText}>No pet donations available</Text>;
   }
 

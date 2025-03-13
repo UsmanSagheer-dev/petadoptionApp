@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,14 +7,16 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import CustomInput from '../../components/input/customInput';
 import TermsCheckbox from '../../components/termCheckBox/TermCheckBox';
 import COLOR from '../../constants/constant';
 import useLogin from '../../hooks/useLogin';
 import styles from './style';
 import CustomButton from '../../components/customButton/CustomButton';
-import {LoginScreenProps} from 'types';
-const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
+import { LoginScreenProps } from 'types';
+
+const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const {
     email,
     setEmail,
@@ -28,10 +30,32 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
     termsError,
   } = useLogin(navigation);
 
+  // Show error toast when error exists
+  useEffect(() => {
+    if (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Login Failed',
+        text2: error,
+      });
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (termsError) {
+      Toast.show({
+        type: 'error',
+        text1: 'Terms Required',
+        text2: termsError,
+      });
+    }
+  }, [termsError]);
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <Text style={styles.title}>Login</Text>
         <View style={styles.form}>
@@ -57,22 +81,15 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               />
               <TouchableOpacity
                 style={styles.forgotPassword}
-                onPress={() => navigation.navigate('Recover')}>
+                onPress={() => navigation.navigate('Recover')}
+              >
                 <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
               </TouchableOpacity>
             </View>
           </View>
 
-          {error && <Text style={styles.errorText}>{error}</Text>}
-
           <View style={styles.termsContainer}>
-            <TermsCheckbox
-              checked={termsAccepted}
-              onChange={setTermsAccepted}
-            />
-            {termsError !== '' && (
-              <Text style={styles.errorText}>{termsError}</Text>
-            )}
+            <TermsCheckbox checked={termsAccepted} onChange={setTermsAccepted} />
           </View>
 
           <View style={styles.buttonGroupContainer}>
@@ -94,6 +111,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
           </View>
         </View>
       </ScrollView>
+      <Toast />
     </KeyboardAvoidingView>
   );
 };

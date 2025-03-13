@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   handle: {
     width: 100,
     height: 7,
-    backgroundColor: '#ccc',
+    backgroundColor:COLOR.lightGray2,
     borderRadius: 10,
   },
   details: {
@@ -40,13 +40,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: 700,
     color: COLOR.primary,
     fontFamily:'MontserratRegular',
   },
   price: {
     fontSize: 22,
-    color: '#FFA500',
+    color:COLOR.infoText,
     fontWeight: 'bold',
   },
   typeContainer: {
@@ -71,12 +71,12 @@ const styles = StyleSheet.create({
   },
   labelTitle: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: 600,
     color: COLOR.infoText,
   },
   labelSub: {
     fontSize: 12,
-    color: '#777',
+    color:COLOR.primary,
   },
   profileContainer: {
     flexDirection: 'row',
@@ -93,13 +93,13 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 50,
-    backgroundColor: 'gray',
+    backgroundColor:COLOR.mediumGray,
     marginRight: 10,
   },
   userName: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: 600,
+    color:COLOR.primary,
   },
   locationContainer: {
     flexDirection: 'row',
@@ -112,25 +112,25 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 14,
-    color: '#666',
+    color:COLOR.primary,
   },
   descriptionContainer: {
     marginVertical: 10,
   },
   description: {
     fontSize: 14,
-    color: '#444',
+    color: COLOR.primary,
     lineHeight: 20,
   },
   button: {
-    backgroundColor: 'black',
+    backgroundColor:COLOR.black,
     padding: 15,
     borderRadius: 10,
     marginTop: 10,
     alignItems: 'center',
   },
   buttonText: {
-    color: 'white',
+    color:COLOR.white,
     fontSize: 16,
     fontWeight: 'bold',
   },

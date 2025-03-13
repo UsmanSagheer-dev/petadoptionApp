@@ -1,50 +1,20 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  Image,
 } from 'react-native';
-import IMAGES from '../../assets/images';
 import COLOR from '../../constants/constant';
 import CustomInput from '../../components/input/customInput';
 import CustomButton from '../../components/customButton/CustomButton';
-import auth from '@react-native-firebase/auth';
-import {Props} from 'types';
+import { Props } from 'types';
 import styles from './style';
-import Toast from 'react-native-toast-message';
-
-const RecoverPasswordScreen: React.FC<Props> = ({navigation}) => {
-  const [email, setEmail] = useState<string>('');
-
-  const handleRecover = async (): Promise<void> => {
-    if (!email) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Please enter your email',
-      });
-      return;
-    }
-
-    try {
-      await auth().sendPasswordResetEmail(email);
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Password reset email sent!',
-      });
-      setEmail('');
-    } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error.message || 'Unable to send reset email',
-      });
-    }
-  };
+import useRecoverPassword from './useRecoverPassword';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+const RecoverPasswordScreen: React.FC<Props> = ({ navigation }) => {
+  const { email, setEmail, handleRecover } = useRecoverPassword();
 
   return (
     <KeyboardAvoidingView
@@ -53,7 +23,7 @@ const RecoverPasswordScreen: React.FC<Props> = ({navigation}) => {
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.goBack()}>
-        <Image source={IMAGES.BACKICON} />
+         <MaterialIcons name="keyboard-backspace" size={25} color={COLOR.black} />
       </TouchableOpacity>
       <Text style={styles.title}>Recover</Text>
       <Text style={styles.title}>Password</Text>

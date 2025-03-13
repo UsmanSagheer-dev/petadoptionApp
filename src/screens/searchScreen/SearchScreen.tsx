@@ -8,7 +8,7 @@ import SearchInput from '../../components/searcInput/SearchInput';
 import HorizontalTabs from '../../components/horizentolTabs/HorizentolTabs';
 import PetCard from '../../components/petCard/PetCard';
 import IMAGES from '../../assets/images/index';
-import {PET_TABS} from '../../constants/constant';
+import COLOR, {PET_TABS} from '../../constants/constant';
 import {Pet, SearchScreenNavigationProp} from 'types';
 import {toggleFavoriteStatus} from '../../redux/slices/petSlice';
 import ICONS from '../../constants/icons';
@@ -58,7 +58,7 @@ const SearchScreen = () => {
       </View>
 
       {loading ? (
-        <ActivityIndicator size="large" color="#000" />
+        <ActivityIndicator size="large" color={COLOR.black} />
       ) : error ? (
         <Text style={styles.errorText}>{error}</Text>
       ) : filteredPets.length === 0 ? (

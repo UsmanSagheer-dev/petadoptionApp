@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
+import {View, Text, ScrollView, ActivityIndicator} from 'react-native';
 import React from 'react';
 import PetCard from '../../components/petCard/PetCard';
 import PetDetailsModal from '../../components/petDetailsModal/PetDetailsModal';
@@ -35,7 +35,7 @@ const FavouriteScreen = () => {
         <Text style={styles.noFavoritesText}>{noFavoritesMessage}</Text>
       ) : (
         <ScrollView style={styles.petCardsContainer}>
-          {favorites?.map((pet) => (
+          {favorites?.map(pet => (
             <PetCard
               key={pet?.id}
               imageUrl={pet?.imageUrl ?? IMAGES.DELETEICON}

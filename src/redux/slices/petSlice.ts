@@ -3,12 +3,7 @@ import auth from '@react-native-firebase/auth';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import {
-  AdoptionRequest,
-  AdoptionRequestBasic,
-  Pet,
-  PetState,
-} from 'types';
+import {AdoptionRequest, AdoptionRequestBasic, Pet, PetState} from 'types';
 import {updatePetDonationsProfile} from './authSlice';
 
 const initialState: PetState = {

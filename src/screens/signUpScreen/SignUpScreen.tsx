@@ -79,7 +79,6 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
                 value={email}
                 onChange={text => setEmail(text)}
               />
-              {emailError && <Text style={styles.errorText}>{emailError}</Text>}
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Password</Text>

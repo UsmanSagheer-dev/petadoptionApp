@@ -16,6 +16,6 @@ export const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#666',
+    color: COLOR.mediumGray
   },
 });

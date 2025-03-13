@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 0},
     shadowOpacity: 1,
     shadowRadius: 3.84,
-    shadowColor: '#000',
+    shadowColor:COLOR.black,
     elevation: 4,
     marginBottom: 10,
   },
@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
   },
   age: {
     fontSize: 10,
-    color: '#666666',
+    color: COLOR.primary,
     fontWeight: '500',
     marginBottom: 2,
   },
@@ -75,17 +75,16 @@ export const styles = StyleSheet.create({
   placeholder: {
     width: 126,
     height: 126,
-    backgroundColor: '#D3D3D3',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
   placeholderText: {
-    color: '#666',
+    color:COLOR.error,
     textAlign: 'center',
   },
   iconText: {
-    color: '#000',
+    color:COLOR.black
   },
   iconContainer: {
     padding: 5,
