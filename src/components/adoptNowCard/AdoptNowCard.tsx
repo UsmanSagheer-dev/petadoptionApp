@@ -20,9 +20,7 @@ const AdoptNowCard = ({data, onContactPress}) => {
       <View style={styles.profileData}>
         <Image
           source={
-            data.ownerPhotoURL
-              ? {uri: data.ownerPhotoURL}
-              : IMAGES.PROFILEIMG
+            data.ownerPhotoURL ? {uri: data.ownerPhotoURL} : IMAGES.PROFILEIMG
           }
           style={styles.image}
         />
@@ -35,7 +33,6 @@ const AdoptNowCard = ({data, onContactPress}) => {
             <Text style={styles.location}>{data.location}</Text>
           </View>
           <Text style={styles.date}>{data.formattedDate}</Text>
-       
         </View>
       </View>
       <CustomButton

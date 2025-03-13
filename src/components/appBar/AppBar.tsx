@@ -3,7 +3,8 @@ import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {CustomeHeaderProps, NavigationProps} from 'types';
 import styles from './style';
-
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import COLOR from '../../constants/constant';
 const AppBar: React.FC<CustomeHeaderProps> = ({title, navigateTo, onPress}) => {
   const navigation = useNavigation<NavigationProps>();
 
@@ -19,7 +20,7 @@ const AppBar: React.FC<CustomeHeaderProps> = ({title, navigateTo, onPress}) => {
     <View style={styles.headerContainer}>
       <Text style={styles.headerTitle}>{title}</Text>
       <TouchableOpacity onPress={handlePress}>
-        <Text style={styles.plus}>+</Text>
+        <MaterialIcons name="add" size={30} color={COLOR.primary} />
       </TouchableOpacity>
     </View>
   );
