@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import {useAppDispatch, useAppSelector} from '../hooks/hooks';
 import {fetchDonations, deleteDonation} from '../redux/slices/petSlice';
-import {Pet} from '../types/types';
+import {Pet} from 'types';
 
 const useFetchUserDonations = () => {
   const dispatch = useAppDispatch();

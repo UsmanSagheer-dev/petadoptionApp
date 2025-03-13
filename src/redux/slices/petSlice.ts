@@ -3,12 +3,7 @@ import auth from '@react-native-firebase/auth';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import {
-  AdoptionRequest,
-  AdoptionRequestBasic,
-  Pet,
-  PetState,
-} from '../../types/types';
+import {AdoptionRequest, AdoptionRequestBasic, Pet, PetState} from 'types';
 import {updatePetDonationsProfile} from './authSlice';
 
 const initialState: PetState = {
@@ -63,7 +58,7 @@ export const toggleFavoriteStatus = createAsyncThunk<
     const newFavoriteStatus = !pet.isFavorite;
 
     const favRef = firestore()
-      .collection('pets')
+      .collection('userFavorites')
       .doc(user.uid)
       .collection('favoritePets')
       .doc(petId);

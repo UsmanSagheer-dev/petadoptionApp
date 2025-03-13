@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor:COLOR.white,
+    backgroundColor: COLOR.white,
   },
   backButton: {
     marginBottom: 30,
@@ -19,32 +19,32 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     marginVertical: 5,
-    fontFamily:'MontserratRegular',
+    fontFamily: 'MontserratRegular',
     color: COLOR.primary,
     marginTop: 10,
   },
   imageUpload: {
     borderWidth: 1,
     borderStyle: 'dashed',
-    borderColor:COLOR.black,
+    borderColor: COLOR.black,
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F0F0F0',
+    backgroundColor: COLOR.imageupload,
     height: 161,
     borderRadius: 10,
     marginTop: 20,
   },
   uploadText: {
     fontSize: 16,
-    color:COLOR.black,
+    color: COLOR.black,
   },
   imagePreview: {
     width: '100%',
     height: '100%',
   },
   button: {
-    backgroundColor:COLOR.black,
+    backgroundColor: COLOR.black,
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -57,15 +57,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   errorText: {
-    color:COLOR.error,
+    color: COLOR.error,
     marginTop: 10,
     textAlign: 'center',
   },
-  iconUpload:{
+  iconUpload: {
     justifyContent: 'center',
     alignItems: 'center',
-   
-  }
+  },
 });
 
 export default styles;

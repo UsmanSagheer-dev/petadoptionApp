@@ -4,7 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import useHeader from '../../hooks/useHeader';
 import IMAGES from '../../assets/images/index';
 import styles from './style';
-import {NavigationProps} from '../../types/types';
+import {NavigationProps} from 'types';
 const Header = () => {
   const {toggleDrawer, profileImage} = useHeader();
   const navigation = useNavigation<NavigationProps>();

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Text, TouchableOpacity, ScrollView} from 'react-native';
 import styles from './style';
-import {TabsProps} from '../../types/types';
+import {TabsProps} from 'types';
 const HorizontalTabs: React.FC<TabsProps> = ({tabs, onTabPress}) => {
   const [selectedTab, setSelectedTab] = useState<string>(tabs[0]?.id || '');
 

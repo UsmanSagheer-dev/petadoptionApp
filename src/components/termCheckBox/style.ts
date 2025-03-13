@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   checked: {
     width: 13,
     height: 13,
-    backgroundColor: '#101C1D',
+    backgroundColor:COLOR.primary ,
     textAlign: 'center',
     lineHeight: 10,
   },
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   link: {
     fontWeight: 600,
     fontFamily: 'MontserratRegular',
-    color: '#101C1D',
+    color:COLOR.primary,
     textDecorationLine: 'underline',
     lineHeight: 17,
   },

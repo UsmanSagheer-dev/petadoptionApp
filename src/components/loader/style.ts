@@ -1,5 +1,6 @@
+import COLOR from "../../constants/constant";
 import { StyleSheet } from "react-native";
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({  
     container: {
       flexDirection: 'row',
       justifyContent: 'center',
@@ -12,13 +13,13 @@ const styles = StyleSheet.create({
       marginHorizontal: 5,
     },
     dot1: {
-      backgroundColor: '#FF6B6B',
+      backgroundColor: COLOR.dotRed,
     },
     dot2: {
-      backgroundColor: '#4ECDC4',
+      backgroundColor:COLOR.dotTeal,
     },
     dot3: {
-      backgroundColor: '#45B7D1',
+      backgroundColor: COLOR.dotBlue,
     },
   });
 

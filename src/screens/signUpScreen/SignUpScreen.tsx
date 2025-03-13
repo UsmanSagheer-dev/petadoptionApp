@@ -19,7 +19,7 @@ import OrDivider from '../../components/onDivider/OnDivider';
 import IMAGES from '../../assets/images/index';
 import useGoogleSignIn from '../../hooks/useGoogleSignIn';
 import styles from './style';
-import {Props} from '../../types/types';
+import {Props} from 'types';
 import {GOOGLE_WEB_CLIENT_ID} from '../../config/config';
 import CustomButton from '../../components/customButton/CustomButton';
 
@@ -79,7 +79,6 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
                 value={email}
                 onChange={text => setEmail(text)}
               />
-              {emailError && <Text style={styles.errorText}>{emailError}</Text>}
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Password</Text>

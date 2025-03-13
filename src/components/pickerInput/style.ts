@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   picker: {
     fontSize: 16,
     fontFamily: 'MontserratRegular',
-    color: 'gray',
+    color: COLOR.primary,
   },
 });
 

@@ -23,11 +23,6 @@ const CardSection: React.FC = () => {
   }
 
   if (!pet?.length) {
-    Toast.show({
-      type: 'info',
-      text1: 'No Data',
-      text2: 'No pet donations available at this time.',
-    });
     return <Text style={styles.noDataText}>No pet donations available</Text>;
   }
 

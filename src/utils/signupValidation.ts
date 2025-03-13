@@ -1,6 +1,6 @@
 import {validateEmail} from './emailUtils';
 import Toast from 'react-native-toast-message';
-import {ValidationRule, SignUpData} from '../types/types';
+import {ValidationRule, SignUpData} from 'types';
 
 export const validateSignUp = (
   data: SignUpData,

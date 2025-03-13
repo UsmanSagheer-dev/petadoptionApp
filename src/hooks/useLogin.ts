@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import auth from '@react-native-firebase/auth';
-import { LoginScreenNavigationProp } from '../types/types';
+import { LoginScreenNavigationProp } from 'types';
 import Toast from 'react-native-toast-message';
 
 const useLogin = (navigation: LoginScreenNavigationProp) => {

@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {useAppDispatch} from '../hooks/hooks';
 import {updatePassword, signout} from '../redux/slices/authSlice';
-import {PasswordUpdateNavigationProp, PasswordUpdateState} from '../types/types';
+import {PasswordUpdateNavigationProp, PasswordUpdateState} from 'types';
 import Toast from 'react-native-toast-message';
 
 export const usePasswordUpdate = (navigation: PasswordUpdateNavigationProp) => {

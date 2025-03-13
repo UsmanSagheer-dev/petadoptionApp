@@ -1,37 +1,16 @@
 import React from 'react';
-import {View, Text, Image, Linking} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {useAppSelector} from '../../hooks/hooks';
-import useProfile from '../../hooks/useProfile';
 import CustomButton from '../customButton/CustomButton';
 import IMAGES from '../../assets/images/index';
 import styles from './style';
-import {RootState} from '../../redux/store';
-import Toast from 'react-native-toast-message';
+import COLOR from '../../constants/constant';
 
-const AdoptNowCard = () => {
-  const {profileData} = useProfile();
-  const donations = useAppSelector((state: RootState) => state.pet.donations);
-
-  const userDonation = donations.find(donation =>
-    donation.requests?.some(request => request.userId === profileData?.uid),
-  );
-
-  const handleContactPress = () => {
-    if (userDonation?.ownerEmail) {
-      Linking.openURL(`mailto:${userDonation.ownerEmail}`);
-    }
-  };
-
-  if (!userDonation) {
-    Toast.show({
-      type: 'info',
-      text1: 'No Adoption Requests',
-      text2: 'No adoption requests found at this time.',
-    });
+const AdoptNowCard = ({data, onContactPress}) => {
+  if (!data) {
     return (
       <View style={styles.card}>
-        <Text style={styles.name}>No adoption requests found</Text>
+        <Text style={styles.name}>No adoption request data</Text>
       </View>
     );
   }
@@ -41,38 +20,24 @@ const AdoptNowCard = () => {
       <View style={styles.profileData}>
         <Image
           source={
-            userDonation.ownerPhotoURL
-              ? {uri: userDonation.ownerPhotoURL}
-              : IMAGES.PROFILEIMG
+            data.ownerPhotoURL ? {uri: data.ownerPhotoURL} : IMAGES.PROFILEIMG
           }
           style={styles.image}
         />
         <View>
-          <Text style={styles.name}>
-            {userDonation.ownerDisplayName || 'Guest User'}
-          </Text>
-          <Text style={styles.breed}>
-            {userDonation.petType || 'Unknown Type'}
-          </Text>
-          <Text style={styles.email}>
-            {userDonation.ownerEmail || 'No email available'}
-          </Text>
+          <Text style={styles.name}>{data.ownerDisplayName}</Text>
+          <Text style={styles.breed}>{data.petType}</Text>
+          <Text style={styles.email}>{data.ownerEmail}</Text>
           <View style={styles.locationContainer}>
-            <MaterialIcons name="location-on" size={16} color="#ff4d4d" />
-            <Text style={styles.location}>
-              {userDonation.location ?? 'Unknown Location'}
-            </Text>
+            <MaterialIcons name="location-on" size={16} color={COLOR.error} />
+            <Text style={styles.location}>{data.location}</Text>
           </View>
-          <Text style={styles.date}>
-            {userDonation.createdAt?.toDate instanceof Function
-              ? userDonation.createdAt.toDate().toLocaleDateString()
-              : 'Date not available'}
-          </Text>
+          <Text style={styles.date}>{data.formattedDate}</Text>
         </View>
       </View>
       <CustomButton
         title="Contact"
-        onClick={handleContactPress}
+        onClick={() => onContactPress(data.ownerEmail)}
         backgroundColor="black"
         textColor="white"
         width="100%"

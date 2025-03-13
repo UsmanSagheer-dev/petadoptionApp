@@ -46,11 +46,7 @@ const styles = StyleSheet.create({
     fontFamily:'MontserratRegular',
     fontWeight: '600',
   },
-  errorText: {
-    color: 'red',
-    marginTop: 10,
-    textAlign: 'center',
-  },
+
   buttonGroupContainer: {
     width: '100%',
     marginTop: 24,

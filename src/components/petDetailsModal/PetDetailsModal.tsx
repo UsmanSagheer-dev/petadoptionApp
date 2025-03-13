@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Animated, Image} from 'react-native';
 import {useCustomBottomSheet} from '../../hooks/useCustomBottomSheet';
-import {CustomBottomSheetProps} from '../../types/types';
+import {CustomBottomSheetProps} from 'types';
 import IMAGES from '../../assets/images';
 import {usePetDetails} from '../../hooks/usePetDetails';
 import styles from './style';

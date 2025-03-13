@@ -5,7 +5,7 @@ import PickerInput from '../../components/pickerInput/PickerInput';
 import useDonateScreen from '../../hooks/useDonateScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './style';
-import {
+import COLOR, {
   PET_TYPE_OPTIONS,
   VACCINATION_OPTIONS,
   GENDER_OPTIONS,
@@ -27,7 +27,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.goBack()}>
-        <Icon name="arrow-back" size={24} color="#000" />
+        <Icon name="arrow-back" size={24} color={COLOR.black} />
       </TouchableOpacity>
 
       <PickerInput
@@ -104,7 +104,7 @@ const DonateScreen: React.FC<{navigation: any}> = ({navigation}) => {
           {!imageUri && (
             <View style={styles.iconUpload}>
               <Icon name="cloud-upload" size={24} color="#000" />
-              <Text style={styles.uploadText}>Select Image</Text>
+              <Text style={styles.uploadText}>Upload Image</Text>
             </View>
           )}
           {imageUri && (
