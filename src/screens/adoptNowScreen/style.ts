@@ -3,13 +3,12 @@ import COLOR from '../../constants/constant';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLOR.white,
-    paddingHorizontal: 17,
+    paddingHorizontal: 15,
   },
 
   cardContainer: {
     marginTop: 20,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   header: {
     fontSize: 24,

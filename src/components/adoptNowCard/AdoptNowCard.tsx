@@ -4,16 +4,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '../customButton/CustomButton';
 import IMAGES from '../../assets/images/index';
 import styles from './style';
-import {useAdoptNowCard} from './useAdoptNowCard';
 import COLOR from '../../constants/constant';
 
-const AdoptNowCard = () => {
-  const {cardData, handleContactPress} = useAdoptNowCard();
-
-  if (!cardData.hasData) {
+const AdoptNowCard = ({data, onContactPress}) => {
+  if (!data) {
     return (
       <View style={styles.card}>
-        <Text style={styles.name}>No adoption requests found</Text>
+        <Text style={styles.name}>No adoption request data</Text>
       </View>
     );
   }
@@ -23,26 +20,27 @@ const AdoptNowCard = () => {
       <View style={styles.profileData}>
         <Image
           source={
-            cardData.ownerPhotoURL
-              ? {uri: cardData.ownerPhotoURL}
+            data.ownerPhotoURL
+              ? {uri: data.ownerPhotoURL}
               : IMAGES.PROFILEIMG
           }
           style={styles.image}
         />
         <View>
-          <Text style={styles.name}>{cardData.ownerDisplayName}</Text>
-          <Text style={styles.breed}>{cardData.petType}</Text>
-          <Text style={styles.email}>{cardData.ownerEmail}</Text>
+          <Text style={styles.name}>{data.ownerDisplayName}</Text>
+          <Text style={styles.breed}>{data.petType}</Text>
+          <Text style={styles.email}>{data.ownerEmail}</Text>
           <View style={styles.locationContainer}>
             <MaterialIcons name="location-on" size={16} color={COLOR.error} />
-            <Text style={styles.location}>{cardData.location}</Text>
+            <Text style={styles.location}>{data.location}</Text>
           </View>
-          <Text style={styles.date}>{cardData.formattedDate}</Text>
+          <Text style={styles.date}>{data.formattedDate}</Text>
+       
         </View>
       </View>
       <CustomButton
         title="Contact"
-        onClick={handleContactPress}
+        onClick={() => onContactPress(data.ownerEmail)}
         backgroundColor="black"
         textColor="white"
         width="100%"

@@ -8,11 +8,6 @@ const styles = StyleSheet.create({
     padding: 15,
     width: '100%',
     alignItems: 'center',
-    shadowColor: COLOR.black,
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
   },
   profileData: {
     flexDirection: 'row',

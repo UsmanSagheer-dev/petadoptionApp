@@ -8,39 +8,38 @@ export const useAdoptNowCard = () => {
   const {profileData} = useProfile();
   const donations = useAppSelector((state: RootState) => state.pet.donations);
 
-  const userDonation = donations.find(donation =>
+  // Find all donations where the current user has made a request
+  const userDonations = donations.filter(donation =>
     donation.requests?.some(request => request.userId === profileData?.uid),
   );
 
-  const handleContactPress = useCallback(() => {
-    if (userDonation?.ownerEmail) {
-      Linking.openURL(`mailto:${userDonation.ownerEmail}`);
+  const handleContactPress = useCallback((email) => {
+    if (email) {
+      Linking.openURL(`mailto:${email}`);
     }
-  }, [userDonation]);
+  }, []);
 
-  const getFormattedDate = useCallback(() => {
-    if (userDonation?.createdAt?.toDate instanceof Function) {
-      return userDonation.createdAt.toDate().toLocaleDateString();
+  const getFormattedDate = useCallback((donation) => {
+    if (donation?.createdAt?.toDate instanceof Function) {
+      return donation.createdAt.toDate().toLocaleDateString();
     }
     return 'Date not available';
-  }, [userDonation]);
+  }, []);
 
-  const cardData = userDonation
-    ? {
-        ownerPhotoURL: userDonation.ownerPhotoURL,
-        ownerDisplayName: userDonation.ownerDisplayName || 'Guest User',
-        petType: userDonation.petType || 'Unknown Type',
-        ownerEmail: userDonation.ownerEmail || 'No email available',
-        location: userDonation.location ?? 'Unknown Location',
-        formattedDate: getFormattedDate(),
-        hasData: true,
-      }
-    : {
-        hasData: false,
-      };
+  const cardsData = userDonations.map(donation => ({
+    id: donation.id,
+    ownerPhotoURL: donation.ownerPhotoURL,
+    ownerDisplayName: donation.ownerDisplayName || 'Guest User',
+    petType: donation.petType || 'Unknown Type',
+    ownerEmail: donation.ownerEmail || 'No email available',
+    location: donation.location ?? 'Unknown Location',
+    formattedDate: getFormattedDate(donation),
+   
+  }));
 
   return {
-    cardData,
+    cardsData,
+    hasData: cardsData.length > 0,
     handleContactPress,
   };
 };
