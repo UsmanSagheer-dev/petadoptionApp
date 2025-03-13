@@ -6,7 +6,7 @@ const IMAGES = {
   ONCLICKFAV: require('./onclickfav.png'),
   OFCLICKFAV: require('./offclickfav.png'),
   LOCATION_VECTOR: require('./locationvector.png'),
-  DELETEICON: require('./Deleteicon.png'),
+  DELETEICON: require('./deleteicon.png'),
   GOOGLEIMG: require('./googleimg.jpg'),
   DOGIMG: require('./dog.jpg'),
   CATIMG: require('./cat.jpg'),

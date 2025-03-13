@@ -1,6 +1,5 @@
 import {StyleSheet} from 'react-native';
 import COLOR from '../../constants/constant';
-import FONTS from 'assets/fonts';
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -14,7 +13,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
     color: COLOR.primary,
-    fontFamily:'MontserratRegular',
+    fontFamily: 'MontserratRegular',
   },
   plus: {
     fontSize: 36,
